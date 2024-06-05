@@ -6,5 +6,8 @@ export const StatusCodes = {
     UNAUTHORIZED: 401,
     FORBIDDEN: 403,
     PAGE_NOT_FOUND: 404,
+    METHOD_NOT_ALLOWD: 405,
     INTERNAL_SERVER_ERROR: 500,
+    BAD_GATEWAY: 502
+
 };

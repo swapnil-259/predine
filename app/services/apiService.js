@@ -1,5 +1,6 @@
 import axiosInstance from './axios';
-import ShowToast, { handleToastCodeWise } from './toast';
+import { handleToastCodeWise } from './toast';
+import { StatusCodes } from '../constants/statusCodes';
 
 export const postData = async (endpoint, data) => {
     try {
@@ -9,7 +10,7 @@ export const postData = async (endpoint, data) => {
         }
         return response.data;
     } catch (error) {
-        if (error.response.status == 400 || error.response.status == 401 || error.response.status == 403) {
+        if (error.response.status == StatusCodes.BAD_REQUEST || error.response.status == StatusCodes.UNAUTHORIZED || error.response.status == StatusCodes.FORBIDDEN) {
             throw handleToastCodeWise({ statusCode: error.response.status, statusMsg: error.response.data.msg })
         }
         else

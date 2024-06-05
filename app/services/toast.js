@@ -1,20 +1,21 @@
 import Toast from 'react-native-toast-message';
+import { StatusCodes } from '../constants/statusCodes';
 
 export const handleToastCodeWise = ({ statusCode, statusMsg }) => {
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
+    if (statusCode == StatusCodes.BAD_REQUEST || statusCode == StatusCodes.UNAUTHORIZED || statusCode == StatusCodes.FORBIDDEN) {
         return ShowToast(
             { type: "error", title: "MESSAGE!", msg: statusMsg }
         )
     }
-    else if (statusCode == 404 || statusCode == 500 || statusCode == 405)
+    else if (statusCode == StatusCodes.PAGE_NOT_FOUND || statusCode == StatusCodes.INTERNAL_SERVER_ERROR || statusCode == StatusCodes.METHOD_NOT_ALLOWD)
         return ShowToast(
             { type: "error", title: "SOMETHING WENT WRONG!", msg: "Please wait a few minutes before you try again." }
         )
-    else if (statusCode == 502)
+    else if (statusCode == StatusCodes.BAD_GATEWAY)
         return ShowToast(
             { type: "error", title: "POOR NETWORK!", msg: "There is something wrong with newtwork, try again later." }
         )
-    else if (statusCode == 200 || statusCode == 201 || statusCode == 202)
+    else if (statusCode == StatusCodes.OK || statusCode == StatusCodes.CREATED || statusCode == StatusCodes.ACCEPTED)
         return ShowToast(
             { type: "success", title: "SUCCESS!", msg: statusMsg }
         )

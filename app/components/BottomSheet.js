@@ -1,4 +1,4 @@
-import React, { Children, useMemo } from "react";
+import React, { useMemo } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 

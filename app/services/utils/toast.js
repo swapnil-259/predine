@@ -1,6 +1,5 @@
 import Toast from 'react-native-toast-message';
-import { StatusCodes } from '../constants/statusCodes';
-
+import { StatusCodes } from '../../constants/statusCodes';
 export const handleToastCodeWise = ({ statusCode, statusMsg }) => {
     if (statusCode == StatusCodes.BAD_REQUEST || statusCode == StatusCodes.UNAUTHORIZED || statusCode == StatusCodes.FORBIDDEN) {
         return ShowToast(
@@ -26,7 +25,7 @@ const ShowToast = ({ type, title, msg }) => {
         type: type,
         text1: title,
         text2: msg,
-        visibilityTime: 8000
+        visibilityTime: 7000
     })
 
 }

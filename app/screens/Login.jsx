@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 
-import {View, Image, BackHandler, Text, Keyboard} from 'react-native';
+import {View, Image, Keyboard} from 'react-native';
 import {BottomSheetComponent} from '../components/BottomSheet';
 import {StyledTextInput, StyledButton, StyledText} from '../components';
-import {postData} from '../services/apiService';
+import {postData} from '../services/api/apiService';
 import {apiURL} from '../constants/urls';
 
 const initialdata = {

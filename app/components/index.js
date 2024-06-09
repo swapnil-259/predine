@@ -1,7 +1,9 @@
 import { styled } from 'nativewind';
-import { View, Text } from 'react-native';
+import { View, Text, BackHandler } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import colors from '../styles/colors';
+import { Dialog, Portal, PaperProvider } from 'react-native-paper';
+import { useState } from 'react';
 
 export const StyledView = styled(View)
 
@@ -12,7 +14,7 @@ export const StyledTextInput = ({ label, placeholder, ...props }) => {
             placeholderTextColor={colors.BLACK}
             mode='outlined'
             keyboardType='text'
-            tw='m-6 mb-2 mt-2 bg-[#FEF7F4] '
+            tw='m-6 mb-2 mt-2 bg-[#FEF7F4]'
             activeOutlineColor={colors.BLACK}
             outlineStyle={{ borderWidth: 1, borderRadius: 10 }}
             {...props}
@@ -20,10 +22,10 @@ export const StyledTextInput = ({ label, placeholder, ...props }) => {
 }
 
 export const StyledButton = ({ fun, label, ...props }) => {
-    console.log({ ...props })
     return (
         <Button mode="contained"
-            tw="bg-[#FE7240] m-10 mb-4 mt-5"
+            textColor='#fff'
+            tw="bg-[#FE7240] m-6 mb-4 mt-5 "
             {...props}
         >
             {label}
@@ -42,3 +44,23 @@ export const StyledText = ({ tw, text, children, ...props }) => {
     )
 }
 
+export const DialogBox = ({ visible, showDialog, hideDialog }) => {
+
+    return (
+        <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog} theme={{ colors: { primary: 'green' } }}>
+                <Dialog.Title>Exit App</Dialog.Title>
+                <Dialog.Content>
+                    <Text variant="bodyMedium">Hold on! Are you sure you want to go back?</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={hideDialog}>Cancel</Button>
+                    <Button onPress={() => {
+                        BackHandler.exitApp()
+                    }}>Exit</Button>
+                </Dialog.Actions>
+
+            </Dialog>
+        </Portal >
+    );
+};

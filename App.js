@@ -10,6 +10,7 @@ import Dashboard from "./app/screens/Dashboard";
 import Toast from "react-native-toast-message";
 import VerifyOTP from "./app/screens/Registration/VerifyOTP";
 import InputEmail from "./app/screens/Registration/InputEmail";
+import MainRegister from "./app/screens/Registration/MainRegister";
 import useLoaderInterceptor from "./app/services/api/interceptor";
 import { LoaderProvider } from "./app/context/LoaderContext";
 import Loader from "./app/components/Loader";
@@ -35,7 +36,7 @@ const MainApp = ({ navigation }) => {
       <Stack.Navigator >
 
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
         <Stack.Screen name="InputEmail" component={InputEmail} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyOTP" component={VerifyOTP}
           options={({ navigation }) => ({
@@ -46,6 +47,8 @@ const MainApp = ({ navigation }) => {
               </TouchableOpacity>
             ),
           })} />
+        <Stack.Screen name="Register" component={MainRegister} options={{ headerShown: true, headerTitleAlign: 'center', headerLeft: () => null }}
+        />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

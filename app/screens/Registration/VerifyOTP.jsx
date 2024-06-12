@@ -36,7 +36,7 @@ const VerifyOTP = ({route, navigation}) => {
       const res = await postData(apiURL.VERIFY_OTP, otpData);
       console.log(res);
       setData(initialdata);
-      navigation.navigate('Login');
+      navigation.navigate('Register');
     } catch (err) {
       setData(initialdata);
       console.log(err);

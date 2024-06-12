@@ -15,6 +15,7 @@ export const StyledTextInput = ({ label, placeholder, ...props }) => {
             mode='outlined'
             keyboardType='text'
             tw='m-6 mb-2 mt-2 bg-[#FEF7F4]'
+            textColor='#000'
             activeOutlineColor={colors.BLACK}
             outlineStyle={{ borderWidth: 1, borderRadius: 10 }}
             {...props}
@@ -25,7 +26,19 @@ export const StyledButton = ({ fun, label, ...props }) => {
     return (
         <Button mode="contained"
             textColor='#fff'
-            tw="bg-[#FE7240] m-6 mb-4 mt-5 "
+            tw="bg-[#FE7240] m-5 mb-4 mt-4 "
+            {...props}
+        >
+            {label}
+        </Button >
+    )
+}
+export const StyledButtonTrans = ({ fun, label, ...props }) => {
+    return (
+        <Button mode="contained"
+            textColor='#FE7240'
+            tw="bg-[#fff] m-6 mb-0 mt-0"
+            style={{ borderColor: '#FE7240', borderWidth: 0.5 }}
             {...props}
         >
             {label}
@@ -34,7 +47,6 @@ export const StyledButton = ({ fun, label, ...props }) => {
 }
 
 export const StyledText = ({ tw, text, children, ...props }) => {
-    console.log({ ...props })
     return (
         <Text tw={tw}{...props}>
             {text}

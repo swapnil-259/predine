@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {View, Image, Keyboard} from 'react-native';
+import {View, Image, Keyboard, TouchableOpacity} from 'react-native';
 import {BottomSheetComponent} from '../components/BottomSheet';
 import {StyledTextInput, StyledButton, StyledText} from '../components';
 import {postData} from '../services/api/apiService';
@@ -92,9 +92,15 @@ const Login = ({navigation}) => {
             onPress={() => {
               handleLogin();
             }}></StyledButton>
-          <StyledText tw="text-black text-center" text="Not Registered?">
-            <StyledText tw="text-[#FE7240]" text=" Click Here!"></StyledText>
-          </StyledText>
+          <View tw="flex-row justify-center items-center ">
+            <StyledText tw="text-black" text="Not Registered?"></StyledText>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('InputEmail');
+              }}>
+              <StyledText tw="text-[#FE7240]" text=" Click Here!"></StyledText>
+            </TouchableOpacity>
+          </View>
         </BottomSheetComponent>
       </View>
     </>

@@ -13,10 +13,11 @@ import {
   StyledTextInput,
   StyledButton,
   DialogBox,
+  StyledButtonTrans,
 } from '../../components';
 import {PaperProvider} from 'react-native-paper';
 import {apiURL} from '../../constants/urls';
-import {postData} from '../../services/api/apiService';
+import {postData, getData} from '../../services/api/apiService';
 
 const InputEmail = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -54,9 +55,12 @@ const InputEmail = ({navigation}) => {
   }, []);
 
   const verifyEmail = async () => {
-    console.log(email);
+    const data = {
+      email: email.email,
+    };
+    console.log('email', data);
     try {
-      const res = await postData(apiURL.VERIFY_EMAIL, email);
+      const res = await postData(apiURL.VERIFY_EMAIL, data);
       console.log(res);
       setEditDisable(false);
       setEmail('');
@@ -65,6 +69,22 @@ const InputEmail = ({navigation}) => {
       console.log(err);
     }
   };
+  const checkEmail = async () => {
+    const data = {
+      email: email.email,
+    };
+    console.log('dta', data);
+    try {
+      const res = await getData(apiURL.CHECK_EMAIL_VERF, data);
+      console.log(res);
+      setEditDisable(false);
+      setEmail('');
+      navigation.navigate('Register', {email: email});
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <PaperProvider>
       <View tw="flex-1 justify-center bg-[#FE7240]">
@@ -88,6 +108,7 @@ const InputEmail = ({navigation}) => {
             tw="text-black font-bold text-[18px] text-center mb-2"
             text="EMAIL VERIFICATION"></StyledText>
           <StyledTextInput
+            style={{marginBottom: 0}}
             label="Email"
             placeholder="Enter Your Email"
             value={email}
@@ -97,17 +118,17 @@ const InputEmail = ({navigation}) => {
             }}></StyledTextInput>
 
           <StyledButton
-            label="SUBMIT"
+            label="VERIFY EMAIL"
             onPress={() => {
               console.log('button pressed');
-              // navigation.navigate('VerifyOTP');
               verifyEmail();
             }}></StyledButton>
-          {/* <View tw="flex-row justify-between ml-8 mr-8">
-            <StyledText tw="text-black" text="Resend OTP"></StyledText>
-            <StyledText tw="text-[#0000FF]" text="00:00"></StyledText>
-          </View> */}
-          <View tw="flex-1 justify-end mb-8">
+          <StyledButtonTrans
+            label={'Continue Registration Process'}
+            onPress={() => {
+              checkEmail();
+            }}></StyledButtonTrans>
+          <View tw="flex-1 justify-end mb-8 mt-1">
             <View tw="flex-row justify-center">
               <StyledText
                 tw="text-black"

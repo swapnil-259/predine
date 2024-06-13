@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Alert, BackHandler} from 'react-native';
-import {styled} from 'nativewind';
+import {BackHandler} from 'react-native';
 import {DialogBox} from '../components';
 import {PaperProvider} from 'react-native-paper';
-const StyledText = styled(Text);
-const StyledView = styled(View);
+import {StyledText, StyledView} from '../components';
 
 const Dashboard = () => {
   const [visible, setVisible] = useState(false);

@@ -46,7 +46,7 @@ const Login = ({navigation}) => {
       const res = await postData(apiURL.LOGIN, loginData);
       setEditDisable(false);
       setData(initialdata);
-      navigation.navigate('Dashboard');
+      navigation.navigate('Panel');
     } catch (err) {}
   };
 

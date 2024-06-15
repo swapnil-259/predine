@@ -5,6 +5,7 @@ export const apiURL = {
     RESEND_OTP: 'noauth/resend_otp/',
     CHECK_EMAIL_VERF: 'noauth/check_email_verf/',
     USER_REGISTRATION: 'noauth/user_registration/',
-    CHECK_AUTH: 'noauth/check_auth/'
+    CHECK_AUTH: 'noauth/check_auth/',
+    LEFT_PANEL: 'noauth/left_panel/'
 
 }

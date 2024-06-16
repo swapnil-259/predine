@@ -6,6 +6,9 @@ export const apiURL = {
     CHECK_EMAIL_VERF: 'noauth/check_email_verf/',
     USER_REGISTRATION: 'noauth/user_registration/',
     CHECK_AUTH: 'noauth/check_auth/',
-    LEFT_PANEL: 'noauth/left_panel/'
+    LEFT_PANEL: 'noauth/left_panel/',
+    GET_ROLE: 'execution/get_role/',
+    GET_RESTAURANT: 'execution/get_res/',
+    OWNER_REGISTRATION: 'execution/owner_registration/'
 
 }

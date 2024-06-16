@@ -70,7 +70,12 @@ const MainStackNavigator = () => {
                         }}
                         name="Register"
                         component={MainRegister}
-                        options={{ headerShown: true, headerTitleAlign: 'center', headerLeft: () => null }}
+                        options={{
+                            headerShown: true, headerTitleAlign: 'center', headerLeft: () => null, headerStyle: {
+                                backgroundColor: '#FE7240',
+                            },
+                            headerTintColor: '#fff'
+                        }}
                     />
                 </Stack.Navigator>
 

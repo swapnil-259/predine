@@ -10,7 +10,6 @@ import {apiURL} from '../../constants/urls';
 import {postData} from '../../services/api/apiService';
 
 const MainRegister = ({navigation, route}) => {
-  console.log('route', route.params);
   const {
     control,
     handleSubmit,
@@ -19,12 +18,12 @@ const MainRegister = ({navigation, route}) => {
   } = useForm({mode: 'onBlur'});
 
   const onSubmit = async data => {
-    data['email'] = route.params.email;
+    data['email'] = route.params.email.email;
     console.log('data', data);
     try {
       const res = await postData(apiURL.USER_REGISTRATION, data);
       console.log(res);
-      navigation.navigate('Dashboard');
+      navigation.navigate('Panel');
     } catch (err) {
       console.log(err);
     }
@@ -50,9 +49,9 @@ const MainRegister = ({navigation, route}) => {
           />
         )}
       />
-      {errors.firstName && (
+      {errors.first_name && (
         <StyledText tw="text-red-500 ml-6">
-          {errors.firstName.message}
+          {errors.first_name.message}
         </StyledText>
       )}
 
@@ -74,9 +73,9 @@ const MainRegister = ({navigation, route}) => {
           />
         )}
       />
-      {errors.lastName && (
+      {errors.last_name && (
         <StyledText tw="text-red-500 ml-6">
-          {errors.lastName.message}
+          {errors.last_name.message}
         </StyledText>
       )}
 
@@ -100,9 +99,9 @@ const MainRegister = ({navigation, route}) => {
           />
         )}
       />
-      {errors.phoneNumber && (
+      {errors.phone_number && (
         <StyledText tw="text-red-500 ml-6">
-          {errors.phoneNumber.message}
+          {errors.phone_number.message}
         </StyledText>
       )}
 
@@ -152,9 +151,9 @@ const MainRegister = ({navigation, route}) => {
           />
         )}
       />
-      {errors.confirmPassword && (
+      {errors.confrim_password && (
         <StyledText tw="text-red-500 ml-6">
-          {errors.confirmPassword.message}
+          {errors.confrim_password.message}
         </StyledText>
       )}
 

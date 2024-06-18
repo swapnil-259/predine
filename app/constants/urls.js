@@ -9,6 +9,7 @@ export const apiURL = {
     LEFT_PANEL: 'noauth/left_panel/',
     GET_ROLE: 'execution/get_role/',
     GET_RESTAURANT: 'execution/get_res/',
-    OWNER_REGISTRATION: 'execution/owner_registration/'
+    OWNER_REGISTRATION: 'execution/owner_registration/',
+    VIEW_OWNERS: 'execution/view_owners/'
 
 }

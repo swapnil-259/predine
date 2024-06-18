@@ -2,8 +2,7 @@ import { styled } from 'nativewind';
 import { View, Text, BackHandler } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import colors from '../styles/colors';
-import { Dialog, Portal, PaperProvider } from 'react-native-paper';
-import { useState } from 'react';
+import { Dialog, Portal, Card } from 'react-native-paper';
 
 export const StyledView = styled(View)
 
@@ -26,7 +25,7 @@ export const StyledButton = ({ fun, label, ...props }) => {
     return (
         <Button mode="contained"
             textColor='#fff'
-            tw="bg-[#FE7240] m-5 mb-4 mt-4 "
+            tw="bg-[#FE7240] m-5 mb-4 mt-4 border-0"
             {...props}
         >
             {label}
@@ -76,3 +75,34 @@ export const DialogBox = ({ visible, showDialog, hideDialog }) => {
         </Portal >
     );
 };
+
+export const RestaurantCard = ({ res_name, res_type }) => {
+    return (
+        <Card tw='bg-[#FEF7F4] mt-0 mb-5'>
+            <Card.Content>
+                <StyledText tw='text-black font-bold text-[18px]'>{res_name}</StyledText>
+                <StyledText tw='text-[#808080] p-1 pl-0'>{res_type}</StyledText>
+            </Card.Content>
+            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{
+                marginHorizontal: 4
+            }} />
+            <Card.Actions>
+                <StyledButton
+                    label={'View'}
+                    style={{
+                        marginRight: 0,
+                        marginTop: 0,
+                        marginBottom: 0
+                    }}></StyledButton>
+                {/* <StyledButton label={'Delete'}
+                    style={{
+                        marginRight: 0,
+                        marginTop: 0,
+                        marginBottom: 0
+                    }}></StyledButton> */}
+
+            </Card.Actions>
+        </Card >
+
+    )
+}

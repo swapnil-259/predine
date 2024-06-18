@@ -72,9 +72,16 @@ const AddOwner = () => {
         <Controller
           control={control}
           name="first_name"
-          rules={{required: {value: true, message: 'First Name is required'}}}
+          rules={{
+            required: {value: true, message: 'First Name is required'},
+            maxLength: {
+              value: 50,
+              message: 'First Name cannot exceed 50 characters',
+            },
+          }}
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
+              maxLength={50}
               placeholder="First Name"
               onBlur={onBlur}
               onChangeText={onChange}
@@ -91,9 +98,16 @@ const AddOwner = () => {
         <Controller
           control={control}
           name="last_name"
-          rules={{required: {value: true, message: 'Last Name is required'}}}
+          rules={{
+            required: {value: true, message: 'Last Name is required'},
+            maxLength: {
+              value: 50,
+              message: 'Last Name cannot exceed 50 characters',
+            },
+          }}
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
+              maxLength={50}
               placeholder="Last Name"
               onBlur={onBlur}
               onChangeText={onChange}
@@ -133,7 +147,10 @@ const AddOwner = () => {
         <Controller
           control={control}
           name="email"
-          rules={{required: {value: true, message: 'Email is required'}}}
+          rules={{
+            required: {value: true, message: 'Email is required'},
+            pattern: {value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email'},
+          }}
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               placeholder="Email"
@@ -150,10 +167,17 @@ const AddOwner = () => {
         <Controller
           control={control}
           name="address"
-          rules={{required: {value: true, message: 'Address is required'}}}
+          rules={{
+            required: {value: true, message: 'Address is required'},
+            maxLength: {
+              value: 150,
+              message: 'Address cannot exceed 150 characters',
+            },
+          }}
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               placeholder="Address"
+              maxLength={150}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -174,6 +198,7 @@ const AddOwner = () => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
+              maxLength={50}
               placeholder="Restaurant Name"
               onBlur={onBlur}
               onChangeText={onChange}
@@ -192,6 +217,10 @@ const AddOwner = () => {
           name="res"
           rules={{
             required: {value: true, message: 'Restaurant Category is required'},
+            maxLength: {
+              value: 50,
+              message: 'Restaurant Category cannot exceed 50 characters',
+            },
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <CustomDropdown

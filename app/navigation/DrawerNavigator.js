@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { getData } from "../services/api/apiService";
 import { apiURL } from "../constants/urls";
 import AddOwner from "../screens/Admin/AddOwner";
-import ViewOwner from "../screens/Admin/ViewOwner";
+import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DrawerText from "../components/DrawerText";
@@ -13,7 +13,7 @@ const Drawer = createDrawerNavigator();
 
 const navigationMap = {
     'AddOwner': AddOwner,
-    'ViewOwner': ViewOwner,
+    'OwnerList': OwnerList,
     'Dashboard': Dashboard
 };
 
@@ -27,15 +27,10 @@ const DrawerNavigator = () => {
     const LeftPanel = async () => {
         try {
             const res = await getData(apiURL.LEFT_PANEL);
-            console.log("res", res);
             setPanelData(res.data);
         } catch (err) {
             console.log(err);
         }
-    };
-    const handleLogout = () => {
-        console.log('Logout pressed');
-
     };
 
     useEffect(() => {

@@ -1,20 +1,15 @@
 import {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import CustomDropdown from '../../components/CustomDropdown';
-import {Dropdown} from 'react-native-element-dropdown';
-import {RestaurantCard, StyledText, StyledView} from '../../components';
-import {getData, postData} from '../../services/api/apiService';
-import {apiURL} from '../../constants/urls';
+import {RestaurantCard, StyledText, StyledView} from '../../../components';
+import {getData} from '../../../services/api/apiService';
+import {apiURL} from '../../../constants/urls';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const ViewOwner = () => {
-  const [value, setValue] = useState(null);
+const OwnerList = () => {
   const [data, setData] = useState([]);
 
   const viewOwners = async () => {
-    console.log(apiURL.VIEW_OWNERS);
     try {
-      const res = await getData(apiURL.VIEW_OWNERS);
+      const res = await getData(apiURL.OWNER_LIST);
       setData(res.data);
       console.log(res);
     } catch (err) {
@@ -53,4 +48,4 @@ const ViewOwner = () => {
   );
 };
 
-export default ViewOwner;
+export default OwnerList;

@@ -4,10 +4,10 @@ import {getData} from '../../../services/api/apiService';
 import {apiURL} from '../../../constants/urls';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const OwnerList = () => {
+const OwnerList = ({navigation}) => {
   const [data, setData] = useState([]);
 
-  const viewOwners = async () => {
+  const ownerList = async () => {
     try {
       const res = await getData(apiURL.OWNER_LIST);
       setData(res.data);
@@ -18,10 +18,10 @@ const OwnerList = () => {
   };
 
   useEffect(() => {
-    viewOwners();
+    ownerList();
   }, []);
   return (
-    <StyledView tw="flex-1 p-5 bg-white">
+    <StyledView tw="flex-1 p-3 bg-white">
       <ScrollView
         contentContainerStyle={
           !data
@@ -37,6 +37,7 @@ const OwnerList = () => {
           data.map((each, index) => {
             return (
               <RestaurantCard
+                onPress={() => navigation.navigate('View Owner', {id: each.id})}
                 res_name={each.restaurant_name}
                 res_type={each.restaurant_type__parent}
                 key={index}></RestaurantCard>

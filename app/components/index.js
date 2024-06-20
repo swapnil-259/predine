@@ -76,8 +76,9 @@ export const DialogBox = ({ visible, showDialog, hideDialog }) => {
     );
 };
 
-export const RestaurantCard = ({ res_name, res_type }) => {
+export const RestaurantCard = ({ res_name, res_type, onPress }) => {
     return (
+
         <Card tw='bg-[#FEF7F4] mt-0 mb-5'>
             <Card.Content>
                 <StyledText tw='text-black font-bold text-[18px]'>{res_name}</StyledText>
@@ -88,21 +89,37 @@ export const RestaurantCard = ({ res_name, res_type }) => {
             }} />
             <Card.Actions>
                 <StyledButton
+                    onPress={onPress}
                     label={'View'}
                     style={{
                         marginRight: 0,
                         marginTop: 0,
-                        marginBottom: 0
+                        marginBottom: 0,
+
                     }}></StyledButton>
-                {/* <StyledButton label={'Delete'}
-                    style={{
-                        marginRight: 0,
-                        marginTop: 0,
-                        marginBottom: 0
-                    }}></StyledButton> */}
 
             </Card.Actions>
         </Card >
 
     )
 }
+
+export const OwnerDetailsCard = ({ data }) => {
+    return (
+        <Card tw='bg-[#FEF7F4] mt-0 mb-5' style={{ borderRadius: 0 }}>
+            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{
+                margin: 4, borderRadius: 0
+            }} />
+            {data.map((each, index) => {
+                return (
+                    <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 5 }} key={index}>
+                        <StyledText tw='text-[#808080] text-[15px] font-bold' style={{ alignText: 'flex-start' }}>{each.label}</StyledText>
+                        <StyledText tw='text-black p-1 pl-0 font-bold text-[15px]' style={{ textAlign: 'right' }}>{each.value}</StyledText>
+                    </Card.Content>
+                )
+            })}
+        </Card>
+    )
+}
+
+

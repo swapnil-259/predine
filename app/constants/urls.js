@@ -10,7 +10,8 @@ export const apiURL = {
     GET_ROLE: 'execution/get_role/',
     GET_RESTAURANT: 'execution/get_res/',
     OWNER_REGISTRATION: 'execution/owner_registration/',
-    OWNER_LIST: 'execution/owner_list/'
+    OWNER_LIST: 'execution/owner_list/',
+    VIEW_OWNERS: 'execution/view_owners/'
 
 
 }

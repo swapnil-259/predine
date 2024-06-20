@@ -8,7 +8,6 @@ import BootSplash from "react-native-bootsplash";
 import { TouchableOpacity } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Login from "../screens/Login";
-import Dashboard from "../screens/Dashboard";
 import VerifyOTP from "../screens/Registration/VerifyOTP";
 import MainRegister from "../screens/Registration/MainRegister";
 import InputEmail from "../screens/Registration/InputEmail";
@@ -16,7 +15,7 @@ import Toast from "react-native-toast-message";
 import { baseURL } from "../services/api/axios";
 import { LoaderProvider } from "../context/LoaderContext";
 import Loader from "../components/Loader";
-import { getData } from "../services/api/apiService";
+import ViewOwner from "../screens/Admin/ViewOwner/ViewOwner";
 import DrawerNaviagtor from "./DrawerNavigator";
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +51,7 @@ const MainStackNavigator = () => {
                 <Stack.Navigator>
                     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                     <Stack.Screen name="Panel" component={DrawerNaviagtor} options={{ headerShown: false }} />
+                    <Stack.Screen name="View Owner" component={ViewOwner} />
                     <Stack.Screen name="InputEmail" component={InputEmail} options={{ headerShown: false }} />
                     <Stack.Screen name="VerifyOTP"
                         component={VerifyOTP}
@@ -89,6 +89,21 @@ const MainStackNavigator = () => {
                 <Loader />
                 <Stack.Navigator>
                     <Stack.Screen name="Panel" component={DrawerNaviagtor} options={{ headerShown: false }} />
+                    <Stack.Screen name="View Owner" component={ViewOwner} options={{
+                        headerTitleAlign: 'center',
+                        headerTitleStyle: {
+                            color: '#fff',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                        },
+                        headerStyle: {
+                            backgroundColor: '#FE7240',
+
+                        },
+                        headerTintColor: '#fff'
+
+                    }} />
+
                 </Stack.Navigator>
                 <Toast />
             </NavigationContainer>

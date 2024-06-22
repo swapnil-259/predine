@@ -24,6 +24,12 @@ const Dashboard = () => {
           visible={visible}
           showDialog={showDialog}
           hideDialog={hideDialog}
+          title={'Exit'}
+          text={'Do you really want to Exit?'}
+          btnText1={'Yes'}
+          btnText2={'Cancel'}
+          onPressbtn1={() => BackHandler.exitApp()}
+          onPressbtn2={hideDialog}
         />
         <StyledText tw="font-bold text-black text-lg">
           Welcome to Predine!

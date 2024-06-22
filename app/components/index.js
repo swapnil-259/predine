@@ -1,14 +1,15 @@
 import { styled } from 'nativewind';
-import { View, Text, BackHandler } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { View, Text, BackHandler, TextInput as ReactInput } from 'react-native';
+import { TextInput as PaperInput, Button } from 'react-native-paper';
 import colors from '../styles/colors';
 import { Dialog, Portal, Card } from 'react-native-paper';
+import { useState } from 'react';
 
 export const StyledView = styled(View)
 
 export const StyledTextInput = ({ label, placeholder, ...props }) => {
     return (
-        <TextInput
+        <PaperInput
             placeholder={placeholder}
             placeholderTextColor={colors.BLACK}
             mode='outlined'
@@ -55,20 +56,18 @@ export const StyledText = ({ tw, text, children, ...props }) => {
     )
 }
 
-export const DialogBox = ({ visible, showDialog, hideDialog }) => {
+export const DialogBox = ({ visible, hideDialog, title, text, btnText1, btnText2, onPressbtn1, onPressbtn2 }) => {
 
     return (
         <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog} theme={{ colors: { primary: 'green' } }}>
-                <Dialog.Title>Exit App</Dialog.Title>
+            <Dialog visible={visible} onDismiss={hideDialog} >
+                <Dialog.Title>{title}</Dialog.Title>
                 <Dialog.Content>
-                    <Text variant="bodyMedium">Hold on! Are you sure you want to go back?</Text>
+                    <Text variant="bodyMedium">{text}</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={hideDialog}>Cancel</Button>
-                    <Button onPress={() => {
-                        BackHandler.exitApp()
-                    }}>Exit</Button>
+                    <Button onPress={onPressbtn1}>{btnText1}</Button>
+                    <Button onPress={onPressbtn2}>{btnText2}</Button>
                 </Dialog.Actions>
 
             </Dialog>
@@ -96,29 +95,39 @@ export const RestaurantCard = ({ res_name, res_type, onPress }) => {
                         marginTop: 0,
                         marginBottom: 0,
 
-                    }}></StyledButton>
 
+                    }}></StyledButton>
             </Card.Actions>
         </Card >
 
     )
 }
 
-export const OwnerDetailsCard = ({ data }) => {
+export const OwnerDetailsCard = ({ data, editable, editData, onTextChange }) => {
+    const handleTextChange = (label, value) => {
+        onTextChange(label, value)
+    };
+    console.log(editData)
     return (
-        <Card tw='bg-[#FEF7F4] mt-0 mb-5' style={{ borderRadius: 0 }}>
+        <Card tw='bg-[#FEF7F4] mt-0 mb-0' style={{ borderRadius: 0 }}>
             <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{
                 margin: 4, borderRadius: 0
             }} />
-            {data.map((each, index) => {
+            {data.filter(each => each.label !== 'id').map((each, index) => {
                 return (
-                    <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 5 }} key={index}>
+                    <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 4 }} key={index}>
                         <StyledText tw='text-[#808080] text-[15px] font-bold' style={{ alignText: 'flex-start' }}>{each.label}</StyledText>
-                        <StyledText tw='text-black p-1 pl-0 font-bold text-[15px]' style={{ textAlign: 'right' }}>{each.value}</StyledText>
+                        <ReactInput tw='text-black p-1 pl-0 font-bold text-[15px]' style={{ textAlign: 'right' }}
+                            defaultValue={each.value}
+                            value={editData[each.value]}
+                            onChangeText={val => handleTextChange(each.label, val)}
+                            editable={each.can_edit === true ? editable : false}
+                        ></ReactInput>
                     </Card.Content>
                 )
             })}
         </Card>
+
     )
 }
 

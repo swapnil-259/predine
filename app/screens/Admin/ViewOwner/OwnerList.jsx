@@ -1,8 +1,9 @@
-import {useEffect, useState} from 'react';
-import {RestaurantCard, StyledText, StyledView} from '../../../components';
-import {getData} from '../../../services/api/apiService';
-import {apiURL} from '../../../constants/urls';
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
+import {RestaurantCard, StyledText, StyledView} from '../../../components';
+import {apiURL} from '../../../constants/urls';
+import {getData} from '../../../services/api/apiService';
 
 const OwnerList = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -17,9 +18,11 @@ const OwnerList = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    ownerList();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      ownerList();
+    }, []),
+  );
   return (
     <StyledView tw="flex-1 p-3 bg-white">
       <ScrollView

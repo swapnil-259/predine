@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 
-import {View, Image, Keyboard, TouchableOpacity} from 'react-native';
+import {Image, Keyboard, TouchableOpacity, View} from 'react-native';
+import {StyledButton, StyledText, StyledTextInput} from '../components';
 import {BottomSheetComponent} from '../components/BottomSheet';
-import {StyledTextInput, StyledButton, StyledText} from '../components';
-import {postData} from '../services/api/apiService';
 import {apiURL} from '../constants/urls';
+import {postData} from '../services/api/apiService';
 
 const initialdata = {
   username: '',
@@ -63,7 +63,7 @@ const Login = ({navigation}) => {
           </View>
         )}
 
-        <BottomSheetComponent>
+        <BottomSheetComponent style={{justifyContent: 'center'}}>
           <StyledText
             tw="text-black font-bold text-[18px] text-center mb-2"
             text="LOGIN"></StyledText>

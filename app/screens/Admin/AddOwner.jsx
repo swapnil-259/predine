@@ -1,15 +1,16 @@
-import {
-  StyledText,
-  StyledView,
-  StyledTextInput,
-  StyledButton,
-} from '../../components';
-import {getData, postData} from '../../services/api/apiService';
-import {apiURL} from '../../constants/urls';
-import {useEffect, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
-import CustomDropdown from '../../components/CustomDropdown';
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback, useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
 import {ScrollView} from 'react-native-gesture-handler';
+import {
+  StyledButton,
+  StyledText,
+  StyledTextInput,
+  StyledView,
+} from '../../components';
+import CustomDropdown from '../../components/CustomDropdown';
+import {apiURL} from '../../constants/urls';
+import {getData, postData} from '../../services/api/apiService';
 
 const AddOwner = () => {
   const [roleData, setRoleData] = useState([]);
@@ -33,10 +34,12 @@ const AddOwner = () => {
     }
   };
 
-  useEffect(() => {
-    getRes();
-    getRole();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRes();
+      getRole();
+    }, []),
+  );
 
   const {
     control,
@@ -58,8 +61,8 @@ const AddOwner = () => {
         phone_number: '',
         restaurant_name: '',
         address: '',
-        res: '',
-        role: '',
+        res: null,
+        role: null,
       });
     } catch (err) {
       console.log(err);
@@ -82,6 +85,7 @@ const AddOwner = () => {
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               maxLength={50}
+              label="First Name"
               placeholder="First Name"
               onBlur={onBlur}
               onChangeText={onChange}
@@ -108,6 +112,7 @@ const AddOwner = () => {
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               maxLength={50}
+              label={'Last Name'}
               placeholder="Last Name"
               onBlur={onBlur}
               onChangeText={onChange}
@@ -131,6 +136,7 @@ const AddOwner = () => {
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               placeholder="Phone Number"
+              label={'Phone Number'}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -154,6 +160,7 @@ const AddOwner = () => {
           render={({field: {onChange, onBlur, value}}) => (
             <StyledTextInput
               placeholder="Email"
+              label={'Email'}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -178,6 +185,7 @@ const AddOwner = () => {
             <StyledTextInput
               placeholder="Address"
               maxLength={150}
+              label={'Address'}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -200,6 +208,7 @@ const AddOwner = () => {
             <StyledTextInput
               maxLength={50}
               placeholder="Restaurant Name"
+              label={'Restaurant Name'}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -217,15 +226,12 @@ const AddOwner = () => {
           name="res"
           rules={{
             required: {value: true, message: 'Restaurant Category is required'},
-            maxLength: {
-              value: 50,
-              message: 'Restaurant Category cannot exceed 50 characters',
-            },
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <CustomDropdown
               placeholder="Restaurant Category"
               data={restaurantData}
+              label="Restaurant Category"
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -244,6 +250,7 @@ const AddOwner = () => {
             <CustomDropdown
               placeholder="Owner Role"
               data={roleData}
+              label="Owner Role"
               value={value}
               onChange={onChange}
               onBlur={onBlur}

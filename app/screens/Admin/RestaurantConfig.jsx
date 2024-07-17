@@ -3,6 +3,7 @@ import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {
   StyledButton,
+  StyledButtonTrans,
   StyledText,
   StyledTextInput,
   StyledView,
@@ -13,6 +14,7 @@ import {getData, postData} from '../../services/api/apiService';
 
 const RestauratConfig = () => {
   const [parentData, setParentData] = useState([]);
+  const [childData, setChildData] = useState([]);
 
   const ParentList = async () => {
     try {
@@ -27,17 +29,23 @@ const RestauratConfig = () => {
   useFocusEffect(
     useCallback(() => {
       ParentList();
+      reset({
+        parent: null,
+        child: '',
+      });
+      setChildData([]);
     }, []),
   );
+
   const {
     control,
+    getValues,
     handleSubmit,
     reset,
     formState: {errors, isValid},
   } = useForm({mode: 'onBlur'});
 
   const onSubmit = async data => {
-    console.log(data);
     try {
       const res = await postData(apiURL.ADD_CHILD, data);
       console.log(res);
@@ -53,10 +61,26 @@ const RestauratConfig = () => {
       console.log(err);
     }
   };
+
+  const onPreviousData = async data => {
+    const parent = getValues('parent');
+
+    try {
+      const res = await getData(apiURL.GET_CHILD, {parent: parent});
+      setChildData(res.data);
+      reset({
+        parent: null,
+      });
+    } catch (err) {
+      reset({
+        parent: null,
+      });
+    }
+  };
+
   return (
     <StyledView tw="flex-1 bg-white ">
-      <StyledView tw="justify-center">
-        <StyledText>HELLO</StyledText>
+      <StyledView tw="justify-center pt-5">
         <Controller
           control={control}
           name="parent"
@@ -113,9 +137,19 @@ const RestauratConfig = () => {
           onPress={handleSubmit(onSubmit)}
           tw="mt-6"
           label={'SUBMIT'}
-          disabled={!isValid}>
-          <StyledText tw="text-white">Register</StyledText>
-        </StyledButton>
+          disabled={!isValid}></StyledButton>
+
+        <StyledButtonTrans
+          label={'VIEW PREVIOUS '}
+          // disabled={!isValid}
+          onPress={onPreviousData}></StyledButtonTrans>
+      </StyledView>
+      <StyledView tw="flex-1  align-center mt-5">
+        {childData.map((item, index) => (
+          <StyledText tw="text-black text-[20px] p-5" key={index}>
+            {item.label}
+          </StyledText>
+        ))}
       </StyledView>
     </StyledView>
   );

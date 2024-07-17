@@ -38,6 +38,16 @@ const AddOwner = () => {
     useCallback(() => {
       getRes();
       getRole();
+      reset({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone_number: '',
+        restaurant_name: '',
+        address: '',
+        res: null,
+        role: null,
+      });
     }, []),
   );
 

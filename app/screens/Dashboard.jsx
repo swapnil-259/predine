@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {BackHandler} from 'react-native';
-import {DialogBox} from '../components';
 import {PaperProvider} from 'react-native-paper';
-import {StyledText, StyledView} from '../components';
+import {DialogBox, StyledButton, StyledText, StyledView} from '../components';
+import {apiURL} from '../constants/urls';
+import {postData} from '../services/api/apiService';
 
 const Dashboard = () => {
   const [visible, setVisible] = useState(false);
@@ -17,6 +18,15 @@ const Dashboard = () => {
     };
     BackHandler.addEventListener('hardwareBackPress', backAction);
   }, []);
+
+  const logoutUser = async () => {
+    try {
+      const res = await postData(apiURL.LOGOUT);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <PaperProvider>
       <StyledView tw="flex-1 justify-center items-center">
@@ -34,6 +44,7 @@ const Dashboard = () => {
         <StyledText tw="font-bold text-black text-lg">
           Welcome to Predine!
         </StyledText>
+        <StyledButton label={'logout'} onPress={logoutUser}></StyledButton>
       </StyledView>
     </PaperProvider>
   );

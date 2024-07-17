@@ -7,5 +7,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.documentSelectors": ["*.{ts,js,tsx,jsx}"],
   "prettier.singleQuote": true,
-  "prettier.trailingComma": "all"
+  "prettier.trailingComma": "all",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

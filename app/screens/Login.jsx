@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 
-import {Image, Keyboard, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Keyboard,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {StyledButton, StyledText, StyledTextInput} from '../components';
 import {BottomSheetComponent} from '../components/BottomSheet';
 import {apiURL} from '../constants/urls';
@@ -15,6 +21,8 @@ const Login = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [isEditDisable, setEditDisable] = useState(true);
   const [data, setData] = useState(initialdata);
+  const screenHeight = Dimensions.get('window').height;
+  const imageHeight = screenHeight * 0.55;
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -56,7 +64,8 @@ const Login = ({navigation}) => {
         {!isKeyboardVisible ? (
           <Image
             source={require('../assets/images/symbol.png')}
-            tw="self-center"></Image>
+            style={{height: imageHeight, width: '100%'}}
+            resizeMode="contain"></Image>
         ) : (
           <View tw="justify-center items-center m-10 ">
             <StyledText tw="text=[15px]">PREDINE</StyledText>

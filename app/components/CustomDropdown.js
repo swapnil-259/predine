@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import { StyledView } from ".";
 
-const CustomDropdown = ({ placeholder, data, value, onChange, onBlur }) => {
-    const [selectedValue, setSelectedValue] = useState(value);
-    useEffect(() => {
-        if (value) {
-            setSelectedValue(value);
-        }
-    }, [value]);
-
-
+const CustomDropdown = ({ placeholder, data, value, onChange, onBlur, ...props }) => {
 
     return (
-        <StyledView tw='flex-1 m-6 mt-2 mb-2'>
+        <StyledView tw='flex-1 m-6 mt-4 mb-2' {...props}>
             <Dropdown
                 data={data}
                 maxHeight={200}
-                value={selectedValue}
+                value={value}
                 labelField="label"
                 placeholder={placeholder}
                 valueField="value"
+
                 onChange={item => {
-                    console.log(item.value)
-                    setSelectedValue(item.value);
+                    console.log(item)
                     onChange(item.value);
                 }}
                 onBlur={onBlur}

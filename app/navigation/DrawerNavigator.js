@@ -1,24 +1,30 @@
 // DrawerNavigator.js
-import React, { useEffect, useState } from "react";
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { getData } from "../services/api/apiService";
+import React, { useEffect, useState } from "react";
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import DrawerText from "../components/DrawerText";
 import { apiURL } from "../constants/urls";
 import AddOwner from "../screens/Admin/AddOwner";
+import RestauratConfig from "../screens/Admin/RestaurantConfig";
 import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DrawerText from "../components/DrawerText";
+import { getData } from "../services/api/apiService";
 
 const Drawer = createDrawerNavigator();
 
 const navigationMap = {
     'AddOwner': AddOwner,
     'OwnerList': OwnerList,
-    'Dashboard': Dashboard
+    'Dashboard': Dashboard,
+    'RestaurantConf': RestauratConfig,
 };
 
 const iconMap = {
-    "MaterialCommunityIcons": MaterialCommunityIcons
+    "MaterialCommunityIcons": MaterialCommunityIcons,
+    "AntDesign": AntDesign
+
 }
 
 const DrawerNavigator = () => {
@@ -60,6 +66,7 @@ const DrawerNavigator = () => {
                             component={Component}
                             key={index}
 
+
                             options={{
                                 headerTitleAlign: 'center',
                                 headerTitleStyle: {
@@ -91,30 +98,3 @@ const DrawerNavigator = () => {
 export default DrawerNavigator;
 
 
-{/* <Drawer.Screen */ }
-// name="Logout"
-// options={{
-// drawerIcon: ({ focused }) => (
-// <MaterialCommunityIcons
-// name="logout"
-// size={20}
-// color={focused ? '#FE7240' : '#000'}
-// />
-// ),
-// drawerLabel: 'Logout'
-// }}
-// >
-// {() => (
-// <DrawerText>
-// {/* Custom content for logout button */}
-// <MaterialCommunityIcons.Button
-// name="logout"
-// backgroundColor="#FFF"
-// color="#FE7240"
-// onPress={handleLogout}
-// >
-// Logout
-// </MaterialCommunityIcons.Button>
-// </DrawerText>
-// )}
-// </Drawer.Screen>

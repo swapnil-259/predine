@@ -11,7 +11,11 @@ export const apiURL = {
     GET_RESTAURANT: 'execution/get_res/',
     OWNER_REGISTRATION: 'execution/owner_registration/',
     OWNER_LIST: 'execution/owner_list/',
-    VIEW_OWNERS: 'execution/view_owners/'
+    VIEW_OWNERS: 'execution/view_owners/',
+    PARENT_LIST: 'execution/parent_list/',
+    ADD_CHILD: 'execution/add_child/',
+    GET_CHILD: 'execution/get_child/',
+    LOGOUT: 'noauth/logout/'
 
 
 }

@@ -1,9 +1,7 @@
 import { styled } from 'nativewind';
-import { View, Text, BackHandler, TextInput as ReactInput } from 'react-native';
-import { TextInput as PaperInput, Button } from 'react-native-paper';
+import { TextInput as ReactInput, Text, View } from 'react-native';
+import { Button, Card, Dialog, TextInput as PaperInput, Portal } from 'react-native-paper';
 import colors from '../styles/colors';
-import { Dialog, Portal, Card } from 'react-native-paper';
-import { useState } from 'react';
 
 export const StyledView = styled(View)
 
@@ -13,6 +11,8 @@ export const StyledTextInput = ({ label, placeholder, ...props }) => {
             placeholder={placeholder}
             placeholderTextColor={colors.BLACK}
             mode='outlined'
+            label={label}
+            focusable={true}
             keyboardType='text'
             tw='m-6 mb-2 mt-2 bg-[#FEF7F4]'
             textColor='#000'

@@ -1,11 +1,15 @@
-import {View, Text} from 'react-native';
-import {deleteData, getData, putData} from '../../../services/api/apiService';
-import {apiURL} from '../../../constants/urls';
 import {useEffect, useState} from 'react';
-import {OwnerDetailsCard, StyledButton, StyledView} from '../../../components';
+import {PaperProvider} from 'react-native-paper';
+import {
+  DialogBox,
+  OwnerDetailsCard,
+  StyledButton,
+  StyledText,
+  StyledView,
+} from '../../../components';
+import {apiURL} from '../../../constants/urls';
+import {deleteData, getData, putData} from '../../../services/api/apiService';
 import ShowToast from '../../../services/utils/toast';
-import {PaperProvider, Dialog, Button} from 'react-native-paper';
-import {DialogBox} from '../../../components';
 
 const ViewOwner = ({route, navigation}) => {
   const buttonInitialState = 'EDIT OWNER';
@@ -103,42 +107,48 @@ const ViewOwner = ({route, navigation}) => {
 
   return (
     <PaperProvider>
-      <StyledView tw="flex-1 bg-white">
-        <OwnerDetailsCard
-          data={data}
-          editable={editable}
-          editData={editData}
-          onTextChange={handleTextChange}></OwnerDetailsCard>
-        <DialogBox
-          visible={visible}
-          onDismiss={hideDialog}
-          title={dialogContent.title}
-          text={dialogContent.text}
-          btnText1={dialogContent.btnText1}
-          btnText2={dialogContent.btnText2}
-          onPressbtn1={() => {
-            if (dialogContent.btnText1 === 'Yes') {
-              editOwner();
-              setEditable(false);
-              setButtonText(buttonInitialState);
-            } else if (dialogContent.btnText1 === 'Delete') {
-              deleteOwner();
-            }
-            hideDialog();
-          }}
-          onPressbtn2={hideDialog}></DialogBox>
-
-        <StyledView style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <StyledButton
-            tw="mr-2"
-            label={buttonText}
-            onPress={() => onCLickEditButton()}></StyledButton>
-          <StyledButton
-            tw="ml-2"
-            label={'DElETE OWNER'}
-            onPress={() => onCLickDeleteButton()}></StyledButton>
+      {data.length === 0 ? (
+        <StyledView tw="flex-1 bg-white justify-center items-center">
+          <StyledText tw="text-black text-[18px]">Loading Data....</StyledText>
         </StyledView>
-      </StyledView>
+      ) : (
+        <StyledView tw="flex-1 bg-white">
+          <OwnerDetailsCard
+            data={data}
+            editable={editable}
+            editData={editData}
+            onTextChange={handleTextChange}></OwnerDetailsCard>
+          <DialogBox
+            visible={visible}
+            onDismiss={hideDialog}
+            title={dialogContent.title}
+            text={dialogContent.text}
+            btnText1={dialogContent.btnText1}
+            btnText2={dialogContent.btnText2}
+            onPressbtn1={() => {
+              if (dialogContent.btnText1 === 'Yes') {
+                editOwner();
+                setEditable(false);
+                setButtonText(buttonInitialState);
+              } else if (dialogContent.btnText1 === 'Delete') {
+                deleteOwner();
+              }
+              hideDialog();
+            }}
+            onPressbtn2={hideDialog}></DialogBox>
+
+          <StyledView style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <StyledButton
+              tw="mr-2"
+              label={buttonText}
+              onPress={() => onCLickEditButton()}></StyledButton>
+            <StyledButton
+              tw="ml-2"
+              label={'DElETE OWNER'}
+              onPress={() => onCLickDeleteButton()}></StyledButton>
+          </StyledView>
+        </StyledView>
+      )}
     </PaperProvider>
   );
 };

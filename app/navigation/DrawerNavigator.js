@@ -3,13 +3,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useEffect, useState } from "react";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import DrawerText from "../components/DrawerText";
 import { apiURL } from "../constants/urls";
 import AddOwner from "../screens/Admin/AddOwner";
 import RestauratConfig from "../screens/Admin/RestaurantConfig";
 import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
+
 import { getData } from "../services/api/apiService";
 
 const Drawer = createDrawerNavigator();
@@ -19,28 +19,33 @@ const navigationMap = {
     'OwnerList': OwnerList,
     'Dashboard': Dashboard,
     'RestaurantConf': RestauratConfig,
+
 };
 
 const iconMap = {
     "MaterialCommunityIcons": MaterialCommunityIcons,
     "AntDesign": AntDesign
+};
 
-}
+export const LeftPanel = async () => {
+    try {
+        const res = await getData(apiURL.LEFT_PANEL);
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+};
 
 const DrawerNavigator = () => {
     const [panelData, setPanelData] = useState([]);
 
-    const LeftPanel = async () => {
-        try {
-            const res = await getData(apiURL.LEFT_PANEL);
-            setPanelData(res.data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
     useEffect(() => {
-        LeftPanel();
+        const fetchPanelData = async () => {
+            const data = await LeftPanel();
+            setPanelData(data);
+        };
+        fetchPanelData();
     }, []);
 
     if (!panelData.length) {
@@ -52,8 +57,7 @@ const DrawerNavigator = () => {
             screenOptions={{
                 headerTintColor: '#fff'
             }}
-            drawerContent={(props) => <DrawerText {...props}
-            />}>
+            drawerContent={(props) => <DrawerText {...props} />}>
             {panelData
                 .sort((a, b) => a.order - b.order)
                 .map((each, index) => {
@@ -65,8 +69,6 @@ const DrawerNavigator = () => {
                             name={each.name}
                             component={Component}
                             key={index}
-
-
                             options={{
                                 headerTitleAlign: 'center',
                                 headerTitleStyle: {
@@ -76,7 +78,6 @@ const DrawerNavigator = () => {
                                 },
                                 headerStyle: {
                                     backgroundColor: '#FE7240',
-
                                 },
                                 drawerActiveTintColor: '#FE7240',
                                 drawerIcon: ({ focused }) => (
@@ -90,11 +91,8 @@ const DrawerNavigator = () => {
                         />
                     );
                 })}
-
         </Drawer.Navigator>
     );
 };
 
 export default DrawerNavigator;
-
-

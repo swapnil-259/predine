@@ -9,13 +9,13 @@ export const StyledTextInput = ({ label, placeholder, ...props }) => {
     return (
         <PaperInput
             placeholder={placeholder}
-            placeholderTextColor={colors.BLACK}
+            placeholderTextColor={'#000000'}
             mode='outlined'
             label={label}
             focusable={true}
             keyboardType='text'
             tw='m-6 mb-2 mt-2 bg-[#FEF7F4]'
-            textColor='#000'
+            textColor='#000000'
             activeOutlineColor={colors.BLACK}
             outlineStyle={{ borderWidth: 1, borderRadius: 10 }}
             {...props}
@@ -103,23 +103,22 @@ export const RestaurantCard = ({ res_name, res_type, onPress }) => {
     )
 }
 
-export const OwnerDetailsCard = ({ data, editable, editData, onTextChange }) => {
+export const OwnerDetailsCard = ({ data, editable, editData, onTextChange, isEdit }) => {
     const handleTextChange = (label, value) => {
         onTextChange(label, value)
     };
-    console.log(editData)
     return (
         <Card tw='bg-[#FEF7F4] mt-0 mb-0' style={{ borderRadius: 0 }}>
-            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{
+            <Card.Cover source={data[data.length - 1]['value'] === null || data[data.length - 1]['value'] === 'None' ? { uri: 'https://picsum.photos/700' } : { uri: data[data.length - 1]['value'] }} style={{
                 margin: 4, borderRadius: 0
             }} />
-            {data.filter(each => each.label !== 'id').map((each, index) => {
+            {data.filter(each => each.label !== 'id' && each.label !== 'Restaurant Image').map((each, index) => {
                 return (
                     <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 4 }} key={index}>
                         <StyledText tw='text-[#808080] text-[15px] font-bold' style={{ alignText: 'flex-start' }}>{each.label}</StyledText>
                         <ReactInput tw='text-black p-1 pl-0 font-bold text-[15px]' style={{ textAlign: 'right' }}
                             defaultValue={each.value}
-                            value={editData[each.value]}
+                            value={isEdit ? editData[each.value] : each.value}
                             onChangeText={val => handleTextChange(each.label, val)}
                             editable={each.can_edit === true ? editable : false}
                         ></ReactInput>

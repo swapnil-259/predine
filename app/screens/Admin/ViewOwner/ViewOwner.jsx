@@ -55,7 +55,7 @@ const ViewOwner = ({route, navigation}) => {
     console.log('hello', data);
     try {
       const res = await deleteData(apiURL.OWNER_REGISTRATION, {data: data});
-      navigation.navigate('Panel');
+      navigation.navigate('PanelAuth');
       console.log(res);
     } catch (err) {
       console.log(err);
@@ -117,7 +117,8 @@ const ViewOwner = ({route, navigation}) => {
             data={data}
             editable={editable}
             editData={editData}
-            onTextChange={handleTextChange}></OwnerDetailsCard>
+            onTextChange={handleTextChange}
+            isEdit={true}></OwnerDetailsCard>
           <DialogBox
             visible={visible}
             onDismiss={hideDialog}

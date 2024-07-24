@@ -1,29 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {
-  View,
+  BackHandler,
+  Dimensions,
   Image,
   Keyboard,
   TouchableOpacity,
-  Alert,
-  BackHandler,
+  View,
 } from 'react-native';
-import {BottomSheetComponent} from '../../components/BottomSheet';
+import {PaperProvider} from 'react-native-paper';
 import {
+  DialogBox,
+  StyledButton,
+  StyledButtonTrans,
   StyledText,
   StyledTextInput,
-  StyledButton,
-  DialogBox,
-  StyledButtonTrans,
 } from '../../components';
-import {PaperProvider} from 'react-native-paper';
+import {BottomSheetComponent} from '../../components/BottomSheet';
 import {apiURL} from '../../constants/urls';
-import {postData, getData} from '../../services/api/apiService';
+import {getData, postData} from '../../services/api/apiService';
 
 const InputEmail = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [isEditDisable, setEditDisable] = useState(true);
   const [email, setEmail] = useState('');
   const [visible, setVisible] = useState(false);
+  const screenHeight = Dimensions.get('window').height;
+  const imageHeight = screenHeight * 0.55;
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -91,7 +93,8 @@ const InputEmail = ({navigation}) => {
         {!isKeyboardVisible ? (
           <Image
             source={require('../../assets/images/symbol.png')}
-            tw="self-center"></Image>
+            style={{height: imageHeight, width: '100%'}}
+            resizeMode="contain"></Image>
         ) : (
           <View tw="justify-center items-center m-10">
             <StyledText tw="text=[15px]">PREDINE</StyledText>
@@ -135,7 +138,7 @@ const InputEmail = ({navigation}) => {
                 text="Already Registered?"></StyledText>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Login');
+                  navigation.navigate('Logout');
                 }}>
                 <StyledText
                   tw="text-[#FE7240]"

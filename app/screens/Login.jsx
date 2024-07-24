@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback} from 'react';
 import {
   Dimensions,
   Image,
@@ -7,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {PaperProvider} from 'react-native-paper';
 import {StyledButton, StyledText, StyledTextInput} from '../components';
 import {BottomSheetComponent} from '../components/BottomSheet';
 import {apiURL} from '../constants/urls';
@@ -44,6 +47,13 @@ const Login = ({navigation}) => {
     };
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      setData(initialdata);
+      setEditDisable(true);
+    }, []),
+  );
+
   const handleLogin = async () => {
     const loginData = {
       username: data.username,
@@ -54,12 +64,12 @@ const Login = ({navigation}) => {
       const res = await postData(apiURL.LOGIN, loginData);
       setEditDisable(false);
       setData(initialdata);
-      navigation.navigate('Panel');
+      navigation.navigate('PanelAuth');
     } catch (err) {}
   };
 
   return (
-    <>
+    <PaperProvider>
       <View tw="flex-1 content-center bg-[#FE7240]">
         {!isKeyboardVisible ? (
           <Image
@@ -112,7 +122,7 @@ const Login = ({navigation}) => {
           </View>
         </BottomSheetComponent>
       </View>
-    </>
+    </PaperProvider>
   );
 };
 export default Login;

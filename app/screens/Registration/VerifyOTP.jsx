@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import OTPTextView from 'react-native-otp-textinput';
 import {PaperProvider} from 'react-native-paper';
 import {
-  StyledView,
-  StyledText,
   StyledButton,
   StyledButtonTrans,
+  StyledText,
+  StyledView,
 } from '../../components';
-import OTPTextView from 'react-native-otp-textinput';
-import {postData} from '../../services/api/apiService';
 import {apiURL} from '../../constants/urls';
+import {postData} from '../../services/api/apiService';
 
 const initialdata = {
   email: '',
@@ -36,7 +36,7 @@ const VerifyOTP = ({route, navigation}) => {
       const res = await postData(apiURL.VERIFY_OTP, otpData);
       console.log(res);
       setData(initialdata);
-      navigation.navigate('Register', {email: email});
+      navigation.navigate('InputEmail');
     } catch (err) {
       setData(initialdata);
       console.log(err);
@@ -70,6 +70,7 @@ const VerifyOTP = ({route, navigation}) => {
             inputCount={6}
             offTintColor={'#000'}
             tintColor={'#000'}
+            initialdata={''}
             textInputStyle={{
               width: 20,
               color: '#000',

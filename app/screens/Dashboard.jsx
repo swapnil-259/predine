@@ -3,15 +3,16 @@ import {BackHandler} from 'react-native';
 import {PaperProvider} from 'react-native-paper';
 import {DialogBox, StyledButton, StyledText, StyledView} from '../components';
 import {apiURL} from '../constants/urls';
-import {postData} from '../services/api/apiService';
-
-const Dashboard = () => {
+import {LeftPanel} from '../navigation/DrawerNavigator';
+import {getData} from '../services/api/apiService';
+const Dashboard = ({navigation}) => {
   const [visible, setVisible] = useState(false);
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
   useEffect(() => {
+    LeftPanel();
     const backAction = () => {
       showDialog();
       return true;
@@ -21,7 +22,8 @@ const Dashboard = () => {
 
   const logoutUser = async () => {
     try {
-      const res = await postData(apiURL.LOGOUT);
+      const res = await getData(apiURL.LOGOUT);
+      navigation.navigate('Logout');
       console.log(res);
     } catch (err) {
       console.log(err);

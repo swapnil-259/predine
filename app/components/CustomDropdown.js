@@ -33,16 +33,16 @@ const CustomDropdown = ({ placeholder, data, value, onChange, onBlur, ...props }
                     backgroundColor: '#FEF7F4'
                 }}
                 placeholderStyle={{
-                    color: '#000'
+                    color: '#D3D3D3'
                 }}
                 style={{
                     backgroundColor: '#FEF7F4',
                     color: '#000',
-                    height: 55,
+                    height: 50,
                     borderColor: 'black',
                     borderWidth: 0.6,
                     borderRadius: 8,
-                    paddingHorizontal: 8,
+                    paddingHorizontal: 15,
                 }}
             />
 

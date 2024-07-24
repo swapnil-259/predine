@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { apiURL } from "../constants/urls";
-import axiosInstance from "../services/api/axios";
-import useLoaderInterceptor from "../services/api/interceptor";
-import BootSplash from "react-native-bootsplash";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Login from "../screens/Login";
-import VerifyOTP from "../screens/Registration/VerifyOTP";
-import MainRegister from "../screens/Registration/MainRegister";
-import InputEmail from "../screens/Registration/InputEmail";
+import BootSplash from "react-native-bootsplash";
 import Toast from "react-native-toast-message";
-import { baseURL } from "../services/api/axios";
-import { LoaderProvider } from "../context/LoaderContext";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from "../components/Loader";
+import { apiURL } from "../constants/urls";
+import { LoaderProvider } from "../context/LoaderContext";
 import ViewOwner from "../screens/Admin/ViewOwner/ViewOwner";
+import Login from "../screens/Login";
+import InputEmail from "../screens/Registration/InputEmail";
+import MainRegister from "../screens/Registration/MainRegister";
+import VerifyOTP from "../screens/Registration/VerifyOTP";
+import axiosInstance, { baseURL } from "../services/api/axios";
+import useLoaderInterceptor from "../services/api/interceptor";
 import DrawerNaviagtor from "./DrawerNavigator";
 const Stack = createNativeStackNavigator();
 
@@ -49,9 +48,8 @@ const MainStackNavigator = () => {
                 <Loader />
 
                 <Stack.Navigator>
-                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="Panel" component={DrawerNaviagtor} options={{ headerShown: false }} />
-                    <Stack.Screen name="View Owner" component={ViewOwner} />
+                    <Stack.Screen name="Logout" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="PanelAuth" component={DrawerNaviagtor} options={{ headerShown: false }} />
                     <Stack.Screen name="InputEmail" component={InputEmail} options={{ headerShown: false }} />
                     <Stack.Screen name="VerifyOTP"
                         component={VerifyOTP}
@@ -89,6 +87,8 @@ const MainStackNavigator = () => {
                 <Loader />
                 <Stack.Navigator>
                     <Stack.Screen name="Panel" component={DrawerNaviagtor} options={{ headerShown: false }} />
+                    <Stack.Screen name="PanelAuth" component={DrawerNaviagtor} options={{ headerShown: false }} />
+                    <Stack.Screen name="Logout" component={Login} options={{ headerShown: false }} />
                     <Stack.Screen name="View Owner" component={ViewOwner} options={{
                         headerTitleAlign: 'center',
                         headerTitleStyle: {

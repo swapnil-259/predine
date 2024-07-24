@@ -2,6 +2,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {ScrollView} from 'react-native-gesture-handler';
+import {PaperProvider} from 'react-native-paper';
 import {
   StyledButton,
   StyledText,
@@ -80,206 +81,223 @@ const AddOwner = () => {
   };
 
   return (
-    <StyledView tw="flex-1 bg-white">
-      <ScrollView tw="bg-white">
-        <Controller
-          control={control}
-          name="first_name"
-          rules={{
-            required: {value: true, message: 'First Name is required'},
-            maxLength: {
-              value: 50,
-              message: 'First Name cannot exceed 50 characters',
-            },
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              maxLength={50}
-              label="First Name"
-              placeholder="First Name"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+    <PaperProvider>
+      <StyledView tw="flex-1 bg-white">
+        <ScrollView tw="bg-white">
+          <Controller
+            control={control}
+            name="first_name"
+            rules={{
+              required: {value: true, message: 'First Name is required'},
+              maxLength: {
+                value: 50,
+                message: 'First Name cannot exceed 50 characters',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                maxLength={50}
+                label="First Name"
+                placeholder="First Name"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.first_name && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.first_name.message}
+            </StyledText>
           )}
-        />
-        {errors.first_name && (
-          <StyledText tw="text-red-500 ml-6">
-            {errors.first_name.message}
-          </StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="last_name"
-          rules={{
-            required: {value: true, message: 'Last Name is required'},
-            maxLength: {
-              value: 50,
-              message: 'Last Name cannot exceed 50 characters',
-            },
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              maxLength={50}
-              label={'Last Name'}
-              placeholder="Last Name"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+          <Controller
+            control={control}
+            name="last_name"
+            rules={{
+              required: {value: true, message: 'Last Name is required'},
+              maxLength: {
+                value: 50,
+                message: 'Last Name cannot exceed 50 characters',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                maxLength={50}
+                label={'Last Name'}
+                placeholder="Last Name"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.last_name && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.last_name.message}
+            </StyledText>
           )}
-        />
-        {errors.last_name && (
-          <StyledText tw="text-red-500 ml-6">
-            {errors.last_name.message}
-          </StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="phone_number"
-          rules={{
-            required: {value: true, message: 'Phone number is required'},
-            pattern: {value: /^\d{10}$/, message: 'Enter a valid phone number'},
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              placeholder="Phone Number"
-              label={'Phone Number'}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              keyboardType="phone-pad"
-            />
+          <Controller
+            control={control}
+            name="phone_number"
+            rules={{
+              required: {value: true, message: 'Phone number is required'},
+              pattern: {
+                value: /^\d{10}$/,
+                message: 'Enter a valid phone number',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                placeholder="Phone Number"
+                label={'Phone Number'}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="phone-pad"
+              />
+            )}
+          />
+          {errors.phone_number && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.phone_number.message}
+            </StyledText>
           )}
-        />
-        {errors.phone_number && (
-          <StyledText tw="text-red-500 ml-6">
-            {errors.phone_number.message}
-          </StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="email"
-          rules={{
-            required: {value: true, message: 'Email is required'},
-            pattern: {value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email'},
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              placeholder="Email"
-              label={'Email'}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required: {value: true, message: 'Email is required'},
+              pattern: {
+                value: /^\S+@\S+\.\S+$/,
+                message: 'Enter a valid email',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                placeholder="Email"
+                label={'Email'}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.email && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.email.message}
+            </StyledText>
           )}
-        />
-        {errors.email && (
-          <StyledText tw="text-red-500 ml-6">{errors.email.message}</StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="address"
-          rules={{
-            required: {value: true, message: 'Address is required'},
-            maxLength: {
-              value: 150,
-              message: 'Address cannot exceed 150 characters',
-            },
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              placeholder="Address"
-              maxLength={150}
-              label={'Address'}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+          <Controller
+            control={control}
+            name="address"
+            rules={{
+              required: {value: true, message: 'Address is required'},
+              maxLength: {
+                value: 150,
+                message: 'Address cannot exceed 150 characters',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                placeholder="Address"
+                maxLength={150}
+                label={'Address'}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.address && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.address.message}
+            </StyledText>
           )}
-        />
-        {errors.address && (
-          <StyledText tw="text-red-500 ml-6">
-            {errors.address.message}
-          </StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="restaurant_name"
-          rules={{
-            required: {value: true, message: 'Restaurant Name is required'},
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <StyledTextInput
-              maxLength={50}
-              placeholder="Restaurant Name"
-              label={'Restaurant Name'}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+          <Controller
+            control={control}
+            name="restaurant_name"
+            rules={{
+              required: {value: true, message: 'Restaurant Name is required'},
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <StyledTextInput
+                maxLength={50}
+                placeholder="Restaurant Name"
+                label={'Restaurant Name'}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.restaurant_name && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.restaurant_name.message}
+            </StyledText>
           )}
-        />
-        {errors.restaurant_name && (
-          <StyledText tw="text-red-500 ml-6">
-            {errors.restaurant_name.message}
-          </StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="res"
-          rules={{
-            required: {value: true, message: 'Restaurant Category is required'},
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <CustomDropdown
-              placeholder="Restaurant Category"
-              data={restaurantData}
-              label="Restaurant Category"
-              value={value}
-              onChange={onChange}
-              onBlur={onBlur}
-            />
+          <Controller
+            control={control}
+            name="res"
+            rules={{
+              required: {
+                value: true,
+                message: 'Restaurant Category is required',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <CustomDropdown
+                placeholder="Restaurant Category"
+                data={restaurantData}
+                label="Restaurant Category"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.res && (
+            <StyledText tw="text-red-500 ml-6">{errors.res.message}</StyledText>
           )}
-        />
-        {errors.res && (
-          <StyledText tw="text-red-500 ml-6">{errors.res.message}</StyledText>
-        )}
 
-        <Controller
-          control={control}
-          name="role"
-          rules={{required: {value: true, message: 'Owners Role is required'}}}
-          render={({field: {onChange, onBlur, value}}) => (
-            <CustomDropdown
-              placeholder="Owner Role"
-              data={roleData}
-              label="Owner Role"
-              value={value}
-              onChange={onChange}
-              onBlur={onBlur}
-            />
+          <Controller
+            control={control}
+            name="role"
+            rules={{
+              required: {value: true, message: 'Owners Role is required'},
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <CustomDropdown
+                placeholder="Owner Role"
+                data={roleData}
+                label="Owner Role"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.role && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.role.message}
+            </StyledText>
           )}
-        />
-        {errors.role && (
-          <StyledText tw="text-red-500 ml-6">{errors.role.message}</StyledText>
-        )}
-      </ScrollView>
+        </ScrollView>
 
-      <StyledButton
-        onPress={handleSubmit(onSubmit)}
-        tw="mt-6"
-        label={'SUBMIT'}
-        disabled={!isValid}>
-        <StyledText tw="text-white">Register</StyledText>
-      </StyledButton>
-    </StyledView>
+        <StyledButton
+          onPress={handleSubmit(onSubmit)}
+          tw="mt-6"
+          label={'SUBMIT'}
+          disabled={!isValid}>
+          <StyledText tw="text-white">Register</StyledText>
+        </StyledButton>
+      </StyledView>
+    </PaperProvider>
   );
 };
 

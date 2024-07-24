@@ -1,10 +1,10 @@
 import React from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {
-  StyledView,
+  StyledButton,
   StyledText,
   StyledTextInput,
-  StyledButton,
+  StyledView,
 } from '../../components';
 import {apiURL} from '../../constants/urls';
 import {postData} from '../../services/api/apiService';

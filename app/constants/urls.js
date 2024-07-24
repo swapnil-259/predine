@@ -15,7 +15,8 @@ export const apiURL = {
     PARENT_LIST: 'execution/parent_list/',
     ADD_CHILD: 'execution/add_child/',
     GET_CHILD: 'execution/get_child/',
-    LOGOUT: 'noauth/logout/'
+    LOGOUT: 'noauth/logout/',
+    OWNER_DATA: 'owner/owner_data/'
 
 
 }

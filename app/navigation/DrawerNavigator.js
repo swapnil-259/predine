@@ -9,7 +9,9 @@ import AddOwner from "../screens/Admin/AddOwner";
 import RestauratConfig from "../screens/Admin/RestaurantConfig";
 import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
-
+import AddMenu from '../screens/Owner/AddMenu';
+import MenuConfig from '../screens/Owner/MenuConfig';
+import Profile from '../screens/Owner/Profile';
 import { getData } from "../services/api/apiService";
 
 const Drawer = createDrawerNavigator();
@@ -19,7 +21,9 @@ const navigationMap = {
     'OwnerList': OwnerList,
     'Dashboard': Dashboard,
     'RestaurantConf': RestauratConfig,
-
+    'AddMenu': AddMenu,
+    'Profile': Profile,
+    'MenuConfig': MenuConfig
 };
 
 const iconMap = {

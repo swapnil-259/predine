@@ -16,6 +16,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "axios": "^1.7.2",
+    "mime": "^4.0.4",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-hook-form": "^7.51.5",
@@ -33,6 +34,7 @@
     "react-native-screens": "^3.31.1",
     "react-native-toast-message": "^2.2.0",
     "react-native-vector-icons": "^10.1.0",
+    "rn-fetch-blob": "^0.12.0",
     "start": "^5.1.0"
   },
   "devDependencies": {
@@ -58,8 +60,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "resolutions": {
-    "react-native-picker-select/**/@react-native-picker/picker": "1.8.3"
   }
 }

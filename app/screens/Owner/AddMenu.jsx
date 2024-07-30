@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {ScrollView} from 'react-native-gesture-handler';
 import {PaperProvider} from 'react-native-paper';
@@ -12,20 +12,36 @@ import {
 import CustomDropdown from '../../components/CustomDropdown';
 import CustomImagePicker from '../../components/CustomFilePicker';
 import CustomTimePicker from '../../components/CustomTimePicker';
+import {apiURL} from '../../constants/urls';
+import {getData, postData} from '../../services/api/apiService';
+import {baseURL} from '../../services/api/axios';
 
 const AddMenu = () => {
+  const [dishCategory, setDishCategory] = useState([]);
+
   useFocusEffect(
     useCallback(() => {
       reset({
-        preparation_min: '',
-        dish_name: '',
+        name: '',
         description: '',
+        preparation_time: '',
         price: '',
-        dish_category: '',
-        dish_image: '',
+        category: '',
+        image: '',
       });
+
+      getDishCat();
     }, [reset]),
   );
+
+  const getDishCat = async () => {
+    try {
+      const res = await getData(apiURL.GET_DISH_CATEGORY);
+      setDishCategory(res.data);
+    } catch (err) {
+      console.log('Error fetching dish categories:', err);
+    }
+  };
 
   const {
     control,
@@ -35,17 +51,52 @@ const AddMenu = () => {
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      dish_name: '',
+      name: '',
       description: '',
-      preparation_min: '',
+      preparation_time: '',
       price: '',
-      dish_category: '',
-      dish_image: '',
+      category: '',
+      image: '',
     },
   });
 
   const onSubmit = async data => {
-    console.log(data.dish_image.name);
+
+    const formData = new FormData();
+    formData.append('preparation_time', data.preparation_time);
+    formData.append('name', data.name);
+    formData.append('description', data.description);
+    formData.append('price', data.price);
+    formData.append('category', data.category);
+
+    if (data.image && data.image.uri) {
+      const imageUri = data.image.uri.replace('file://', '');
+
+      formData.append('image', {
+        uri: `file://${imageUri}`,
+        name: data.image.fileName,
+        type: data.image.type || 'image/jpeg',
+      });
+    }
+
+    try {
+      const response = await postData(baseURL + apiURL.ADD_DISH, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      reset({
+        name: '',
+        description: '',
+        preparation_time: '',
+        price: '',
+        category: '',
+        image: '',
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -54,9 +105,13 @@ const AddMenu = () => {
         <ScrollView tw="bg-white">
           <Controller
             control={control}
-            name="dish_name"
+            name="name"
             rules={{
               required: {value: true, message: 'Dish Name is required'},
+              minLength: {
+                value: 2,
+                message: 'Dish Name must be 2 characters long',
+              },
               maxLength: {
                 value: 50,
                 message: 'Dish Name cannot exceed 50 characters',
@@ -73,9 +128,9 @@ const AddMenu = () => {
               />
             )}
           />
-          {errors.dish_name && (
+          {errors.name && (
             <StyledText tw="text-red-500 ml-6">
-              {errors.dish_name.message}
+              {errors.name.message}
             </StyledText>
           )}
 
@@ -84,6 +139,10 @@ const AddMenu = () => {
             name="description"
             rules={{
               required: {value: true, message: 'Description is required'},
+              minLength: {
+                value: 5,
+                message: 'Description must be at least 5 characters long',
+              },
               maxLength: {
                 value: 200,
                 message: 'Description cannot exceed 200 characters',
@@ -91,8 +150,8 @@ const AddMenu = () => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <StyledTextInput
-                maxLength={50}
-                label={'Description'}
+                maxLength={200}
+                label="Description"
                 placeholder="Description"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -108,11 +167,11 @@ const AddMenu = () => {
 
           <Controller
             control={control}
-            name="preparation_min"
+            name="preparation_time"
             rules={{
               required: {
                 value: true,
-                message: 'Preparation Minutes is required',
+                message: 'Preparation Minutes are required',
               },
             }}
             render={({field: {onChange, value, onBlur}}) => (
@@ -120,13 +179,13 @@ const AddMenu = () => {
                 value={value}
                 onBlur={onBlur}
                 onChange={onChange}
-                placeholder={'Select Preparation Minutes'}
+                placeholder="Select Preparation Minutes"
               />
             )}
           />
-          {errors.preparation_min && (
+          {errors.preparation_time && (
             <StyledText tw="text-red-500 ml-6">
-              {errors.preparation_min.message}
+              {errors.preparation_time.message}
             </StyledText>
           )}
 
@@ -139,9 +198,9 @@ const AddMenu = () => {
             render={({field: {onChange, onBlur, value}}) => (
               <StyledTextInput
                 placeholder="Price"
-                label={'Price'}
+                label="Price"
                 onBlur={onBlur}
-                keyboardType={'numeric'}
+                keyboardType="numeric"
                 onChangeText={onChange}
                 value={value}
               />
@@ -152,16 +211,17 @@ const AddMenu = () => {
               {errors.price.message}
             </StyledText>
           )}
+
           <Controller
             control={control}
-            name="dish_category"
+            name="category"
             rules={{
               required: {value: true, message: 'Dish Category is required'},
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <CustomDropdown
                 placeholder="Dish Category"
-                data={[{label: 'heel', value: 'hej'}]}
+                data={dishCategory}
                 label="Dish Category"
                 value={value}
                 onChange={onChange}
@@ -169,15 +229,15 @@ const AddMenu = () => {
               />
             )}
           />
-          {errors.dish_category && (
+          {errors.category && (
             <StyledText tw="text-red-500 ml-6">
-              {errors.dish_category.message}
+              {errors.category.message}
             </StyledText>
           )}
 
           <Controller
             control={control}
-            name="dish_image"
+            name="image"
             rules={{
               required: {value: true, message: 'Dish Image is required'},
             }}
@@ -189,9 +249,9 @@ const AddMenu = () => {
               />
             )}
           />
-          {errors.dish_image && (
+          {errors.image && (
             <StyledText style={{color: 'red', marginLeft: 6}}>
-              {errors.dish_image.message}
+              {errors.image.message}
             </StyledText>
           )}
         </ScrollView>
@@ -199,7 +259,7 @@ const AddMenu = () => {
         <StyledButton
           onPress={handleSubmit(onSubmit)}
           tw="mt-6"
-          label={'SUBMIT'}
+          label="SUBMIT"
           disabled={!isValid}>
           <StyledText tw="text-white">Register</StyledText>
         </StyledButton>

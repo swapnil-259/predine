@@ -5,11 +5,13 @@ import { StyledView } from ".";
 const CustomDropdown = ({ placeholder, data, value, onChange, onBlur, ...props }) => {
 
     return (
-        <StyledView tw='flex-1 m-6 mt-4 mb-2' {...props}>
+        <StyledView tw='flex-1 m-6 mt-3 mb-2' {...props}>
             <Dropdown
+
                 data={data}
-                maxHeight={200}
+                // maxHeight={50}
                 value={value}
+                maxHeight={200}
                 labelField="label"
                 placeholder={placeholder}
                 valueField="value"
@@ -36,6 +38,7 @@ const CustomDropdown = ({ placeholder, data, value, onChange, onBlur, ...props }
                     color: '#D3D3D3'
                 }}
                 style={{
+                    marginTop: 5,
                     backgroundColor: '#FEF7F4',
                     color: '#000',
                     height: 50,

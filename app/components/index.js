@@ -38,7 +38,7 @@ export const StyledButtonTrans = ({ fun, label, ...props }) => {
         <Button mode="contained"
             textColor='#FE7240'
             tw="bg-[#fff] m-6 mb-0 mt-0"
-            style={{ borderColor: '#FE7240', borderWidth: 0.5 }}
+            style={{ borderColor: '#FE7240', borderWidth: 0.5, marginBottom: 10 }}
             {...props}
         >
             {label}

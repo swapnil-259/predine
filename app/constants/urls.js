@@ -8,15 +8,17 @@ export const apiURL = {
     CHECK_AUTH: 'noauth/check_auth/',
     LEFT_PANEL: 'noauth/left_panel/',
     GET_ROLE: 'execution/get_role/',
-    GET_RESTAURANT: 'execution/get_res/',
+    GET_RESTAURANT: 'execution/get_res_cat/',
     OWNER_REGISTRATION: 'execution/owner_registration/',
     OWNER_LIST: 'execution/owner_list/',
     VIEW_OWNERS: 'execution/view_owners/',
-    PARENT_LIST: 'execution/parent_list/',
-    ADD_CHILD: 'execution/add_child/',
-    GET_CHILD: 'execution/get_child/',
+    PARENT_LIST: 'common/parent_list/',
+    ADD_CHILD: 'common/add_child/',
+    GET_CHILD: 'common/get_child/',
     LOGOUT: 'noauth/logout/',
-    OWNER_DATA: 'owner/owner_data/'
+    OWNER_DATA: 'owner/owner_data/',
+    ADD_DISH: 'owner/add_dish/',
+    GET_DISH_CATEGORY: 'owner/get_dish_cat/'
 
 
 }

@@ -18,7 +18,11 @@ export const apiURL = {
     LOGOUT: 'noauth/logout/',
     OWNER_DATA: 'owner/owner_data/',
     ADD_DISH: 'owner/add_dish/',
-    GET_DISH_CATEGORY: 'owner/get_dish_cat/'
+    GET_DISH_CATEGORY: 'owner/get_dish_cat/',
+    ALL_DISH: 'owner/all_dish/',
+    GET_DIET_PREFERENCE: 'owner/get_diet_pref/',
+    GET_ALL_CATEGORY: 'owner/get_all_category/'
+
 
 
 }

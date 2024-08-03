@@ -11,7 +11,7 @@ const CustomTimePicker = ({ value, onChange, placeholder }) => {
 
     const renderMinutes = () => {
         let minutesArray = [<Picker.Item key="" label={placeholder} value="" enabled={false} />];
-        for (let i = 0; i < 61; i++) {
+        for (let i = 1; i < 61; i++) {
             minutesArray.push(<Picker.Item key={i} label={`${i} minute${(i !== 1 && i !== 0) ? 's' : ''}`} value={i} />);
         }
         return minutesArray;

@@ -9,9 +9,11 @@ import AddOwner from "../screens/Admin/AddOwner";
 import RestauratConfig from "../screens/Admin/RestaurantConfig";
 import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
+import AddChef from '../screens/Owner/AddChef';
 import AddMenu from '../screens/Owner/AddMenu';
 import MenuConfig from '../screens/Owner/MenuConfig';
 import Profile from '../screens/Owner/Profile';
+import ViewMenu from '../screens/Owner/ViewMenu';
 import { getData } from "../services/api/apiService";
 
 const Drawer = createDrawerNavigator();
@@ -23,7 +25,9 @@ const navigationMap = {
     'RestaurantConf': RestauratConfig,
     'AddMenu': AddMenu,
     'Profile': Profile,
-    'MenuConfig': MenuConfig
+    'MenuConfig': MenuConfig,
+    'ViewMenu': ViewMenu,
+    'AddChef': AddChef
 };
 
 const iconMap = {
@@ -59,9 +63,15 @@ const DrawerNavigator = () => {
     return (
         <Drawer.Navigator
             screenOptions={{
-                headerTintColor: '#fff'
+                headerTintColor: '#fff',
+                drawerLabelStyle: {
+                    fontSize: 15,
+                    paddingLeft: 5,
+                }
+
             }}
-            drawerContent={(props) => <DrawerText {...props} />}>
+            drawerContent={(props) => <DrawerText {...props} />}
+        >
             {panelData
                 .sort((a, b) => a.order - b.order)
                 .map((each, index) => {
@@ -74,16 +84,20 @@ const DrawerNavigator = () => {
                             component={Component}
                             key={index}
                             options={{
+
                                 headerTitleAlign: 'center',
                                 headerTitleStyle: {
                                     color: '#fff',
-                                    fontSize: 20,
+                                    fontSize: 22,
                                     fontWeight: 'bold',
                                 },
                                 headerStyle: {
                                     backgroundColor: '#FE7240',
                                 },
                                 drawerActiveTintColor: '#FE7240',
+                                drawerInactiveTintColor: '#000',
+
+
                                 drawerIcon: ({ focused }) => (
                                     <Icon
                                         name={each.icon}

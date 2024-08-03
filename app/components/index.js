@@ -1,7 +1,9 @@
 import { styled } from 'nativewind';
 import { TextInput as ReactInput, Text, View } from 'react-native';
-import { Button, Card, Dialog, TextInput as PaperInput, Portal } from 'react-native-paper';
+import { Button, Card, Dialog, TextInput as PaperInput, Text as PaperText, Portal } from 'react-native-paper';
+import { baseURL } from '../services/api/axios';
 import colors from '../styles/colors';
+
 
 export const StyledView = styled(View)
 
@@ -38,8 +40,7 @@ export const StyledButtonTrans = ({ fun, label, ...props }) => {
         <Button mode="contained"
             textColor='#FE7240'
             tw="bg-[#fff] m-6 mb-0 mt-0"
-            style={{ borderColor: '#FE7240', borderWidth: 0.5, marginBottom: 10 }}
-            {...props}
+            style={{ borderColor: '#FE7240', borderWidth: 0.5, marginBottom: 10, ...props }}
         >
             {label}
         </Button >
@@ -127,6 +128,46 @@ export const OwnerDetailsCard = ({ data, editable, editData, onTextChange, isEdi
             })}
         </Card>
 
+    )
+}
+
+export const DishCard = ({ props }) => {
+    return (
+        <Card
+            style={{
+                // marginBottom: 10,
+                paddingRight: 10,
+                backgroundColor: '#fff',
+                borderRadius: 0,
+                elevation: 0
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Card.Content style={{ flex: 1, padding: 10 }}>
+                    <PaperText variant="titleLarge">{props.name}</PaperText>
+                    <PaperText variant="titleMedium">{props.description}</PaperText>
+
+                    <PaperText variant="bodyMedium">
+                        Preparation Time: {props.preparation_time} minutes
+                    </PaperText>
+                    <PaperText variant="bodyMedium">Price: {props.price}rs</PaperText>
+                    <PaperText variant="bodyMedium">
+                        Recommended: {props.recommended}
+                    </PaperText>
+                    {/* <Text variant="bodyMedium">
+                      Diet: {each.diet__parent == 'Veg' ? 'Veg' : 'Non-Veg'}
+                    </Text> */}
+                </Card.Content>
+                <Card.Cover
+                    source={{ uri: baseURL + '/media/' + props.image }}
+                    style={{
+                        aspectRatio: 1,
+                        width: 125,
+                        height: 125,
+                        marginLeft: 10,
+                    }}
+                />
+            </View>
+        </Card>
     )
 }
 

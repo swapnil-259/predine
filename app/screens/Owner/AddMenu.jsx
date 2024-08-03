@@ -1,8 +1,9 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {PaperProvider} from 'react-native-paper';
+import {Checkbox, PaperProvider} from 'react-native-paper';
 import {
   StyledButton,
   StyledText,
@@ -18,6 +19,7 @@ import {baseURL} from '../../services/api/axios';
 
 const AddMenu = () => {
   const [dishCategory, setDishCategory] = useState([]);
+  const [dietPref, setDietPref] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,9 +30,12 @@ const AddMenu = () => {
         price: '',
         category: '',
         image: '',
+        diet: '',
+        recommended: false,
       });
 
       getDishCat();
+      getDietPref();
     }, [reset]),
   );
 
@@ -38,6 +43,15 @@ const AddMenu = () => {
     try {
       const res = await getData(apiURL.GET_DISH_CATEGORY);
       setDishCategory(res.data);
+    } catch (err) {
+      console.log('Error fetching dish categories:', err);
+    }
+  };
+  const getDietPref = async () => {
+    console.log(baseURL + apiURL.GET_DIET_PREFERENCE);
+    try {
+      const res = await getData(apiURL.GET_DIET_PREFERENCE);
+      setDietPref(res.data);
     } catch (err) {
       console.log('Error fetching dish categories:', err);
     }
@@ -57,17 +71,24 @@ const AddMenu = () => {
       price: '',
       category: '',
       image: '',
+      diet: '',
+      recommended: false,
     },
   });
 
   const onSubmit = async data => {
-
     const formData = new FormData();
     formData.append('preparation_time', data.preparation_time);
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', data.price);
     formData.append('category', data.category);
+    formData.append('diet', data.diet);
+    if (data.recommended) {
+      formData.append('recommended', 1);
+    } else {
+      formData.append('recommended', 0);
+    }
 
     if (data.image && data.image.uri) {
       const imageUri = data.image.uri.replace('file://', '');
@@ -92,6 +113,8 @@ const AddMenu = () => {
         price: '',
         category: '',
         image: '',
+        diet: '',
+        recommended: false,
       });
       console.log(response.data);
     } catch (err) {
@@ -194,12 +217,18 @@ const AddMenu = () => {
             name="price"
             rules={{
               required: {value: true, message: 'Price is required'},
+              maxLength: {
+                value: 4,
+                message: 'Price validation',
+              },
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <StyledTextInput
                 placeholder="Price"
                 label="Price"
                 onBlur={onBlur}
+                maxLength={4}
+                minLength={1}
                 keyboardType="numeric"
                 onChangeText={onChange}
                 value={value}
@@ -234,6 +263,28 @@ const AddMenu = () => {
               {errors.category.message}
             </StyledText>
           )}
+          <Controller
+            control={control}
+            name="diet"
+            rules={{
+              required: {value: true, message: 'Diet Preference is required'},
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <CustomDropdown
+                placeholder="Diet Preference"
+                data={dietPref}
+                label="Diet Preference"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.diet && (
+            <StyledText tw="text-red-500 ml-6">
+              {errors.diet.message}
+            </StyledText>
+          )}
 
           <Controller
             control={control}
@@ -252,6 +303,30 @@ const AddMenu = () => {
           {errors.image && (
             <StyledText style={{color: 'red', marginLeft: 6}}>
               {errors.image.message}
+            </StyledText>
+          )}
+          <Controller
+            control={control}
+            name="recommended"
+            render={({field: {onChange, value}}) => (
+              <View
+                style={{flexDirection: 'row', marginLeft: 30, marginTop: 10}}>
+                <StyledText tw="text-black text-[16px] pt-1.5">
+                  Recommended Category
+                </StyledText>
+                <Checkbox
+                  status={value ? 'checked' : 'unchecked'}
+                  uncheckedColor="#D3D3D3"
+                  color="#000000"
+                  onPress={() => onChange(!value)}
+                />
+              </View>
+            )}
+          />
+
+          {errors.recommended && (
+            <StyledText style={{color: 'red', marginLeft: 6}}>
+              {errors.recommended.message}
             </StyledText>
           )}
         </ScrollView>

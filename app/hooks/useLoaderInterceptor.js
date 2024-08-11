@@ -1,6 +1,6 @@
-import axiosInstance from "./axios";
 import { useContext } from "react";
-import { LoaderContext } from "../../context/LoaderContext";
+import { LoaderContext } from "../context/LoaderContext";
+import axiosInstance from "../services/api/axios";
 
 
 const useLoaderInterceptor = () => {

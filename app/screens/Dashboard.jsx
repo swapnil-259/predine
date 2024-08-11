@@ -3,6 +3,7 @@ import {BackHandler} from 'react-native';
 import {PaperProvider} from 'react-native-paper';
 import {DialogBox, StyledButton, StyledText, StyledView} from '../components';
 import {apiURL} from '../constants/urls';
+import useBackHandler from '../hooks/useBackHandler';
 import {LeftPanel} from '../navigation/DrawerNavigator';
 import {getData} from '../services/api/apiService';
 const Dashboard = ({navigation}) => {
@@ -13,12 +14,13 @@ const Dashboard = ({navigation}) => {
 
   useEffect(() => {
     LeftPanel();
-    const backAction = () => {
-      showDialog();
-      return true;
-    };
-    BackHandler.addEventListener('hardwareBackPress', backAction);
+    setVisible(false);
   }, []);
+
+  useBackHandler(() => {
+    showDialog();
+    return true;
+  });
 
   const logoutUser = async () => {
     try {
@@ -40,7 +42,9 @@ const Dashboard = ({navigation}) => {
           text={'Do you really want to Exit?'}
           btnText1={'Yes'}
           btnText2={'Cancel'}
-          onPressbtn1={() => BackHandler.exitApp()}
+          onPressbtn1={() => {
+            BackHandler.exitApp(), hideDialog();
+          }}
           onPressbtn2={hideDialog}
         />
         <StyledText tw="font-bold text-black text-lg">

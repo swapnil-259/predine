@@ -8,13 +8,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from "../components/Loader";
 import { apiURL } from "../constants/urls";
 import { LoaderProvider } from "../context/LoaderContext";
+import useLoaderInterceptor from "../hooks/useLoaderInterceptor";
 import ViewOwner from "../screens/Admin/ViewOwner/ViewOwner";
 import Login from "../screens/Login";
 import InputEmail from "../screens/Registration/InputEmail";
 import MainRegister from "../screens/Registration/MainRegister";
 import VerifyOTP from "../screens/Registration/VerifyOTP";
 import axiosInstance, { baseURL } from "../services/api/axios";
-import useLoaderInterceptor from "../services/api/interceptor";
 import DrawerNaviagtor from "./DrawerNavigator";
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +62,20 @@ const MainStackNavigator = () => {
                             ),
                         })}
                     />
+                    <Stack.Screen name="View Owner" component={ViewOwner} options={{
+                        headerTitleAlign: 'center',
+                        headerTitleStyle: {
+                            color: '#fff',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                        },
+                        headerStyle: {
+                            backgroundColor: '#FE7240',
+
+                        },
+                        headerTintColor: '#fff'
+
+                    }} />
                     <Stack.Screen
                         onReady={() => {
                             BootSplash.hide({ fade: true });

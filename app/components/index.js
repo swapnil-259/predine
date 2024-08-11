@@ -35,11 +35,12 @@ export const StyledButton = ({ fun, label, ...props }) => {
         </Button >
     )
 }
-export const StyledButtonTrans = ({ fun, label, ...props }) => {
+export const StyledButtonTrans = ({ fun, label, onPress, ...props }) => {
     return (
         <Button mode="contained"
             textColor='#FE7240'
             tw="bg-[#fff] m-6 mb-0 mt-0"
+            onPress={onPress}
             style={{ borderColor: '#FE7240', borderWidth: 0.5, marginBottom: 10, ...props }}
         >
             {label}
@@ -61,14 +62,14 @@ export const DialogBox = ({ visible, hideDialog, title, text, btnText1, btnText2
 
     return (
         <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog} >
-                <Dialog.Title>{title}</Dialog.Title>
+            <Dialog visible={visible} onDismiss={hideDialog} style={{ backgroundColor: '#FEF7F4', }}>
+                <Dialog.Title style={{ color: '#000' }}>{title}</Dialog.Title>
                 <Dialog.Content>
-                    <Text variant="bodyMedium">{text}</Text>
+                    <Text variant="bodyMedium" style={{ color: '#000' }}>{text}</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={onPressbtn1}>{btnText1}</Button>
-                    <Button onPress={onPressbtn2}>{btnText2}</Button>
+                    <Button onPress={onPressbtn1} buttonColor='#FE7240' textColor='#fff' style={{ height: 40, borderRadius: 20 }}>{btnText1}</Button>
+                    <Button onPress={onPressbtn2} buttonColor='#FE7240' textColor='#fff' style={{ height: 40, borderRadius: 20 }}>{btnText2}</Button>
                 </Dialog.Actions>
 
             </Dialog>
@@ -110,7 +111,7 @@ export const OwnerDetailsCard = ({ data, editable, editData, onTextChange, isEdi
     };
     return (
         <Card tw='bg-[#FEF7F4] mt-0 mb-0' style={{ borderRadius: 0 }}>
-            <Card.Cover source={data[data.length - 1]['value'] === null || data[data.length - 1]['value'] === 'None' ? { uri: 'https://picsum.photos/700' } : { uri: data[data.length - 1]['value'] }} style={{
+            <Card.Cover source={data[data.length - 1]['value'] === null || data[data.length - 1]['value'] === 'None' ? { uri: 'https://picsum.photos/700' } : { uri: baseURL + 'media/' + data[data.length - 1]['value'] }} style={{
                 margin: 4, borderRadius: 0
             }} />
             {data.filter(each => each.label !== 'id' && each.label !== 'Restaurant Image').map((each, index) => {

@@ -4,7 +4,8 @@ import { Text, View } from 'react-native';
 import { DishCard, StyledText } from ".";
 
 const CustomAccordian = ({ name, menuData }) => {
-    console.log('mame', menuData)
+    const categoryDishes = menuData.filter(each => each.category_id__parent === name);
+
     return (
         <View>
             <Collapse isExpanded={true} >
@@ -14,20 +15,19 @@ const CustomAccordian = ({ name, menuData }) => {
                     </Separator>
                 </CollapseHeader>
                 <CollapseBody>
-                    {!menuData ? <StyledText tw="text-center text-black">
-                        Waiting for data...
-                    </StyledText> : menuData.map((each, index) => {
-                        if (each.category_id__parent === name)
-                            return (
-                                <DishCard props={{ ...each }} key={index}></DishCard>
-
-                            )
-                    })}
-
+                    {categoryDishes.length === 0 ? (
+                        <StyledText tw="text-center text-black">
+                            No dishes available for this category
+                        </StyledText>
+                    ) : (
+                        categoryDishes.map((each, index) => (
+                            <DishCard props={{ ...each }} key={index}></DishCard>
+                        ))
+                    )}
                 </CollapseBody>
             </Collapse>
         </View>
+    );
+};
 
-    )
-}
-export default CustomAccordian
+export default CustomAccordian;

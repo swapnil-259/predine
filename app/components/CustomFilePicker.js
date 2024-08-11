@@ -35,7 +35,7 @@ const CustomImagePicker = ({ onChange, onBlur, value }) => {
             <TouchableOpacity
                 onBlur={onBlur}
                 style={{
-                    flex: 1,
+                    // flex: 1,
                     margin: 25,
                     marginTop: 15,
                     height: 50,

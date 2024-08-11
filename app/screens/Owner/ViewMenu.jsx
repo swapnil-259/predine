@@ -9,6 +9,8 @@ import {getData} from '../../services/api/apiService';
 const ViewMenu = () => {
   const [menuData, setMenuData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
+
   useFocusEffect(
     useCallback(() => {
       getMenu();
@@ -25,6 +27,7 @@ const ViewMenu = () => {
       console.log('Error fetching dish categories:', err);
     }
   };
+
   const getCategories = async () => {
     try {
       const res = await getData(apiURL.GET_ALL_CATEGORY);
@@ -34,6 +37,20 @@ const ViewMenu = () => {
       console.log(err);
     }
   };
+
+  const handleCategorySelection = category => {
+    setSelectedCategory(category);
+  };
+
+  const filteredMenuData =
+    selectedCategory === 'All Categories'
+      ? menuData
+      : menuData.filter(item => item.category_id__parent === selectedCategory);
+
+  const filteredCategoryData =
+    selectedCategory === 'All Categories'
+      ? categoryData
+      : categoryData.filter(each => each.parent === selectedCategory);
 
   return (
     <StyledView tw="flex-1 bg-white">
@@ -49,33 +66,45 @@ const ViewMenu = () => {
             Waiting for data...
           </StyledText>
         ) : (
-          categoryData.map((each, index) => {
+          filteredCategoryData.map((each, index) => {
             return (
               <CustomAccordian
                 name={each.parent}
                 key={index}
-                menuData={menuData}></CustomAccordian>
+                menuData={filteredMenuData}></CustomAccordian>
             );
           })
         )}
       </ScrollView>
       <StyledView tw="pt-3 bg-[#FEF7F4]">
-        <ScrollView horizontal>
-          <StyledButtonTrans
-            label={'All Categories'}
-            marginRight={10}
-            marginLeft={10}></StyledButtonTrans>
+        {!categoryData ? (
+          <StyledText tw="text-black text-center p-3">
+            Waiting for Categories...
+          </StyledText>
+        ) : (
+          <ScrollView horizontal>
+            <StyledButtonTrans
+              label={'All Categories'}
+              marginRight={10}
+              marginLeft={10}
+              onPress={() =>
+                handleCategorySelection('All Categories')
+              }></StyledButtonTrans>
 
-          {categoryData.map((each, index) => {
-            return (
-              <StyledButtonTrans
-                key={index}
-                label={each.parent}
-                marginRight={10}
-                marginLeft={10}></StyledButtonTrans>
-            );
-          })}
-        </ScrollView>
+            {categoryData.map((each, index) => {
+              return (
+                <StyledButtonTrans
+                  key={index}
+                  label={each.parent}
+                  marginRight={10}
+                  marginLeft={10}
+                  onPress={() =>
+                    handleCategorySelection(each.parent)
+                  }></StyledButtonTrans>
+              );
+            })}
+          </ScrollView>
+        )}
       </StyledView>
     </StyledView>
   );

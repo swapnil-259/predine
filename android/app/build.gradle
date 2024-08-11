@@ -90,6 +90,14 @@ android {
             keyPassword 'android'
         }
     }
+    signingConfigs {
+        release {
+        storeFile file('predine.keystore')
+        storePassword 'predine@123'
+        keyAlias 'predine'
+        keyPassword 'predine@123'
+        }
+    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug

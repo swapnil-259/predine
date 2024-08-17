@@ -1,8 +1,10 @@
 import { styled } from 'nativewind';
 import { TextInput as ReactInput, Text, View } from 'react-native';
 import { Button, Card, Dialog, TextInput as PaperInput, Text as PaperText, Portal } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { baseURL } from '../services/api/axios';
 import colors from '../styles/colors';
+
 
 
 export const StyledView = styled(View)
@@ -77,7 +79,8 @@ export const DialogBox = ({ visible, hideDialog, title, text, btnText1, btnText2
     );
 };
 
-export const RestaurantCard = ({ res_name, res_type, onPress }) => {
+export const RestaurantCard = ({ res_name, res_type, res_image, onPress }) => {
+    console.log("im", res_image)
     return (
 
         <Card tw='bg-[#FEF7F4] mt-0 mb-5'>
@@ -85,7 +88,7 @@ export const RestaurantCard = ({ res_name, res_type, onPress }) => {
                 <StyledText tw='text-black font-bold text-[18px]'>{res_name}</StyledText>
                 <StyledText tw='text-[#808080] p-1 pl-0'>{res_type}</StyledText>
             </Card.Content>
-            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{
+            <Card.Cover source={(res_image === null || res_image === 'None') ? { uri: 'https://picsum.photos/700' } : { uri: baseURL + 'media/' + res_image }} style={{
                 marginHorizontal: 4
             }} />
             <Card.Actions>
@@ -173,3 +176,69 @@ export const DishCard = ({ props }) => {
 }
 
 
+export const NavigationCard = ({ title, iconName }) => {
+    return (
+
+        <Card
+            style={{
+                backgroundColor: '#fff',
+                borderColor: '#FE7240',
+                borderWidth: 0.7,
+                height: 'auto',
+                justifyContent: 'center',
+            }}>
+
+            <Card.Title
+                title={title}
+                titleStyle={{
+                    color: '#FE7240',
+                    fontSize: 18,
+                    marginTop: 5,
+                    fontWeight: '700',
+                    flexWrap: 'wrap',
+                }}
+                allowFontScaling={true}
+                ellipsizeMode="tail"
+                right={() => (
+                    <MaterialCommunityIcons
+                        name={iconName}
+                        color="#000"
+                        size={25}
+                        style={{ paddingRight: 20 }}
+                    />
+                )}
+            />
+        </Card>
+    )
+}
+
+export const ChefCard = ({ chef__first_name, chef__email, chef__last_name, chef__phone_number }) => {
+    return (<Card style={{ margin: 10, backgroundColor: '#FEF7F4' }}>
+        <Card.Content>
+            <StyledView style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                <StyledText tw='text-[#808080]'>
+                    Name
+                </StyledText>
+                <StyledText tw='text-black'>
+                    {chef__first_name} {chef__last_name}
+                </StyledText>
+            </StyledView>
+            <StyledView style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                <StyledText tw='text-[#808080]'>
+                    Email
+                </StyledText>
+                <StyledText tw='text-black'>
+                    {chef__email}
+                </StyledText>
+            </StyledView>
+            <StyledView style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <StyledText tw='text-[#808080]'>
+                    Phone Number
+                </StyledText>
+                <StyledText tw='text-black'>
+                    {chef__phone_number}
+                </StyledText>
+            </StyledView>
+        </Card.Content>
+    </Card>)
+}

@@ -1,21 +1,25 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {PaperProvider} from 'react-native-paper';
-import {
-  StyledButton,
-  StyledButtonTrans,
-  StyledText,
-  StyledTextInput,
-  StyledView,
-} from '../../components';
-import CustomDropdown from '../../components/CustomDropdown';
-import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
+import {NavigationCard, StyledView} from '../../../components';
+import {apiURL} from '../../../constants/urls';
+import {getData, postData} from '../../../services/api/apiService';
+import ViewAdminConfigCard from './ViewAdminConfigCard';
 
 const RestauratConfig = () => {
   const [parentData, setParentData] = useState([]);
   const [childData, setChildData] = useState([]);
+  const [visibleModal, setVisibleModal] = useState(null);
+  const showModal = modalName => setVisibleModal(modalName);
+  const hideModal = () => {
+    setVisibleModal(null);
+    reset({
+      parent: null,
+      child: '',
+    });
+  };
 
   const ParentList = async () => {
     try {
@@ -47,42 +51,92 @@ const RestauratConfig = () => {
   } = useForm({mode: 'onBlur'});
 
   const onSubmit = async data => {
-    try {
-      const res = await postData(apiURL.ADD_CHILD, data);
-      console.log(res);
-      reset({
-        parent: null,
-        child: '',
-      });
-    } catch (err) {
-      reset({
-        parent: null,
-        child: '',
-      });
-      console.log(err);
+    if (visibleModal === 'manageConfig') {
+      try {
+        const res = await postData(apiURL.ADD_CHILD, data);
+        console.log(res);
+        reset({
+          parent: null,
+          child: '',
+        });
+        hideModal();
+      } catch (err) {
+        reset({
+          parent: null,
+          child: '',
+        });
+        console.log(err);
+      }
+    } else if (visibleModal === 'viewPrevConfig') {
+      const parent = getValues('parent');
+
+      try {
+        const res = await getData(apiURL.GET_CHILD, {parent: parent});
+        setChildData(res.data);
+        reset({
+          parent: null,
+        });
+      } catch (err) {
+        reset({
+          parent: null,
+        });
+      }
     }
   };
 
-  const onPreviousData = async data => {
-    const parent = getValues('parent');
+  // const onPreviousData = async data => {
+  //   const parent = getValues('parent');
 
-    try {
-      const res = await getData(apiURL.GET_CHILD, {parent: parent});
-      setChildData(res.data);
-      reset({
-        parent: null,
-      });
-    } catch (err) {
-      reset({
-        parent: null,
-      });
-    }
-  };
+  //   try {
+  //     const res = await getData(apiURL.GET_CHILD, {parent: parent});
+  //     setChildData(res.data);
+  //     reset({
+  //       parent: null,
+  //     });
+  //   } catch (err) {
+  //     reset({
+  //       parent: null,
+  //     });
+  //   }
+  // };
 
   return (
     <PaperProvider>
       <StyledView tw="flex-1 bg-white ">
-        <StyledView tw="justify-center pt-5">
+        <TouchableOpacity
+          style={{
+            margin: 20,
+            marginBottom: 0,
+          }}
+          onPress={() => showModal('manageConfig')}>
+          <NavigationCard
+            title={'Configuration'}
+            iconName={'cog-outline'}></NavigationCard>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            margin: 20,
+            marginBottom: 0,
+          }}
+          onPress={() => showModal('viewPrevConfig')}>
+          <NavigationCard
+            title={'View Previous Configuration'}
+            iconName={'chevron-right'}
+          />
+        </TouchableOpacity>
+        <ViewAdminConfigCard
+          visibleModal={visibleModal}
+          hideModal={hideModal}
+          parentData={parentData}
+          control={control}
+          handleSubmit={handleSubmit}
+          reset={reset}
+          onSubmit={onSubmit}
+          errors={errors}
+          isValid={isValid}
+          getValues={getValues}
+          childData={childData}></ViewAdminConfigCard>
+        {/* <StyledView tw="justify-center pt-5">
           <Controller
             control={control}
             name="parent"
@@ -154,7 +208,7 @@ const RestauratConfig = () => {
               {item.label}
             </StyledText>
           ))}
-        </StyledView>
+        </StyledView> */}
       </StyledView>
     </PaperProvider>
   );

@@ -23,7 +23,11 @@ export const
         ALL_DISH: 'owner/all_dish/',
         GET_DIET_PREFERENCE: 'owner/get_diet_pref/',
         GET_ALL_CATEGORY: 'owner/get_all_category/',
-        CHANGE_RES_PIC: '/owner/change_res_pic/'
+        CHANGE_RES_PIC: 'owner/change_res_pic/',
+        ADD_CHEF: 'owner/add_chef/',
+        ADD_BANK_DETAILS: 'owner/add_bank_details/',
+        CHANGE_PASSWORD: 'owner/change_password/',
+        GET_CHEFS: 'owner/get_chefs/'
 
 
 

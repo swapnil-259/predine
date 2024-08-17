@@ -40,6 +40,7 @@ const OwnerList = ({navigation}) => {
             </StyledText>
           ) : (
             data.map((each, index) => {
+              console.log('each', each);
               return (
                 <RestaurantCard
                   onPress={() =>
@@ -47,6 +48,7 @@ const OwnerList = ({navigation}) => {
                   }
                   res_name={each.restaurant_name}
                   res_type={each.restaurant_type__parent}
+                  res_image={each.restaurant_pic}
                   key={index}></RestaurantCard>
               );
             })

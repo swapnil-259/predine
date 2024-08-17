@@ -1,18 +1,18 @@
-// DrawerNavigator.js
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useEffect, useState } from "react";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DrawerText from "../components/DrawerText";
 import { apiURL } from "../constants/urls";
 import AddOwner from "../screens/Admin/AddOwner";
-import RestauratConfig from "../screens/Admin/RestaurantConfig";
+import RestauratConfig from "../screens/Admin/Configuration/RestaurantConfig";
 import OwnerList from "../screens/Admin/ViewOwner/OwnerList";
 import Dashboard from "../screens/Dashboard";
-import AddChef from '../screens/Owner/AddChef';
 import AddMenu from '../screens/Owner/AddMenu';
-import MenuConfig from '../screens/Owner/MenuConfig';
-import Profile from '../screens/Owner/Profile';
+import Chef from '../screens/Owner/Chef/Chef';
+import MenuConfig from '../screens/Owner/Menu Configuration/MenuConfig';
+import Profile from '../screens/Owner/Profile/Profile';
 import ViewMenu from '../screens/Owner/ViewMenu';
 import { getData } from "../services/api/apiService";
 
@@ -27,12 +27,13 @@ const navigationMap = {
     'Profile': Profile,
     'MenuConfig': MenuConfig,
     'ViewMenu': ViewMenu,
-    'AddChef': AddChef
+    'AddChef': Chef
 };
 
 const iconMap = {
     "MaterialCommunityIcons": MaterialCommunityIcons,
-    "AntDesign": AntDesign
+    "AntDesign": AntDesign,
+    "Ionicons": Ionicons
 };
 
 export const LeftPanel = async () => {

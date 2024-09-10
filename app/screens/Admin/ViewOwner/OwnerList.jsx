@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native';
 import {PaperProvider} from 'react-native-paper';
 import {RestaurantCard, StyledText, StyledView} from '../../../components';
 import {apiURL} from '../../../constants/urls';
@@ -24,32 +24,30 @@ const OwnerList = ({navigation}) => {
       ownerList();
     }, []),
   );
+
   return (
     <PaperProvider>
       <StyledView tw="flex-1 p-3 bg-white">
         <ScrollView
-          contentContainerStyle={
-            !data
-              ? {flexGrow: 1, justifyContent: 'center', alignItems: 'center'}
-              : {}
-          }
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: data.length === 0 ? 'center' : 'flex-start',
+            alignItems: 'center',
+          }}
           tw="bg-white">
-          {!data ? (
-            <StyledText tw="text-center text-black">
-              Waiting for data...
+          {data.length === 0 ? (
+            <StyledText tw="text-center text-black text-[17px]">
+              There are no owners to show...
             </StyledText>
           ) : (
-            data.map((each, index) => {
-              return (
-                <RestaurantCard
-                  onPress={() =>
-                    navigation.navigate('View Owner', {id: each.id})
-                  }
-                  res_name={each.restaurant_name}
-                  res_type={each.restaurant_type__parent}
-                  key={index}></RestaurantCard>
-              );
-            })
+            data.map((each, index) => (
+              <RestaurantCard
+                onPress={() => navigation.navigate('View Owner', {id: each.id})}
+                res_name={each.restaurant_name}
+                res_type={each.restaurant_type__parent}
+                key={index}
+              />
+            ))
           )}
         </ScrollView>
       </StyledView>

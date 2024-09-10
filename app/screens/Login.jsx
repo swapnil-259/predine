@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
-
 import {useFocusEffect} from '@react-navigation/native';
-import {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
+  BackHandler,
   Dimensions,
   Image,
   Keyboard,
@@ -10,7 +9,12 @@ import {
   View,
 } from 'react-native';
 import {PaperProvider} from 'react-native-paper';
-import {StyledButton, StyledText, StyledTextInput} from '../components';
+import {
+  DialogBox,
+  StyledButton,
+  StyledText,
+  StyledTextInput,
+} from '../components';
 import {BottomSheetComponent} from '../components/BottomSheet';
 import {apiURL} from '../constants/urls';
 import {postData} from '../services/api/apiService';
@@ -24,8 +28,12 @@ const Login = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [isEditDisable, setEditDisable] = useState(true);
   const [data, setData] = useState(initialdata);
+  const [visible, setVisible] = useState(false);
   const screenHeight = Dimensions.get('window').height;
   const imageHeight = screenHeight * 0.55;
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -41,9 +49,17 @@ const Login = ({navigation}) => {
       },
     );
 
+    const backAction = () => {
+      showDialog();
+      return true;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
     };
   }, []);
 
@@ -71,6 +87,20 @@ const Login = ({navigation}) => {
   return (
     <PaperProvider>
       <View tw="flex-1 content-center bg-[#FE7240]">
+        <DialogBox
+          visible={visible}
+          showDialog={showDialog}
+          hideDialog={hideDialog}
+          title={'Exit'}
+          text={'Do you really want to Exit?'}
+          btnText1={'Yes'}
+          btnText2={'Cancel'}
+          onPressbtn1={() => {
+            BackHandler.exitApp(), setVisible(false);
+          }}
+          onPressbtn2={hideDialog}
+        />
+
         {!isKeyboardVisible ? (
           <Image
             source={require('../assets/images/symbol.png')}
@@ -125,4 +155,5 @@ const Login = ({navigation}) => {
     </PaperProvider>
   );
 };
+
 export default Login;

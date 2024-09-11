@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import DrawerText from '../components/DrawerText';
 import {apiURL} from '../constants/urls';
 import AddOwner from '../screens/Admin/AddOwner';
-import RestauratConfig from '../screens/Admin/RestaurantConfig';
+import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig';
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
 import Dashboard from '../screens/Dashboard';
 import AddMenu from '../screens/Owner/AddMenu';

@@ -15,7 +15,10 @@ export const StyledView = styled(View);
 
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Use any icon library you prefer
+import {
+  default as Icon,
+  default as MaterialCommunityIcons,
+} from 'react-native-vector-icons/MaterialCommunityIcons'; // Use any icon library you prefer
 
 export const StyledTextInput = ({
   label,
@@ -248,5 +251,29 @@ export const DishCard = ({props}) => {
         />
       </View>
     </Card>
+  );
+};
+
+export const NavigationCard = ({iconName, text}) => {
+  return (
+    <StyledView
+      style={{
+        height: 85,
+        backgroundColor: '#fff',
+        margin: 20,
+        marginBottom: 0,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#FE7240',
+        flexDirection: 'row',
+        alignItems: 'center',
+        elevation: 5,
+        paddingHorizontal: 20,
+      }}>
+      <StyledText tw=" flex-1 text-[19px] font-bold text-[#FE7240]">
+        {text}
+      </StyledText>
+      <MaterialCommunityIcons name={iconName} size={25} color="#000" />
+    </StyledView>
   );
 };

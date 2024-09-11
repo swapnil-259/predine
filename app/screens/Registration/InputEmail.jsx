@@ -23,12 +23,19 @@ const InputEmail = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [isEditDisable, setEditDisable] = useState(true);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(''); // State for email validation error
   const [visible, setVisible] = useState(false);
   const screenHeight = Dimensions.get('window').height;
   const imageHeight = screenHeight * 0.55;
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
+
+  // Email validation function using regex
+  const validateEmail = email => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -57,31 +64,40 @@ const InputEmail = ({navigation}) => {
   }, []);
 
   const verifyEmail = async () => {
-    const data = {
-      email: email.email,
-    };
-    console.log('email', data);
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+    setEmailError(''); // Clear the error if the email is valid
+
+    const data = {email: email};
+
     try {
       const res = await postData(apiURL.VERIFY_EMAIL, data);
       console.log(res);
       setEditDisable(false);
       setEmail('');
-      navigation.navigate('VerifyOTP', {email: email});
+      navigation.navigate('VerifyOTP', {email});
     } catch (err) {
       console.log(err);
     }
   };
+
   const checkEmail = async () => {
-    const data = {
-      email: email.email,
-    };
-    console.log('dta', data);
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+    setEmailError(''); // Clear the error if the email is valid
+
+    const data = {email: email};
+
     try {
       const res = await getData(apiURL.CHECK_EMAIL_VERF, data);
       console.log(res);
       setEditDisable(false);
       setEmail('');
-      navigation.navigate('Register', {email: email});
+      navigation.navigate('Register', {email});
     } catch (err) {
       console.log(err);
     }
@@ -110,15 +126,18 @@ const InputEmail = ({navigation}) => {
           <StyledText
             tw="text-black font-bold text-[18px] text-center mb-2"
             text="EMAIL VERIFICATION"></StyledText>
+
           <StyledTextInput
             style={{marginBottom: 0}}
             label="Email"
             placeholder="Enter Your Email"
             value={email}
-            // editable={isEditDisable}
-            onChangeText={val => {
-              setEmail(prev => ({...prev, email: val}));
-            }}></StyledTextInput>
+            onChangeText={val => setEmail(val)}></StyledTextInput>
+
+          {/* Show validation error */}
+          {emailError ? (
+            <StyledText tw="text-red-500">{emailError}</StyledText>
+          ) : null}
 
           <StyledButton
             label="VERIFY EMAIL"
@@ -126,20 +145,17 @@ const InputEmail = ({navigation}) => {
               console.log('button pressed');
               verifyEmail();
             }}></StyledButton>
+
           <StyledButtonTrans
             label={'Continue Registration Process'}
-            onPress={() => {
-              checkEmail();
-            }}></StyledButtonTrans>
+            onPress={() => checkEmail()}></StyledButtonTrans>
+
           <View tw="flex-1 justify-end mb-8 mt-1">
             <View tw="flex-row justify-center">
               <StyledText
                 tw="text-black"
                 text="Already Registered?"></StyledText>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Logout');
-                }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
                 <StyledText
                   tw="text-[#FE7240]"
                   text=" Back to Login!"></StyledText>
@@ -151,4 +167,5 @@ const InputEmail = ({navigation}) => {
     </PaperProvider>
   );
 };
+
 export default InputEmail;

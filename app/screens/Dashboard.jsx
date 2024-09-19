@@ -43,9 +43,9 @@ const Dashboard = ({navigation}) => {
           onPressbtn1={() => BackHandler.exitApp()}
           onPressbtn2={hideDialog}
         />
-        <StyledText tw="font-bold text-black text-lg">
-          Welcome to Predine!
-        </StyledText>
+        <StyledText
+          tw="font-bold text-black text-lg"
+          text={'Welcome to Predine!'}></StyledText>
         <StyledButton label={'logout'} onPress={logoutUser}></StyledButton>
       </StyledView>
     </PaperProvider>

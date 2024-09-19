@@ -32,13 +32,13 @@ const OwnerList = ({navigation}) => {
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: data.length === 0 ? 'center' : 'flex-start',
-            alignItems: 'center',
+            // alignItems: 'center',
           }}
           tw="bg-white">
           {data.length === 0 ? (
-            <StyledText tw="text-center text-black text-[17px]">
-              There are no owners to show...
-            </StyledText>
+            <StyledText
+              tw="text-center text-black text-[17px]"
+              text={'There are no owners to show...'}></StyledText>
           ) : (
             data.map((each, index) => (
               <RestaurantCard

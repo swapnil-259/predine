@@ -21,6 +21,7 @@ const AddOwner = () => {
     try {
       const res = await getData(apiURL.GET_ROLE);
       setRoleData(res.data);
+      console.log('role', res.data);
     } catch (err) {
       console.log(err);
     }
@@ -30,6 +31,7 @@ const AddOwner = () => {
     try {
       const res = await getData(apiURL.GET_RESTAURANT);
       setRestaurantData(res.data);
+      console.log('res', res.data);
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +62,7 @@ const AddOwner = () => {
   } = useForm({mode: 'onBlur'});
 
   const onSubmit = async data => {
-    console.log(data);
+    // console.log(data);
 
     try {
       const res = await postData(apiURL.OWNER_REGISTRATION, data);
@@ -110,9 +112,9 @@ const AddOwner = () => {
             )}
           />
           {errors.first_name && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.first_name.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.first_name.message}></StyledText>
           )}
 
           <Controller
@@ -141,9 +143,9 @@ const AddOwner = () => {
             )}
           />
           {errors.last_name && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.last_name.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.last_name.message}></StyledText>
           )}
 
           <Controller
@@ -169,9 +171,9 @@ const AddOwner = () => {
             )}
           />
           {errors.phone_number && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.phone_number.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.phone_number.message}></StyledText>
           )}
 
           <Controller
@@ -195,9 +197,9 @@ const AddOwner = () => {
             )}
           />
           {errors.email && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.email.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.email.message}></StyledText>
           )}
 
           <Controller
@@ -222,9 +224,9 @@ const AddOwner = () => {
             )}
           />
           {errors.address && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.address.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.address.message}></StyledText>
           )}
 
           <Controller
@@ -249,9 +251,9 @@ const AddOwner = () => {
             )}
           />
           {errors.restaurant_name && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.restaurant_name.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.restaurant_name.message}></StyledText>
           )}
 
           <Controller
@@ -275,7 +277,9 @@ const AddOwner = () => {
             )}
           />
           {errors.res && (
-            <StyledText tw="text-red-500 ml-6">{errors.res.message}</StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.res.message}></StyledText>
           )}
 
           <Controller
@@ -296,9 +300,9 @@ const AddOwner = () => {
             )}
           />
           {errors.role && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.role.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.role.message}></StyledText>
           )}
         </ScrollView>
 

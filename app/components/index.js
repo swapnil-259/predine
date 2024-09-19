@@ -18,8 +18,7 @@ import {TouchableOpacity} from 'react-native';
 import {
   default as Icon,
   default as MaterialCommunityIcons,
-} from 'react-native-vector-icons/MaterialCommunityIcons'; // Use any icon library you prefer
-
+} from 'react-native-vector-icons/MaterialCommunityIcons';
 export const StyledTextInput = ({
   label,
   placeholder,
@@ -36,7 +35,7 @@ export const StyledTextInput = ({
         mode="outlined"
         label={label}
         secureTextEntry={secureTextEntry && !isPasswordVisible}
-        tw="m-6 mb-2 mt-2 bg-[#FEF7F4]"
+        tw="m-6 mb-2 mt-2 bg-[#FEF7F4] font-bold"
         textColor="#000000"
         activeOutlineColor={colors.BLACK}
         outlineStyle={{borderWidth: 1, borderRadius: 10}}
@@ -68,7 +67,7 @@ export const StyledButton = ({fun, label, ...props}) => {
     <Button
       mode="contained"
       textColor="#fff"
-      tw="bg-[#FE7240] m-5 mb-4 mt-4 border-0"
+      tw="bg-[#FE7240] m-5 mb-4 mt-4 border-0 font-bold"
       {...props}>
       {label}
     </Button>
@@ -91,12 +90,11 @@ export const StyledButtonTrans = ({fun, label, ...props}) => {
   );
 };
 
-export const StyledText = ({tw, text, children, ...props}) => {
+export const StyledText = ({tw, text, ...props}) => {
   return (
-    <Text tw={tw} {...props}>
+    <PaperText tw={tw} {...props}>
       {text}
-      {children}
-    </Text>
+    </PaperText>
   );
 };
 
@@ -130,10 +128,10 @@ export const RestaurantCard = ({res_name, res_type, onPress}) => {
   return (
     <Card tw="bg-[#FEF7F4] mt-0 mb-5">
       <Card.Content>
-        <StyledText tw="text-black font-bold text-[18px]">
-          {res_name}
-        </StyledText>
-        <StyledText tw="text-[#808080] p-1 pl-0">{res_type}</StyledText>
+        <StyledText
+          tw="text-black font-bold text-[18px]"
+          text={res_name}></StyledText>
+        <StyledText tw="text-[#808080] p-1 pl-0" text={res_type}></StyledText>
       </Card.Content>
       <Card.Cover
         source={{uri: 'https://picsum.photos/700'}}
@@ -166,13 +164,14 @@ export const OwnerDetailsCard = ({
     onTextChange(label, value);
   };
   return (
-    <Card tw="bg-[#FEF7F4] mt-0 mb-0" style={{borderRadius: 0}}>
+    <Card tw="bg-[#FEF7F4] mb-0" style={{borderRadius: 10, margin: 10}}>
       <Card.Cover
         source={
           data[data.length - 1]['value'] === null ||
-          data[data.length - 1]['value'] === 'None'
+          data[data.length - 1]['value'] === 'None' ||
+          data[data.length - 1]['value'] === ''
             ? {uri: 'https://picsum.photos/700'}
-            : {uri: data[data.length - 1]['value']}
+            : {uri: baseURL + 'media/' + data[data.length - 1]['value']}
         }
         style={{
           margin: 4,
@@ -195,9 +194,8 @@ export const OwnerDetailsCard = ({
               key={index}>
               <StyledText
                 tw="text-[#808080] text-[15px] font-bold"
-                style={{alignText: 'flex-start'}}>
-                {each.label}
-              </StyledText>
+                style={{alignText: 'flex-start'}}
+                text={each.label}></StyledText>
               <ReactInput
                 tw="text-black p-1 pl-0 font-bold text-[15px]"
                 style={{textAlign: 'right'}}
@@ -215,6 +213,7 @@ export const OwnerDetailsCard = ({
 };
 
 export const DishCard = ({props}) => {
+  console.log('img', props.image);
   return (
     <Card
       style={{
@@ -241,7 +240,12 @@ export const DishCard = ({props}) => {
                     </Text> */}
         </Card.Content>
         <Card.Cover
-          source={{uri: baseURL + '/media/' + props.image}}
+          source={{
+            uri:
+              props.image !== ''
+                ? baseURL + '/media/' + props.image
+                : 'https://picsum.photos/700',
+          }}
           style={{
             aspectRatio: 1,
             width: 125,
@@ -270,9 +274,9 @@ export const NavigationCard = ({iconName, text}) => {
         elevation: 5,
         paddingHorizontal: 20,
       }}>
-      <StyledText tw=" flex-1 text-[19px] font-bold text-[#FE7240]">
-        {text}
-      </StyledText>
+      <StyledText
+        tw=" flex-1 text-[19px] font-bold text-[#FE7240]"
+        text={text}></StyledText>
       <MaterialCommunityIcons name={iconName} size={25} color="#000" />
     </StyledView>
   );

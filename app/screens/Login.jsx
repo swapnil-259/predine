@@ -108,7 +108,7 @@ const Login = ({navigation}) => {
             resizeMode="contain"></Image>
         ) : (
           <View tw="justify-center items-center m-10 ">
-            <StyledText tw="text=[15px]">PREDINE</StyledText>
+            <StyledText tw="text=[15px] font-bold">PREDINE</StyledText>
           </View>
         )}
 
@@ -142,12 +142,16 @@ const Login = ({navigation}) => {
               handleLogin();
             }}></StyledButton>
           <View tw="flex-row justify-center items-center ">
-            <StyledText tw="text-black" text="Not Registered?"></StyledText>
+            <StyledText
+              tw="text-black font-bold"
+              text="Not Registered?"></StyledText>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('InputEmail');
               }}>
-              <StyledText tw="text-[#FE7240]" text=" Click Here!"></StyledText>
+              <StyledText
+                tw="text-[#FE7240] font-bold"
+                text=" Click Here!"></StyledText>
             </TouchableOpacity>
           </View>
         </BottomSheetComponent>

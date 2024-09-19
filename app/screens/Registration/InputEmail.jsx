@@ -76,8 +76,7 @@ const InputEmail = ({navigation}) => {
       const res = await postData(apiURL.VERIFY_EMAIL, data);
       console.log(res);
       setEditDisable(false);
-      setEmail('');
-      navigation.navigate('VerifyOTP', {email});
+      navigation.navigate('VerifyOTP', {data});
     } catch (err) {
       console.log(err);
     }
@@ -88,8 +87,7 @@ const InputEmail = ({navigation}) => {
       setEmailError('Please enter a valid email address');
       return;
     }
-    setEmailError(''); // Clear the error if the email is valid
-
+    setEmailError('');
     const data = {email: email};
 
     try {
@@ -136,7 +134,7 @@ const InputEmail = ({navigation}) => {
 
           {/* Show validation error */}
           {emailError ? (
-            <StyledText tw="text-red-500">{emailError}</StyledText>
+            <StyledText tw="text-red-500" text={emailError}></StyledText>
           ) : null}
 
           <StyledButton
@@ -153,11 +151,11 @@ const InputEmail = ({navigation}) => {
           <View tw="flex-1 justify-end mb-8 mt-1">
             <View tw="flex-row justify-center">
               <StyledText
-                tw="text-black"
+                tw="text-black font-bold"
                 text="Already Registered?"></StyledText>
               <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
                 <StyledText
-                  tw="text-[#FE7240]"
+                  tw="text-[#FE7240] font-bold"
                   text=" Back to Login!"></StyledText>
               </TouchableOpacity>
             </View>

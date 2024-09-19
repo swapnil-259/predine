@@ -10,8 +10,8 @@ import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig'
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
 import Dashboard from '../screens/Dashboard';
 import AddMenu from '../screens/Owner/AddMenu';
-import MenuConfig from '../screens/Owner/MenuConfig';
-import Profile from '../screens/Owner/Profile';
+import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
+import Profile from '../screens/Owner/Profile/Profile';
 import ViewMenu from '../screens/Owner/ViewMenu';
 import {getData} from '../services/api/apiService';
 

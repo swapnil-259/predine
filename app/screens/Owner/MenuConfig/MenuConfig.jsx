@@ -1,22 +1,30 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {ScrollView} from 'react-native-gesture-handler';
-import {
-  StyledButton,
-  StyledButtonTrans,
-  StyledText,
-  StyledTextInput,
-  StyledView,
-} from '../../components';
-import CustomDropdown from '../../components/CustomDropdown';
+import {useForm} from 'react-hook-form';
 
-import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
-
+import {ScrollView, TouchableOpacity} from 'react-native';
+import {Modal, PaperProvider, Portal} from 'react-native-paper';
+import {NavigationCard, StyledView} from '../../../components';
+import {apiURL} from '../../../constants/urls';
+import {getData, postData} from '../../../services/api/apiService';
+import ViewMenuConfigCard from './ViewMenuCard';
 const MenuConfig = () => {
   const [parentData, setParentData] = useState([]);
   const [childData, setChildData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [modalType, setModalType] = useState(null);
+
+  const showModal = type => {
+    setModalType(type);
+    setVisible(true);
+  };
+  const hideModal = () => {
+    setVisible(false), setChildData([]);
+    reset({
+      parent: null,
+      child: '',
+    });
+  };
 
   const ParentList = async () => {
     try {
@@ -29,36 +37,39 @@ const MenuConfig = () => {
   };
 
   const onSubmit = async data => {
-    try {
-      const res = await postData(apiURL.ADD_CHILD, data);
-      console.log(res);
-      reset({
-        parent: null,
-        child: '',
-      });
-    } catch (err) {
-      reset({
-        parent: null,
-        child: '',
-      });
-      console.log(err);
-    }
-  };
-  const onPreviousData = async () => {
-    console.log(getValues('parent'));
-    const parent = getValues('parent');
+    switch (modalType) {
+      case 'menuConfig':
+        try {
+          const res = await postData(apiURL.ADD_CHILD, data);
+          console.log(res);
+          reset({
+            parent: null,
+            child: '',
+          });
+        } catch (err) {
+          reset({
+            parent: null,
+            child: '',
+          });
+          console.log(err);
+        }
+        break;
+      case 'viewPrevConfig':
+        const parent = getValues('parent');
 
-    try {
-      const res = await getData(apiURL.GET_CHILD, {parent: parent});
-      console.log('asdfghj', res.data);
-      setChildData(res.data);
-      reset({
-        parent: null,
-      });
-    } catch (err) {
-      reset({
-        parent: null,
-      });
+        try {
+          const res = await getData(apiURL.GET_CHILD, {parent: parent});
+          console.log('asdfghj', res.data);
+          setChildData(res.data);
+          reset({
+            parent: null,
+          });
+        } catch (err) {
+          reset({
+            parent: null,
+          });
+        }
+        break;
     }
   };
 
@@ -70,6 +81,7 @@ const MenuConfig = () => {
         child: '',
       });
       setChildData([]);
+      hideModal();
     }, []),
   );
 
@@ -81,8 +93,53 @@ const MenuConfig = () => {
     formState: {errors, isValid},
   } = useForm({mode: 'onBlur'});
   return (
-    <StyledView tw="flex-1 bg-white">
-      <ScrollView tw="bg-white">
+    <PaperProvider>
+      <StyledView tw="flex-1 bg-white">
+        <TouchableOpacity onPress={() => showModal('menuConfig')}>
+          <NavigationCard
+            text={'Menu Configuration'}
+            iconName={'cog'}></NavigationCard>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => showModal('viewPrevConfig')}>
+          <NavigationCard
+            text={'View Previous Configuration'}
+            iconName={'chevron-left'}></NavigationCard>
+        </TouchableOpacity>
+      </StyledView>
+
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={{
+            backgroundColor: 'white',
+            margin: 20,
+            borderRadius: 15,
+            minHeight: 200,
+            maxHeight: 600,
+          }}>
+          <ScrollView>
+            <ViewMenuConfigCard
+              modalVisible={modalType}
+              isValid={isValid}
+              control={control}
+              errors={errors}
+              parentData={parentData}
+              onSubmit={onSubmit}
+              handleSubmit={handleSubmit}
+              childData={childData}
+            />
+          </ScrollView>
+        </Modal>
+      </Portal>
+    </PaperProvider>
+  );
+};
+
+export default MenuConfig;
+
+{
+  /* <ScrollView tw="bg-white">
         <Controller
           control={control}
           name="parent"
@@ -150,9 +207,5 @@ const MenuConfig = () => {
             {item.label}
           </StyledText>
         ))}
-      </StyledView>
-    </StyledView>
-  );
-};
-
-export default MenuConfig;
+      </StyledView> */
+}

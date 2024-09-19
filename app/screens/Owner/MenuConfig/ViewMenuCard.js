@@ -10,7 +10,7 @@ import {
 } from '../../../components';
 import CustomDropdown from '../../../components/CustomDropdown';
 
-const ViewConfigCard = ({
+const ViewMenuConfigCard = ({
   modalVisible,
   control,
   errors,
@@ -22,7 +22,7 @@ const ViewConfigCard = ({
 }) => {
   const renderContent = () => {
     switch (modalVisible) {
-      case 'restaurantConfig':
+      case 'menuConfig':
         return (
           <StyledView tw="justify-center pt-5">
             <Controller
@@ -154,4 +154,4 @@ const ViewConfigCard = ({
   return renderContent();
 };
 
-export default ViewConfigCard;
+export default ViewMenuConfigCard;

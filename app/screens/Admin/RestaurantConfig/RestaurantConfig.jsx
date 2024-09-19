@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {TouchableOpacity} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
 import {Modal, PaperProvider, Portal} from 'react-native-paper';
 import {NavigationCard, StyledView} from '../../../components';
 import {apiURL} from '../../../constants/urls';
@@ -85,7 +85,10 @@ const RestauratConfig = () => {
   };
   const hideModal = () => {
     setVisible(false), setChildData([]);
-    setParentData([]);
+    reset({
+      parent: null,
+      child: '',
+    });
   };
   return (
     <PaperProvider>
@@ -100,18 +103,20 @@ const RestauratConfig = () => {
             text={'View Previous Configuration'}
             iconName={'chevron-left'}></NavigationCard>
         </TouchableOpacity>
+      </StyledView>
 
-        <Portal>
-          <Modal
-            visible={visible}
-            onDismiss={hideModal}
-            contentContainerStyle={{
-              backgroundColor: 'white',
-              margin: 20,
-              borderRadius: 15,
-              minHeight: 150,
-              maxHeight: 500,
-            }}>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={{
+            backgroundColor: 'white',
+            margin: 20,
+            borderRadius: 15,
+            minHeight: 200,
+            maxHeight: 600,
+          }}>
+          <ScrollView>
             <ViewConfigCard
               modalVisible={modalType}
               isValid={isValid}
@@ -122,9 +127,9 @@ const RestauratConfig = () => {
               handleSubmit={handleSubmit}
               childData={childData}
             />
-          </Modal>
-        </Portal>
-      </StyledView>
+          </ScrollView>
+        </Modal>
+      </Portal>
     </PaperProvider>
   );
 };

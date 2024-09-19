@@ -16,10 +16,12 @@ const initialdata = {
 };
 
 const VerifyOTP = ({route, navigation}) => {
-  const email = route.params.email.email;
+  const email = route.params.data.email;
+  console.log('email', route.params);
   const [data, setData] = useState({...initialdata, email});
 
   const handleOTPChange = otp => {
+    console.log('otp', otp);
     setData(prevData => ({
       ...prevData,
       otp: otp,
@@ -31,6 +33,7 @@ const VerifyOTP = ({route, navigation}) => {
       email: email,
       otp: data.otp,
     };
+    console.log('otpdtaa', otpData);
 
     try {
       const res = await postData(apiURL.VERIFY_OTP, otpData);

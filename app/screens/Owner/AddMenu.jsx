@@ -152,9 +152,9 @@ const AddMenu = () => {
             )}
           />
           {errors.name && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.name.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.name.message}></StyledText>
           )}
 
           <Controller
@@ -183,9 +183,9 @@ const AddMenu = () => {
             )}
           />
           {errors.description && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.description.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.description.message}></StyledText>
           )}
 
           <Controller
@@ -207,9 +207,9 @@ const AddMenu = () => {
             )}
           />
           {errors.preparation_time && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.preparation_time.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.preparation_time.message}></StyledText>
           )}
 
           <Controller
@@ -236,9 +236,9 @@ const AddMenu = () => {
             )}
           />
           {errors.price && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.price.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.price.message}></StyledText>
           )}
 
           <Controller
@@ -259,9 +259,9 @@ const AddMenu = () => {
             )}
           />
           {errors.category && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.category.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.category.message}></StyledText>
           )}
           <Controller
             control={control}
@@ -281,9 +281,9 @@ const AddMenu = () => {
             )}
           />
           {errors.diet && (
-            <StyledText tw="text-red-500 ml-6">
-              {errors.diet.message}
-            </StyledText>
+            <StyledText
+              tw="text-red-500 ml-6"
+              text={errors.diet.message}></StyledText>
           )}
 
           <Controller
@@ -301,9 +301,9 @@ const AddMenu = () => {
             )}
           />
           {errors.image && (
-            <StyledText style={{color: 'red', marginLeft: 6}}>
-              {errors.image.message}
-            </StyledText>
+            <StyledText
+              style={{color: 'red', marginLeft: 6}}
+              text={errors.image.message}></StyledText>
           )}
           <Controller
             control={control}
@@ -311,9 +311,9 @@ const AddMenu = () => {
             render={({field: {onChange, value}}) => (
               <View
                 style={{flexDirection: 'row', marginLeft: 30, marginTop: 10}}>
-                <StyledText tw="text-black text-[16px] pt-1.5">
-                  Recommended Category
-                </StyledText>
+                <StyledText
+                  tw="text-black text-[16px] pt-1.5 font-bold"
+                  text={'Recommended Category'}></StyledText>
                 <Checkbox
                   status={value ? 'checked' : 'unchecked'}
                   uncheckedColor="#D3D3D3"

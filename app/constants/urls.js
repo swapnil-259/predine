@@ -25,4 +25,6 @@ export const apiURL = {
   EDIT_RES_IMAGE: '/owner/edt_res_image/',
   CHANGE_PASSWORD: '/common/change_password/',
   ADD_BANK_DETAILS: '/owner/add_bank_details/',
+  CHECK_BANK_STATUS: '/owner/check_acc_status/',
+  VIEW_BANK_DETAILS: '/owner/view_bank_details/',
 };

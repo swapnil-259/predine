@@ -46,6 +46,7 @@ const MenuConfig = () => {
             parent: null,
             child: '',
           });
+          hideModal();
         } catch (err) {
           reset({
             parent: null,

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
+import {Card} from 'react-native-paper';
 import {
   OwnerDetailsCard,
   StyledButton,
@@ -15,8 +16,8 @@ const ViewProfileCard = ({
   control,
   errors,
   getValues,
-  //   childData,
   profileData,
+  bankData,
   isValid,
   handleSubmit,
   onSubmit,
@@ -314,6 +315,47 @@ const ViewProfileCard = ({
               label={'SUBMIT'}
               disabled={!isValid}
             />
+          </StyledView>
+        );
+      case 'viewBankDetails':
+        return (
+          <StyledView tw="justify-center m-2">
+            {bankData.map((each, index) => {
+              return (
+                <StyledView key={index} tw="mb-4 p-4">
+                  <Card
+                    style={{
+                      padding: 10,
+                      margin: 10,
+                      backgroundColor: '#FEF7F4',
+                    }}>
+                    <StyledText
+                      tw="text-black text-[16px] font-bold"
+                      text={each.acc_holder_name}></StyledText>
+                  </Card>
+                  <Card
+                    style={{
+                      padding: 10,
+                      margin: 10,
+                      backgroundColor: '#FEF7F4',
+                    }}>
+                    <StyledText
+                      tw="text-black text-[16px] font-bold"
+                      text={each.acc_number}></StyledText>
+                  </Card>
+                  <Card
+                    style={{
+                      padding: 10,
+                      margin: 10,
+                      backgroundColor: '#FEF7F4',
+                    }}>
+                    <StyledText
+                      tw="text-black text-[16px] font-bold"
+                      text={each.acc_ifsc_code}></StyledText>
+                  </Card>
+                </StyledView>
+              );
+            })}
           </StyledView>
         );
 

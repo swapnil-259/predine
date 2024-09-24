@@ -11,12 +11,33 @@ const Profile = () => {
   const [ownerData, setOwnerData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [modalType, setModalType] = useState(null);
+  const [accStatus, setAccStatus] = useState(false);
+  const [bankData, setBankData] = useState([]);
 
   const getProfileData = async () => {
     try {
       const res = await getData(apiURL.OWNER_DATA);
       console.log(res.data);
       setOwnerData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const checkBankStatus = async () => {
+    try {
+      const res = await getData(apiURL.CHECK_BANK_STATUS);
+      console.log(res.account_status);
+      setAccStatus(res.account_status);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const viewBankDetails = async () => {
+    try {
+      const res = await getData(apiURL.VIEW_BANK_DETAILS);
+      console.log(res.data);
+      setBankData(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -43,6 +64,8 @@ const Profile = () => {
         confirm_acc_number: '',
       });
       getProfileData();
+      checkBankStatus();
+      viewBankDetails();
     }, []),
   );
 
@@ -70,6 +93,7 @@ const Profile = () => {
           reset({
             image: '',
           });
+          hideModal();
           getProfileData();
           console.log(response.data);
         } catch (err) {
@@ -85,6 +109,7 @@ const Profile = () => {
             new_password: '',
             confirm_password: '',
           });
+          hideModal();
         } catch (err) {
           reset({
             old_password: '',
@@ -104,6 +129,8 @@ const Profile = () => {
             ifsc_code: '',
             confirm_acc_number: '',
           });
+          check_bank_status();
+          hideModal();
         } catch (err) {
           reset({
             acc_holder_name: '',
@@ -142,11 +169,20 @@ const Profile = () => {
             text={'Change Password'}
             iconName={'pencil'}></NavigationCard>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => showModal('addBankDetails')}>
-          <NavigationCard
-            text={'Add Bank Details'}
-            iconName={'bank-plus'}></NavigationCard>
-        </TouchableOpacity>
+        {accStatus === true ? (
+          <TouchableOpacity onPress={() => showModal('viewBankDetails')}>
+            <NavigationCard
+              text={'View Bank Details'}
+              iconName={'bank'}></NavigationCard>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => showModal('addBankDetails')}>
+            <NavigationCard
+              text={'Add Bank Details'}
+              iconName={'bank-plus'}></NavigationCard>
+          </TouchableOpacity>
+        )}
+
         <Portal>
           <Modal
             visible={visible}
@@ -165,7 +201,7 @@ const Profile = () => {
                 control={control}
                 errors={errors}
                 profileData={ownerData}
-                // parentData={parentData}
+                bankData={bankData}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
                 getValues={getValues}

@@ -16,6 +16,7 @@ import VerifyOTP from '../screens/Registration/VerifyOTP';
 import axiosInstance, {baseURL} from '../services/api/axios';
 import useLoaderInterceptor from '../services/api/interceptor';
 import DrawerNaviagtor from './DrawerNavigator';
+
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {

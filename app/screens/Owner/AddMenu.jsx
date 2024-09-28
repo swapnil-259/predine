@@ -103,6 +103,7 @@ const AddMenu = () => {
     try {
       const response = await postData(baseURL + apiURL.ADD_DISH, formData, {
         headers: {
+          
           'Content-Type': 'multipart/form-data',
         },
       });

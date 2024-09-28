@@ -26,7 +26,7 @@ const Profile = () => {
   const checkBankStatus = async () => {
     try {
       const res = await getData(apiURL.CHECK_BANK_STATUS);
-      console.log(res.account_status);
+      console.log('status', res.account_status);
       setAccStatus(res.account_status);
     } catch (err) {
       console.log(err);
@@ -36,7 +36,7 @@ const Profile = () => {
   const viewBankDetails = async () => {
     try {
       const res = await getData(apiURL.VIEW_BANK_DETAILS);
-      console.log(res.data);
+      console.log(res);
       setBankData(res.data);
     } catch (err) {
       console.log(err);
@@ -129,7 +129,7 @@ const Profile = () => {
             ifsc_code: '',
             confirm_acc_number: '',
           });
-          check_bank_status();
+          checkBankStatus();
           hideModal();
         } catch (err) {
           reset({

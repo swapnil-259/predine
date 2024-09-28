@@ -27,4 +27,5 @@ export const apiURL = {
   ADD_BANK_DETAILS: '/owner/add_bank_details/',
   CHECK_BANK_STATUS: '/owner/check_acc_status/',
   VIEW_BANK_DETAILS: '/owner/view_bank_details/',
+  ADD_CHEF: '/owner/add_chef/',
 };

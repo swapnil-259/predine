@@ -68,7 +68,7 @@ const InputEmail = ({navigation}) => {
       setEmailError('Please enter a valid email address');
       return;
     }
-    setEmailError(''); // Clear the error if the email is valid
+    setEmailError('');
 
     const data = {email: email};
 
@@ -111,15 +111,22 @@ const InputEmail = ({navigation}) => {
             resizeMode="contain"></Image>
         ) : (
           <View tw="justify-center items-center m-10">
-            <StyledText tw="text=[15px]">PREDINE</StyledText>
+            <StyledText tw="text=[15px]" text={'PREDINE'}></StyledText>
           </View>
         )}
         <DialogBox
           visible={visible}
           showDialog={showDialog}
           hideDialog={hideDialog}
+          title={'Exit'}
+          text={'Do you really want to Exit?'}
+          btnText1={'Yes'}
+          btnText2={'Cancel'}
+          onPressbtn1={() => {
+            BackHandler.exitApp(), setVisible(false);
+          }}
+          onPressbtn2={hideDialog}
         />
-
         <BottomSheetComponent>
           <StyledText
             tw="text-black font-bold text-[18px] text-center mb-2"
@@ -132,7 +139,6 @@ const InputEmail = ({navigation}) => {
             value={email}
             onChangeText={val => setEmail(val)}></StyledTextInput>
 
-          {/* Show validation error */}
           {emailError ? (
             <StyledText tw="text-red-500" text={emailError}></StyledText>
           ) : null}

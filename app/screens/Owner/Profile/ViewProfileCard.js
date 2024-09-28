@@ -319,46 +319,79 @@ const ViewProfileCard = ({
         );
       case 'viewBankDetails':
         return (
-          <StyledView tw="justify-center m-2">
+          <StyledView tw="justify-center m-4">
             {bankData.map((each, index) => {
               return (
-                <StyledView key={index} tw="mb-4 p-4">
+                <StyledView
+                  key={index}
+                  tw="mb-6 p-4 bg-white rounded-lg shadow-md">
+                  {/* Account Holder's Name */}
+                  <StyledText
+                    tw="text-gray-500 text-[15px] font-bold mb-1 mr-2"
+                    text={'Account Holder Name'}></StyledText>
                   <Card
                     style={{
                       padding: 10,
-                      margin: 10,
                       backgroundColor: '#FEF7F4',
+                      borderRadius: 10,
+                      elevation: 3,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.2,
+                      shadowRadius: 4,
+                      shadowOffset: {width: 0, height: 2},
                     }}>
                     <StyledText
-                      tw="text-black text-[16px] font-bold"
-                      text={each.acc_holder_name}></StyledText>
+                      tw="text-black text-[18px] font-bold"
+                      text={each.acc_holder_name}
+                    />
                   </Card>
+
+                  {/* Account Number */}
+                  <StyledText
+                    tw="text-gray-500 text-[15px] font-bold mt-5 mb-1 mr-2"
+                    text={'Account Number'}></StyledText>
                   <Card
                     style={{
                       padding: 10,
-                      margin: 10,
                       backgroundColor: '#FEF7F4',
+                      borderRadius: 10,
+                      elevation: 3,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.2,
+                      shadowRadius: 4,
+                      shadowOffset: {width: 0, height: 2},
                     }}>
                     <StyledText
-                      tw="text-black text-[16px] font-bold"
-                      text={each.acc_number}></StyledText>
+                      tw="text-black text-[18px] font-bold"
+                      text={each.acc_number}
+                    />
                   </Card>
+
+                  {/* IFSC Code */}
+                  <StyledText
+                    tw="text-gray-500 text-[15px] font-bold mt-5 mb-1 mr-2"
+                    text={'IFSC Code'}></StyledText>
                   <Card
                     style={{
                       padding: 10,
-                      margin: 10,
                       backgroundColor: '#FEF7F4',
+                      borderRadius: 10,
+                      elevation: 3,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.2,
+                      shadowRadius: 4,
+                      shadowOffset: {width: 0, height: 2},
                     }}>
                     <StyledText
-                      tw="text-black text-[16px] font-bold"
-                      text={each.acc_ifsc_code}></StyledText>
+                      tw="text-black text-[18px] font-bold"
+                      text={each.acc_ifsc_code}
+                    />
                   </Card>
                 </StyledView>
               );
             })}
           </StyledView>
         );
-
       default:
         return null;
     }

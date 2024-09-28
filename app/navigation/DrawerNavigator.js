@@ -9,6 +9,7 @@ import AddOwner from '../screens/Admin/AddOwner';
 import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig';
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
 import Dashboard from '../screens/Dashboard';
+import AddChef from '../screens/Owner/AddChef';
 import AddMenu from '../screens/Owner/AddMenu';
 import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
 import Profile from '../screens/Owner/Profile/Profile';
@@ -26,7 +27,7 @@ const navigationMap = {
   Profile: Profile,
   MenuConfig: MenuConfig,
   ViewMenu: ViewMenu,
-  // 'AddChef': AddChef
+  AddChef: AddChef,
 };
 
 const iconMap = {

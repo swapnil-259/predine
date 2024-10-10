@@ -31,7 +31,6 @@ const InputEmail = ({navigation}) => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
-  // Email validation function using regex
   const validateEmail = email => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -140,7 +139,7 @@ const InputEmail = ({navigation}) => {
             onChangeText={val => setEmail(val)}></StyledTextInput>
 
           {emailError ? (
-            <StyledText tw="text-red-500" text={emailError}></StyledText>
+            <StyledText tw="pl-8 text-red-500" text={emailError}></StyledText>
           ) : null}
 
           <StyledButton

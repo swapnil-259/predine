@@ -14,8 +14,10 @@ import AddMenu from '../screens/Owner/AddMenu';
 import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
 import Profile from '../screens/Owner/Profile/Profile';
 import ViewMenu from '../screens/Owner/ViewMenu';
+import OrderSummary from '../screens/User/OrderSummary';
+import UserDashboard from '../screens/User/UserDashboard';
+import UserProfile from '../screens/User/UserProfile';
 import {getData} from '../services/api/apiService';
-
 const Drawer = createDrawerNavigator();
 
 const navigationMap = {
@@ -28,6 +30,9 @@ const navigationMap = {
   MenuConfig: MenuConfig,
   ViewMenu: ViewMenu,
   AddChef: AddChef,
+  UserProfile: UserProfile,
+  OrderSummary: OrderSummary,
+  UserDashboard: UserDashboard,
 };
 
 const iconMap = {
@@ -93,7 +98,6 @@ const DrawerNavigator = () => {
                 },
                 drawerActiveTintColor: '#FE7240',
                 drawerInactiveTintColor: '#000',
-
                 drawerIcon: ({focused}) => (
                   <Icon
                     name={each.icon}
@@ -101,6 +105,7 @@ const DrawerNavigator = () => {
                     color={focused ? '#FE7240' : '#000'}
                   />
                 ),
+                headerShown: each.component === 'UserDashboard' ? false : true,
               }}
             />
           );

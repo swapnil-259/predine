@@ -83,8 +83,8 @@ export const StyledButtonTrans = ({fun, label, ...props}) => {
         borderColor: '#FE7240',
         borderWidth: 0.5,
         marginBottom: 10,
-        ...props,
-      }}>
+      }}
+      {...props}>
       {label}
     </Button>
   );

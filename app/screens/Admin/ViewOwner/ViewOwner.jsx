@@ -145,7 +145,7 @@ const ViewOwner = ({route, navigation}) => {
               onPress={() => onCLickEditButton()}></StyledButton>
             <StyledButton
               tw="ml-2"
-              label={'DElETE OWNER'}
+              label={'DELETE OWNER'}
               onPress={() => onCLickDeleteButton()}></StyledButton>
           </StyledView>
         </StyledView>

@@ -18,8 +18,8 @@ const MainRegister = ({navigation, route}) => {
   } = useForm({mode: 'onBlur'});
 
   const onSubmit = async data => {
-    data['email'] = route.params.email.email;
-    console.log('data', data);
+    data['email'] = route.params.email;
+    console.log('data', route.params.email);
     try {
       const res = await postData(apiURL.USER_REGISTRATION, data);
       console.log(res);
@@ -30,7 +30,7 @@ const MainRegister = ({navigation, route}) => {
   };
 
   return (
-    <StyledView tw="flex-1 bg-white pt-4 ">
+    <StyledView tw="flex-1 bg-white pt-4">
       <Controller
         control={control}
         name="first_name"
@@ -38,6 +38,14 @@ const MainRegister = ({navigation, route}) => {
           required: {
             value: true,
             message: 'First Name is required',
+          },
+          minLength: {
+            value: 2,
+            message: 'First Name must be at least 2 characters long',
+          },
+          maxLength: {
+            value: 100,
+            message: 'First Name cannot be more than 100 characters',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -50,9 +58,9 @@ const MainRegister = ({navigation, route}) => {
         )}
       />
       {errors.first_name && (
-        <StyledText tw="text-red-500 ml-6">
-          {errors.first_name.message}
-        </StyledText>
+        <StyledText
+          tw="text-red-500 ml-6"
+          text={errors.first_name.message}></StyledText>
       )}
 
       <Controller
@@ -62,6 +70,14 @@ const MainRegister = ({navigation, route}) => {
           required: {
             value: true,
             message: 'Last Name is required',
+          },
+          minLength: {
+            value: 2,
+            message: 'Last Name must be at least 2 characters long',
+          },
+          maxLength: {
+            value: 100,
+            message: 'Last Name cannot be more than 100 characters',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -74,9 +90,9 @@ const MainRegister = ({navigation, route}) => {
         )}
       />
       {errors.last_name && (
-        <StyledText tw="text-red-500 ml-6">
-          {errors.last_name.message}
-        </StyledText>
+        <StyledText
+          tw="text-red-500 ml-6"
+          text={errors.last_name.message}></StyledText>
       )}
 
       <Controller
@@ -85,8 +101,12 @@ const MainRegister = ({navigation, route}) => {
         rules={{
           required: {value: true, message: 'Phone number is required'},
           pattern: {
-            value: /^\d{10}$/,
-            message: 'Enter a valid phone number',
+            value: /^[6-9]\d{9}$/,
+            message: 'Enter a valid Indian phone number',
+          },
+          maxLength: {
+            value: 10,
+            message: 'Phone number cannot be more than 10 digits',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -100,9 +120,9 @@ const MainRegister = ({navigation, route}) => {
         )}
       />
       {errors.phone_number && (
-        <StyledText tw="text-red-500 ml-6">
-          {errors.phone_number.message}
-        </StyledText>
+        <StyledText
+          tw="text-red-500 ml-6"
+          text={errors.phone_number.message}></StyledText>
       )}
 
       <Controller
@@ -112,6 +132,20 @@ const MainRegister = ({navigation, route}) => {
           required: {
             value: true,
             message: 'Password is required',
+          },
+          minLength: {
+            value: 8,
+            message: 'Password must be at least 8 characters long',
+          },
+          maxLength: {
+            value: 16,
+            message: 'Password cannot be more than 16 characters',
+          },
+          pattern: {
+            value:
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+            message:
+              'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -125,9 +159,9 @@ const MainRegister = ({navigation, route}) => {
         )}
       />
       {errors.password && (
-        <StyledText tw="text-red-500 ml-6">
-          {errors.password.message}
-        </StyledText>
+        <StyledText
+          tw="text-red-500 ml-6"
+          text={errors.password.message}></StyledText>
       )}
 
       <Controller
@@ -151,10 +185,10 @@ const MainRegister = ({navigation, route}) => {
           />
         )}
       />
-      {errors.confrim_password && (
-        <StyledText tw="text-red-500 ml-6">
-          {errors.confrim_password.message}
-        </StyledText>
+      {errors.confirm_password && (
+        <StyledText
+          tw="text-red-500 ml-6"
+          text={errors.confirm_password.message}></StyledText>
       )}
 
       <StyledButton
@@ -162,7 +196,7 @@ const MainRegister = ({navigation, route}) => {
         tw="mt-6"
         label={'SUBMIT'}
         disabled={!isValid}>
-        <StyledText tw="text-white">Register</StyledText>
+        <StyledText tw="text-white" text={'Register'}></StyledText>
       </StyledButton>
     </StyledView>
   );

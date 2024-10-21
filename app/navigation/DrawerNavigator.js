@@ -15,6 +15,7 @@ import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
 import Profile from '../screens/Owner/Profile/Profile';
 import ViewMenu from '../screens/Owner/ViewMenu';
 import OrderSummary from '../screens/User/OrderSummary';
+import PrivacyPolicy from '../screens/User/Privacy Policy/PrivacyPolicy';
 import UserDashboard from '../screens/User/UserDashboard';
 import UserProfile from '../screens/User/UserProfile';
 import {getData} from '../services/api/apiService';
@@ -33,6 +34,7 @@ const navigationMap = {
   UserProfile: UserProfile,
   OrderSummary: OrderSummary,
   UserDashboard: UserDashboard,
+  PrivacyPolicy: PrivacyPolicy,
 };
 
 const iconMap = {

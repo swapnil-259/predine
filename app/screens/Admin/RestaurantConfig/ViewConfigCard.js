@@ -146,6 +146,33 @@ const ViewConfigCard = ({
             </ScrollView>
           </StyledView>
         );
+      case 'dashboardMapping':
+        return (
+          <StyledView tw={'justify-content pt-5'}>
+            <Controller
+              control={control}
+              name="parent"
+              rules={{
+                required: {value: true, message: 'Parent Category is required'},
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <CustomDropdown
+                  style={{marginTop: 0}}
+                  placeholder="Select Parent Category"
+                  data={parentData}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.parent && (
+              <StyledText
+                tw="text-red-500 ml-6"
+                text={errors.parent.message}></StyledText>
+            )}
+          </StyledView>
+        );
       default:
         return null;
     }

@@ -103,6 +103,11 @@ const RestauratConfig = () => {
             text={'View Previous Configuration'}
             iconName={'chevron-left'}></NavigationCard>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => showModal('dashboardMapping')}>
+          <NavigationCard
+            text={' Dashboard Mapping'}
+            iconName={'sitemap'}></NavigationCard>
+        </TouchableOpacity>
       </StyledView>
 
       <Portal>

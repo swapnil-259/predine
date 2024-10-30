@@ -16,7 +16,7 @@ const UserProfile = () => {
   const userProfile = async () => {
     try {
       const res = await getData(apiURL.USER_DATA);
-      setUserData(res.data); // Assuming res.data is an array
+      setUserData(res.data);
       console.log(res.data);
     } catch (err) {
       console.log('Error fetching user data:', err);
@@ -36,7 +36,7 @@ const UserProfile = () => {
       {userData.map((user, index) => (
         <StyledView
           key={index}
-          tw="bg-[#FEF7F4] border border-[#FE7420] shadow-xl rounded-2xl p-6 mb-6">
+          tw="bg-[#FEF7F4] border border-[#ccc] shadow-xl rounded-2xl p-6 mb-6">
           <StyledText
             tw="text-2xl font-bold mb-4 text-black"
             text={`${user.first_name} ${user.last_name}`}

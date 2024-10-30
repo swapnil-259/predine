@@ -23,7 +23,7 @@ const MainRegister = ({navigation, route}) => {
     try {
       const res = await postData(apiURL.USER_REGISTRATION, data);
       console.log(res);
-      navigation.navigate('Panel');
+      navigation.navigate('PanelAuth');
     } catch (err) {
       console.log(err);
     }

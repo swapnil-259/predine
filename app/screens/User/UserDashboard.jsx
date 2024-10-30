@@ -1,6 +1,6 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, Text, View} from 'react-native';
 import {Appbar, Card, Paragraph, Searchbar, Title} from 'react-native-paper';
 import {StyledButton} from '../../components';
 import {apiURL} from '../../constants/urls';
@@ -19,7 +19,6 @@ const UserDashboard = () => {
     {id: 5, name: 'Indian', image: 'https://via.placeholder.com/100'},
     {id: 6, name: 'Indian', image: 'https://via.placeholder.com/100'},
     {id: 7, name: 'Indian', image: 'https://via.placeholder.com/100'},
-    // Add more categories as needed
   ]);
 
   const navigation = useNavigation();
@@ -37,6 +36,15 @@ const UserDashboard = () => {
       setFilteredData(res.data);
     } catch (err) {
       console.log('Error fetching restaurant data:', err);
+    }
+  };
+  const logoutUser = async () => {
+    try {
+      const res = await getData(apiURL.LOGOUT);
+      navigation.navigate('Logout');
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -58,7 +66,6 @@ const UserDashboard = () => {
   };
 
   const handleCategoryPress = category => {
-    // You can keep the filtered data without removing the existing content
     console.log('hlelo');
   };
 
@@ -85,8 +92,20 @@ const UserDashboard = () => {
             color: '#fff',
           }}
         />
-        <Appbar.Action icon="logout" onPress={() => {}} color="#fff" />
-        <Appbar.Action icon="magnify" onPress={() => {}} color="#fff" />
+        <Appbar.Action
+          icon="logout"
+          onPress={() => {
+            logoutUser();
+          }}
+          color="#fff"
+        />
+        <Appbar.Action
+          icon="account"
+          onPress={() => {
+            navigation.navigate('User Profile');
+          }}
+          color="#fff"
+        />
       </Appbar.Header>
 
       <Searchbar
@@ -102,10 +121,10 @@ const UserDashboard = () => {
         }}
       />
 
-      <ScrollView
+      {/* <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{marginVertical: 10}}>
+        style={{marginVertical: 10, margin: 20}}>
         {categories.map(category => (
           <TouchableOpacity
             key={category.id}
@@ -140,7 +159,7 @@ const UserDashboard = () => {
             </Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </ScrollView> */}
 
       <ScrollView
         contentContainerStyle={{

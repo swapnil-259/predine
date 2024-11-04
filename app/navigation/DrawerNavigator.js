@@ -8,10 +8,12 @@ import {apiURL} from '../constants/urls';
 import AddOwner from '../screens/Admin/AddOwner';
 import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig';
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
+import ShowOrders from '../screens/Chef/ShowOrders';
 import Dashboard from '../screens/Dashboard';
 import AddChef from '../screens/Owner/AddChef';
 import AddMenu from '../screens/Owner/AddMenu';
 import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
+import Orders from '../screens/Owner/Orders';
 import Profile from '../screens/Owner/Profile/Profile';
 import ViewMenu from '../screens/Owner/ViewMenu';
 import OrderSummary from '../screens/User/OrderSummary';
@@ -35,6 +37,8 @@ const navigationMap = {
   OrderSummary: OrderSummary,
   UserDashboard: UserDashboard,
   PrivacyPolicy: PrivacyPolicy,
+  Orders: Orders,
+  ShowOrders: ShowOrders,
 };
 
 const iconMap = {
@@ -107,7 +111,11 @@ const DrawerNavigator = () => {
                     color={focused ? '#FE7240' : '#000'}
                   />
                 ),
-                headerShown: each.component === 'UserDashboard' ? false : true,
+                headerShown:
+                  each.component === 'UserDashboard' ||
+                  each.component === 'ShowOrders'
+                    ? false
+                    : true,
               }}
             />
           );

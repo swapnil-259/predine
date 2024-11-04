@@ -1,11 +1,12 @@
 import {useFocusEffect} from '@react-navigation/native';
-import {useCallback, useState} from 'react';
-import {StyledText, StyledView} from '../../components'; // Imported StyledButton
+import React, {useCallback, useState} from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {StyledText, StyledView} from '../../components';
 import {apiURL} from '../../constants/urls';
 import {getData} from '../../services/api/apiService';
 
 const UserProfile = () => {
-  const [userData, setUserData] = useState([]); // Assuming userData is an array now
+  const [userData, setUserData] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,8 +26,8 @@ const UserProfile = () => {
 
   if (!userData.length) {
     return (
-      <StyledView>
-        <StyledText text="Loading profile..." tw="text-black" />
+      <StyledView tw="flex-1 justify-center items-center bg-white">
+        <StyledText text="Loading profile..." tw="text-black text-xl" />
       </StyledView>
     );
   }
@@ -41,19 +42,37 @@ const UserProfile = () => {
             tw="text-2xl font-bold mb-4 text-black"
             text={`${user.first_name} ${user.last_name}`}
           />
-          <StyledView tw="mb-4">
-            <StyledText tw="text-lg text-black mb-1 font-bold" text="Email" />
-            <StyledText tw="text-base text-black" text={user.email} />
+
+          <StyledView tw="flex-row items-center mb-4">
+            <Icon
+              name="email"
+              size={20}
+              color="#000"
+              style={{marginRight: 15}}
+            />
+            <StyledView tw="tems-center">
+              <StyledText tw="text-lg text-black font-bold" text="Email" />
+              <StyledText tw="text-base text-black" text={user.email} />
+            </StyledView>
           </StyledView>
-          <StyledView tw="mb-4">
-            <StyledText
-              tw="text-lg text-black mb-1 font-bold"
-              text="Phone Number "
+
+          <StyledView tw="flex-row items-center">
+            <Icon
+              name="phone"
+              size={20}
+              color="#000"
+              style={{marginRight: 15}}
             />
-            <StyledText
-              tw="text-base text-black"
-              text={user.phone_number.toString()}
-            />
+            <StyledView>
+              <StyledText
+                tw="text-lg text-black font-bold"
+                text="Phone Number"
+              />
+              <StyledText
+                tw="text-base text-black"
+                text={user.phone_number.toString()}
+              />
+            </StyledView>
           </StyledView>
         </StyledView>
       ))}

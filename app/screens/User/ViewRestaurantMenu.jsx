@@ -1,20 +1,23 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {FlatList, Image, TouchableOpacity} from 'react-native';
+import {Alert, Image, ScrollView, TouchableOpacity} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {Appbar, Modal, PaperProvider, Portal} from 'react-native-paper';
-import {StyledText, StyledView} from '../../components';
-import HHMMTimepicker from '../../components/HHMMTimepicker';
+import {StyledButton, StyledText, StyledView} from '../../components';
 import {apiURL} from '../../constants/urls';
-import {getData} from '../../services/api/apiService';
+import {getData, postData} from '../../services/api/apiService';
 import {baseURL} from '../../services/api/axios';
-
 const ViewRestaurantMenu = ({route}) => {
   const [menuData, setMenuData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(null); // State to hold selected time
-  const bottomSheetRef = useRef(null); // Ref to control BottomSheet
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [isTimePicked, setIsTimePicked] = useState(false);
+
+  const bottomSheetRef = useRef(null);
 
   const openModal = () => {
     setShowModal(true);
@@ -22,6 +25,27 @@ const ViewRestaurantMenu = ({route}) => {
 
   const closeModal = () => {
     setShowModal(false);
+    setSelectedTime(new Date());
+    setIsTimePicked(false);
+  };
+  const handleTimeChange = time => {
+    const startTime = new Date(time);
+    startTime.setHours(9, 0, 0);
+
+    const endTime = new Date(time);
+    endTime.setHours(19, 0, 0);
+
+    if (time >= startTime && time <= endTime) {
+      setSelectedTime(time);
+      setIsTimePicked(true);
+      setShowTimePicker(false);
+    } else {
+      Alert.alert(
+        'Invalid Time',
+        'Please select a time between 9 AM and 7 PM.',
+      );
+      setShowTimePicker(false);
+    }
   };
 
   const handleAdd = item => {
@@ -36,7 +60,7 @@ const ViewRestaurantMenu = ({route}) => {
       }
       return [...prevItems, {...item, quantity: 1}];
     });
-    bottomSheetRef.current?.expand(); // Open the BottomSheet when item is added
+    bottomSheetRef.current?.expand();
   };
 
   const handleIncrement = itemId => {
@@ -86,9 +110,7 @@ const ViewRestaurantMenu = ({route}) => {
       const res = await getData(apiURL.MENU_DATA, {data: route.params.id});
       setMenuData(res.data);
       console.log(res.data);
-    } catch (err) {
-      console.log('Error fetching menu data:', err);
-    }
+    } catch (err) {}
   };
 
   const renderDish = ({item}) => {
@@ -98,7 +120,24 @@ const ViewRestaurantMenu = ({route}) => {
     return (
       <StyledView tw="p-4 bg-[#FEF7F4] mb-4 rounded-lg shadow-lg flex-row border border-[#ccc]">
         <StyledView tw="flex-1 pr-4">
-          <StyledText tw="text-lg text-black font-bold mb-2" text={item.name} />
+          <StyledView style={{flexDirection: 'row', alignItems: 'center'}}>
+            <StyledView
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginRight: 8,
+              }}>
+              <StyledView tw="w-5 h-5 border rounded border-gray-300 mr-2 items-center justify-center">
+                <StyledView
+                  tw={`w-3 h-3 ${
+                    item.diet__parent === 'Veg' ? 'bg-green-600' : 'bg-red-600'
+                  } rounded-full`}
+                />
+              </StyledView>
+            </StyledView>
+            <StyledText tw="text-lg text-black font-bold" text={item.name} />
+          </StyledView>
+
           <StyledView style={{flexDirection: 'row'}} tw="gap-1">
             <StyledText
               tw="text-sm text-gray-700 mb-1 font-bold"
@@ -162,7 +201,7 @@ const ViewRestaurantMenu = ({route}) => {
                   marginTop: 10,
                 }}>
                 <StyledText
-                  tw="text-white font-bold"
+                  tw="text-white font-bold text-[16px]"
                   style={{fontSize: 20}}
                   text="Add"
                 />
@@ -183,18 +222,18 @@ const ViewRestaurantMenu = ({route}) => {
                 <TouchableOpacity onPress={() => handleDecrement(item.id)}>
                   <StyledText
                     tw="text-white font-bold"
-                    style={{fontSize: 20}}
+                    style={{fontSize: 22}}
                     text="-"
                   />
                 </TouchableOpacity>
                 <StyledText
-                  tw="text-white font-bold"
+                  tw="text-white font-bold text-[16px]"
                   text={quantity.toString()}
                 />
                 <TouchableOpacity onPress={() => handleIncrement(item.id)}>
                   <StyledText
-                    tw="text-white font-bold"
-                    style={{fontSize: 20}}
+                    tw="text-white font-bold "
+                    style={{fontSize: 22}}
                     text="+"
                   />
                 </TouchableOpacity>
@@ -218,9 +257,8 @@ const ViewRestaurantMenu = ({route}) => {
   };
 
   const handleBuyNow = () => {
+    console.log('cartitems', cartItems);
     openModal();
-    console.log('Proceeding to checkout with items:', cartItems);
-    console.log('Selected Time:', selectedTime);
   };
 
   const totalPrice = cartItems.reduce(
@@ -228,16 +266,28 @@ const ViewRestaurantMenu = ({route}) => {
     0,
   );
 
-  const handleOrder = () => {
-    if (!selectedTime) {
+  const handleOrder = async () => {
+    if (!isTimePicked) {
       alert('Please select a time for your order.');
       return;
     }
-    console.log('Order Details:');
-    console.log('Cart Items:', cartItems);
-    console.log('Selected Time:', selectedTime);
-    // You can proceed to handle order submission here
-    closeModal();
+    const totalPrice = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+    console.log(cartItems, selectedTime);
+    data = {
+      cartItems: cartItems,
+      selectedTime: selectedTime,
+      totalPrice: totalPrice,
+      restaurantId: route.params.id,
+    };
+    try {
+      const res = await postData(apiURL.ORDER_PLACED, data);
+      closeModal();
+      setCartItems([]);
+      bottomSheetRef.current?.close();
+    } catch (err) {}
   };
 
   return (
@@ -254,35 +304,41 @@ const ViewRestaurantMenu = ({route}) => {
             }}
           />
         </Appbar.Header>
-
-        <FlatList
-          tw="p-4"
-          data={menuData}
-          renderItem={renderDish}
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-
-        {/* BottomSheet for Cart */}
+        <ScrollView contentContainerStyle={{padding: 10, paddingBottom: '50%'}}>
+          {menuData.map((item, index) => (
+            <StyledView key={index} tw="mb-4">
+              {renderDish({item})}
+            </StyledView>
+          ))}
+        </ScrollView>
         <BottomSheet
           ref={bottomSheetRef}
-          snapPoints={['25%', '50%']}
+          snapPoints={['25%', '35%', '50%']}
           index={-1}
-          backgroundStyle={{backgroundColor: '#f5f5f5'}}>
+          enableDynamicSizing={false}
+          backgroundStyle={{
+            backgroundColor: '#FEF7F4',
+            borderRadius: 40,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            paddingTop: 10,
+          }}>
           <StyledView tw="p-4">
             <StyledText
               tw="text-xl text-black font-bold mb-4"
               text="Your Cart"
             />
+            {/* <BottomSheetScrollView */}
+            {/* contentContainerStyle={{flexGrow: 1, padding: 10}}> */}
             {cartItems.length > 0 ? (
               cartItems.map((item, index) => (
                 <StyledView key={index} tw="flex-row justify-between mb-2">
                   <StyledText
-                    tw="text-base text-black"
+                    tw="text-base text-black font-bold"
                     text={`${item.name} x ${item.quantity}`}
                   />
                   <StyledText
-                    tw="text-base text-black"
+                    tw="text-base text-black font-bold"
                     text={`₹${item.price * item.quantity}`}
                   />
                 </StyledView>
@@ -293,6 +349,7 @@ const ViewRestaurantMenu = ({route}) => {
                 text="No items in cart."
               />
             )}
+            {/* </BottomSheetScrollView> */}
             <StyledText
               tw="text-lg font-bold mt-4 text-black"
               text={`Total: ₹${totalPrice}`}
@@ -314,9 +371,12 @@ const ViewRestaurantMenu = ({route}) => {
                   marginRight: 5,
                   alignItems: 'center',
                   borderColor: 'red',
-                  borderWidth: 1,
+                  borderWidth: 0.5,
                 }}>
-                <StyledText tw="text-red-500 font-bold" text="Clear" />
+                <StyledText
+                  tw="text-red-500 font-bold text-[16px]"
+                  text="Clear"
+                />
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -330,44 +390,82 @@ const ViewRestaurantMenu = ({route}) => {
                   marginLeft: 5,
                   alignItems: 'center',
                 }}>
-                <StyledText tw="text-white font-bold" text="Buy Now" />
+                <StyledText
+                  tw="text-white font-bold text-[16px]"
+                  text="Buy Now"
+                />
               </TouchableOpacity>
             </StyledView>
           </StyledView>
         </BottomSheet>
 
-        {/* Modal for Order Time */}
         <Portal>
           <Modal
             visible={showModal}
             onDismiss={closeModal}
             contentContainerStyle={{
               padding: 20,
+              margin: 20,
               backgroundColor: 'white',
               borderRadius: 10,
+              elevation: 5,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 2},
+              shadowOpacity: 0.2,
+              shadowRadius: 4,
             }}>
-            <StyledText
-              tw="text-lg font-bold text-black mb-4"
-              text="Select Order Time"
-            />
-            <HHMMTimepicker
-              selectedTime={selectedTime}
-              onTimeChange={setSelectedTime}
-              minTime={new Date()}
-            />
+            <StyledView style={{alignItems: 'center', marginBottom: 20}}>
+              <StyledText
+                tw="text-lg font-bold text-black"
+                text="Select Order Time"
+              />
+            </StyledView>
+
             <TouchableOpacity
-              onPress={handleOrder}
+              onPress={() => setShowTimePicker(true)}
               style={{
-                backgroundColor: '#FE7420',
-                paddingVertical: 10,
+                backgroundColor: '#FEF7F4',
+                padding: 15,
                 borderRadius: 5,
-                marginTop: 20,
+                height: 50,
+                width: '100%',
+                borderColor: '#ccc',
+                borderWidth: 1,
               }}>
               <StyledText
-                tw="text-white text-center font-bold"
-                text="Place Order"
+                tw="text-black align-center font-bold text-[18px]"
+                text="Pick a time"
               />
             </TouchableOpacity>
+
+            <DatePicker
+              modal
+              theme="light"
+              open={showTimePicker}
+              date={selectedTime}
+              onConfirm={handleTimeChange}
+              onCancel={() => setShowTimePicker(false)}
+              mode="time"
+            />
+
+            <StyledView style={{marginVertical: 20, alignItems: 'center'}}>
+              <StyledText
+                tw={'text-black text-lg font-bold'}
+                text={
+                  isTimePicked
+                    ? selectedTime.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })
+                    : 'No time selected'
+                }
+              />
+            </StyledView>
+
+            <StyledButton
+              label={'Place Order'}
+              onPress={handleOrder}></StyledButton>
           </Modal>
         </Portal>
       </StyledView>

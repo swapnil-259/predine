@@ -1,7 +1,6 @@
 import React, { createContext, useState } from "react";
 
 export const LoaderContext = createContext();
-console.log(LoaderContext)
 
 
 export const LoaderProvider = ({ children }) => {

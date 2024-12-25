@@ -17,9 +17,10 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "predine"
   
   override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this, R.style.BootTheme) // ⬅️ initialize the splash screen
-    super.onCreate(null) // or super.onCreate(null) with react-native-screens
-  }
+    RNBootSplash.init(this, R.style.BootTheme) // Initialize the splash screen
+    super.onCreate(null)
+}
+
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

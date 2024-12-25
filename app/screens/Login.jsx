@@ -1,5 +1,5 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   BackHandler,
   Dimensions,
@@ -8,16 +8,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {PaperProvider} from 'react-native-paper';
+import { PaperProvider } from 'react-native-paper';
 import {
   DialogBox,
   StyledButton,
   StyledText,
   StyledTextInput,
 } from '../components';
-import {BottomSheetComponent} from '../components/BottomSheet';
-import {apiURL} from '../constants/urls';
-import {postData} from '../services/api/apiService';
+import { BottomSheetComponent } from '../components/BottomSheet';
+import { apiURL } from '../constants/urls';
+import { postData } from '../services/api/apiService';
 
 const initialdata = {
   username: '',
@@ -118,6 +118,8 @@ const Login = ({navigation}) => {
             text="LOGIN"></StyledText>
 
           <StyledTextInput
+            autoCapitalize="none" 
+            keyboardType="email-address"
             label="Email"
             placeholder="Enter Your Email"
             value={data.username}

@@ -1,5 +1,5 @@
-import {styled} from 'nativewind';
-import {TextInput as ReactInput, Text, View} from 'react-native';
+import { styled } from 'nativewind';
+import { TextInput as ReactInput, Text, View } from 'react-native';
 import {
   Button,
   Card,
@@ -8,17 +8,19 @@ import {
   Text as PaperText,
   Portal,
 } from 'react-native-paper';
-import {baseURL} from '../services/api/axios';
+import { baseURL } from '../services/api/axios';
 import colors from '../styles/colors';
 
 export const StyledView = styled(View);
 
-import React, {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 import {
   default as Icon,
   default as MaterialCommunityIcons,
 } from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
 export const StyledTextInput = ({
   label,
   placeholder,

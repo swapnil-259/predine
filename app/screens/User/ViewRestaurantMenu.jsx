@@ -1,14 +1,16 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 // import DateTimePicker from '@react-native-community/datetimepicker';
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useRef, useState} from 'react';
-import {Alert, Image, ScrollView, TouchableOpacity} from 'react-native';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Alert, Image, ScrollView, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {Appbar, Modal, PaperProvider, Portal} from 'react-native-paper';
-import {StyledButton, StyledText, StyledView} from '../../components';
-import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
-import {baseURL} from '../../services/api/axios';
+import { Appbar, Modal, PaperProvider, Portal } from 'react-native-paper';
+import { DialogBox, StyledButton, StyledText, StyledView } from '../../components';
+import { apiURL } from '../../constants/urls';
+import { getData, postData } from '../../services/api/apiService';
+import { baseURL } from '../../services/api/axios';
+
 const ViewRestaurantMenu = ({route}) => {
   const [menuData, setMenuData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
@@ -109,7 +111,6 @@ const ViewRestaurantMenu = ({route}) => {
     try {
       const res = await getData(apiURL.MENU_DATA, {data: route.params.id});
       setMenuData(res.data);
-      console.log(res.data);
     } catch (err) {}
   };
 
@@ -144,7 +145,7 @@ const ViewRestaurantMenu = ({route}) => {
               text="Description :"
             />
             <StyledText
-              tw="text-sm text-gray-500 mb-1"
+              tw="text-sm text-gray-500 mb-1 font-bold"
               text={item.description}
             />
           </StyledView>
@@ -154,7 +155,7 @@ const ViewRestaurantMenu = ({route}) => {
               text="Diet:"
             />
             <StyledText
-              tw="text-sm text-gray-500 mb-1"
+              tw="text-sm text-gray-500 mb-1 font-bold"
               text={item.diet__parent}
             />
           </StyledView>
@@ -164,7 +165,7 @@ const ViewRestaurantMenu = ({route}) => {
               text="Category:"
             />
             <StyledText
-              tw="text-sm text-gray-500 mb-1"
+              tw="text-sm text-gray-500 mb-1 font-bold"
               text={item.category__parent}
             />
           </StyledView>
@@ -174,7 +175,7 @@ const ViewRestaurantMenu = ({route}) => {
               text="Preparation time:"
             />
             <StyledText
-              tw="text-sm text-gray-500"
+              tw="text-sm text-gray-500 font-bold"
               text={`${item.preparation_time} mins`}
             />
           </StyledView>
@@ -275,7 +276,6 @@ const ViewRestaurantMenu = ({route}) => {
       (total, item) => total + item.price * item.quantity,
       0,
     );
-    console.log(cartItems, selectedTime);
     data = {
       cartItems: cartItems,
       selectedTime: selectedTime,
@@ -286,6 +286,8 @@ const ViewRestaurantMenu = ({route}) => {
       const res = await postData(apiURL.ORDER_PLACED, data);
       closeModal();
       setCartItems([]);
+      console.log('res', res);
+      
       bottomSheetRef.current?.close();
     } catch (err) {}
   };
@@ -311,9 +313,22 @@ const ViewRestaurantMenu = ({route}) => {
             </StyledView>
           ))}
         </ScrollView>
+        <DialogBox
+                  visible={visible}
+                  showDialog={showDialog}
+                  hideDialog={hideDialog}
+                  title={'Exit'}
+                  text={'Do you really want to Exit?'}
+                  btnText1={'Yes'}
+                  btnText2={'Cancel'}
+                  onPressbtn1={() => {
+                    BackHandler.exitApp(), setVisible(false);
+                  }}
+                  onPressbtn2={hideDialog}
+                />
         <BottomSheet
           ref={bottomSheetRef}
-          snapPoints={['25%', '35%', '50%']}
+          snapPoints={['28%', '28%', '28%']}
           index={-1}
           enableDynamicSizing={false}
           backgroundStyle={{
@@ -321,19 +336,18 @@ const ViewRestaurantMenu = ({route}) => {
             borderRadius: 40,
             borderWidth: 1,
             borderColor: '#ccc',
-            paddingTop: 10,
           }}>
-          <StyledView tw="p-4">
+
             <StyledText
-              tw="text-xl text-black font-bold mb-4"
+              tw="text-xl text-black font-bold mb-4 pl-5 text-center"
               text="Your Cart"
             />
-            {/* <BottomSheetScrollView */}
-            {/* contentContainerStyle={{flexGrow: 1, padding: 10}}> */}
+            <BottomSheetScrollView style={{margin:10,marginTop:0,borderWidth:1,borderColor:'#ccc',borderRadius:5}}> 
             {cartItems.length > 0 ? (
-              cartItems.map((item, index) => (
-                <StyledView key={index} tw="flex-row justify-between mb-2">
-                  <StyledText
+              cartItems.map((item, index) =>{
+                return(
+                  <StyledView style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10 }} key={index}>
+                <StyledText
                     tw="text-base text-black font-bold"
                     text={`${item.name} x ${item.quantity}`}
                   />
@@ -342,23 +356,24 @@ const ViewRestaurantMenu = ({route}) => {
                     text={`₹${item.price * item.quantity}`}
                   />
                 </StyledView>
-              ))
+                )
+              })
             ) : (
               <StyledText
                 tw="text-base text-gray-500"
                 text="No items in cart."
               />
             )}
-            {/* </BottomSheetScrollView> */}
+            </BottomSheetScrollView>
             <StyledText
-              tw="text-lg font-bold mt-4 text-black"
+              tw="text-lg font-bold text-black ml-5"
               text={`Total: ₹${totalPrice}`}
             />
             <StyledView
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 10,
+                margin: 20,
               }}>
               <TouchableOpacity
                 onPress={handleClearCart}
@@ -396,7 +411,6 @@ const ViewRestaurantMenu = ({route}) => {
                 />
               </TouchableOpacity>
             </StyledView>
-          </StyledView>
         </BottomSheet>
 
         <Portal>

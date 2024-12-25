@@ -1,25 +1,17 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
-import {Image, ScrollView, Text, View} from 'react-native';
-import {Appbar, Card, Paragraph, Searchbar, Title} from 'react-native-paper';
-import {StyledButton} from '../../components';
-import {apiURL} from '../../constants/urls';
-import {getData} from '../../services/api/apiService';
-import {baseURL} from '../../services/api/axios';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
+import { Appbar, Card, Paragraph, Searchbar, Title } from 'react-native-paper';
+import { StyledButton } from '../../components';
+import { apiURL } from '../../constants/urls';
+import { getData } from '../../services/api/apiService';
+import { baseURL } from '../../services/api/axios';
 
 const UserDashboard = () => {
   const [allRestaurantsData, setAllRestaurantsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [categories, setCategories] = useState([
-    {id: 1, name: 'Fast Food', image: 'https://via.placeholder.com/100'},
-    {id: 2, name: 'Italian', image: 'https://via.placeholder.com/100'},
-    {id: 3, name: 'Chinese', image: 'https://via.placeholder.com/100'},
-    {id: 4, name: 'Indian', image: 'https://via.placeholder.com/100'},
-    {id: 5, name: 'Indian', image: 'https://via.placeholder.com/100'},
-    {id: 6, name: 'Indian', image: 'https://via.placeholder.com/100'},
-    {id: 7, name: 'Indian', image: 'https://via.placeholder.com/100'},
-  ]);
+
 
   const navigation = useNavigation();
 

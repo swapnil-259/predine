@@ -1,11 +1,11 @@
-import {useFocusEffect} from '@react-navigation/native';
-import {useCallback, useState} from 'react';
-import {ScrollView} from 'react-native';
-import {Button, Card, List, Paragraph, Title} from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { ScrollView } from 'react-native';
+import { Button, Card, List, Paragraph, Title } from 'react-native-paper';
 import RazorpayCheckout from 'react-native-razorpay';
-import {StyledText, StyledView} from '../../components';
-import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
+import { StyledText, StyledView } from '../../components';
+import { apiURL } from '../../constants/urls';
+import { getData, postData } from '../../services/api/apiService';
 
 const OrderSummary = () => {
   const [orders, setOrders] = useState([]);
@@ -30,11 +30,19 @@ const OrderSummary = () => {
         }));
 
       setOrders(sortedOrders);
-      console.log(sortedOrders);
     } catch (err) {
       console.error('Error fetching order summary:', err);
     }
   };
+
+  const cancelOrder = async orderId => {
+    try {
+      const res = await postData(apiURL.CANCEL_ORDER, {order_id: orderId});
+      orderSummary();
+    } catch (err) {
+      console.error('Error cancelling order:', err);
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -44,24 +52,23 @@ const OrderSummary = () => {
 
   const initiatePayment = async order => {
     try {
-      // Call your server to create a Razorpay order and get the order ID
       const response = await postData(apiURL.CREATE_ORDER, {
         order_id: order.order_id,
       });
-      console.log('res', response);
-      const {razorpayOrderId, amount} = response;
+      const {razorpayOrderId, amount,prefill} = response;
+      console.log('ro', razorpayOrderId, amount,prefill);
 
       const options = {
         description: 'Order Payment',
-        image: 'https://your-logo-url.com/logo.png', // Replace with your logo URL
+        image: 'https://your-logo-url.com/logo.png', 
         currency: 'INR',
-        key: 'rzp_test_15l3Ocx8qVYVm5', // Replace with your Razorpay key ID
-        amount: amount * 100, // Amount in paise
+        key: 'rzp_test_15l3Ocx8qVYVm5', 
+        amount: amount * 100, 
         order_id: razorpayOrderId,
-        name: 'HEllo World', // Replace with your restaurant or app name
+        name: 'Predine', 
         prefill: {
-          email: 'amritansh.raj21@gmail.com', // Replace with customer's email
-          contact: '9634959998', // Replace with customer's phone number
+          email: 'amritansh.raj21@gmail.com', 
+          contact: '9634959998', 
         },
         theme: {color: '#FE7240'},
       };
@@ -69,14 +76,12 @@ const OrderSummary = () => {
       RazorpayCheckout.open(options)
         .then(async paymentData => {
           console.log('pd', paymentData);
-          // On successful payment, update the payment status on the server
           await postData(apiURL.CONFIRM_ORDER, {
             razorpay_order_id: paymentData.razorpay_order_id,
             razorpay_payment_id: paymentData.razorpay_payment_id,
             razorpay_signature: paymentData.razorpay_signature,
           });
 
-          // Refresh the order summary to reflect the updated payment status
           orderSummary();
           console.log('Payment Successful:', paymentData);
         })
@@ -160,10 +165,8 @@ const OrderSummary = () => {
                 {order.show_cancel_button && (
                   <Button
                     mode="outlined"
-                    onPress={() =>
-                      console.log(
-                        `Cancel clicked for order ID: ${order.order_id}`,
-                      )
+                    onPress={() =>cancelOrder(order.id)
+                     
                     }
                     style={{
                       marginTop: 10,

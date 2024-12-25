@@ -41,4 +41,5 @@ export const apiURL = {
   CHEF_ORDER_DATA: '/chef/chef_orders/',
   COMPLETE_ORDER: '/chef/order_completed/',
   RECIEVED_ORDER: '/chef/order_recieved/',
+  CANCEL_ORDER: '/user/cancel-order/',
 };

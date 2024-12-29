@@ -6,7 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Alert, Image, ScrollView, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { Appbar, Modal, PaperProvider, Portal } from 'react-native-paper';
-import { DialogBox, StyledButton, StyledText, StyledView } from '../../components';
+import { StyledButton, StyledText, StyledView } from '../../components';
 import { apiURL } from '../../constants/urls';
 import { getData, postData } from '../../services/api/apiService';
 import { baseURL } from '../../services/api/axios';
@@ -35,7 +35,7 @@ const ViewRestaurantMenu = ({route}) => {
     startTime.setHours(9, 0, 0);
 
     const endTime = new Date(time);
-    endTime.setHours(19, 0, 0);
+    endTime.setHours(22, 0, 0);
 
     if (time >= startTime && time <= endTime) {
       setSelectedTime(time);
@@ -290,7 +290,29 @@ const ViewRestaurantMenu = ({route}) => {
       
       bottomSheetRef.current?.close();
     } catch (err) {}
+
+
   };
+
+  const getMinimumDate = () => {
+    console.log('cartItems', cartItems);
+  
+    const maxPreparationTime = cartItems.reduce(
+      (maxTime, item) => Math.max(maxTime, item.preparation_time),
+      0 
+    );
+  
+    console.log('Max Preparation Time:', maxPreparationTime);
+  
+    const minimumDate = new Date();
+    console.log('Prev Minimum Date:', minimumDate);
+  
+    minimumDate.setMinutes(minimumDate.getMinutes() + maxPreparationTime);
+  
+    console.log('Next Minimum Date:', minimumDate);
+    return minimumDate;
+  };
+  
 
   return (
     <PaperProvider>
@@ -313,19 +335,7 @@ const ViewRestaurantMenu = ({route}) => {
             </StyledView>
           ))}
         </ScrollView>
-        <DialogBox
-                  visible={visible}
-                  showDialog={showDialog}
-                  hideDialog={hideDialog}
-                  title={'Exit'}
-                  text={'Do you really want to Exit?'}
-                  btnText1={'Yes'}
-                  btnText2={'Cancel'}
-                  onPressbtn1={() => {
-                    BackHandler.exitApp(), setVisible(false);
-                  }}
-                  onPressbtn2={hideDialog}
-                />
+        
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={['28%', '28%', '28%']}
@@ -436,7 +446,7 @@ const ViewRestaurantMenu = ({route}) => {
             </StyledView>
 
             <TouchableOpacity
-              onPress={() => setShowTimePicker(true)}
+              onPress={() => {setShowTimePicker(true),setSelectedTime(getMinimumDate())}}
               style={{
                 backgroundColor: '#FEF7F4',
                 padding: 15,
@@ -456,6 +466,7 @@ const ViewRestaurantMenu = ({route}) => {
               modal
               theme="light"
               open={showTimePicker}
+              minimumDate={getMinimumDate()}
               date={selectedTime}
               onConfirm={handleTimeChange}
               onCancel={() => setShowTimePicker(false)}

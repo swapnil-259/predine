@@ -42,4 +42,6 @@ export const apiURL = {
   COMPLETE_ORDER: '/chef/order_completed/',
   RECIEVED_ORDER: '/chef/order_recieved/',
   CANCEL_ORDER: '/user/cancel-order/',
+  ORDER_CANCELLED_NO_ORDER_RESPOSNE :'user/order-cancelled-no-owner-response/',
+  CANCEL_DISH: '/owner/orders/cancel/',
 };

@@ -1,25 +1,18 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { Appbar, Card, Paragraph, Searchbar, Title } from 'react-native-paper';
+import { Appbar, Card, PaperProvider, Paragraph, Searchbar, Title } from 'react-native-paper';
 import { StyledButton } from '../../components';
 import { apiURL } from '../../constants/urls';
 import { getData } from '../../services/api/apiService';
 import { baseURL } from '../../services/api/axios';
 
-const UserDashboard = () => {
+const UserDashboard = ({navigation}) => {
   const [allRestaurantsData, setAllRestaurantsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
 
-  const navigation = useNavigation();
-
-  useFocusEffect(
-    useCallback(() => {
-      allRestaurants();
-    }, []),
-  );
 
   const allRestaurants = async () => {
     try {
@@ -30,6 +23,12 @@ const UserDashboard = () => {
       console.log('Error fetching restaurant data:', err);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      allRestaurants();
+    }, []),
+  );
   const logoutUser = async () => {
     try {
       const res = await getData(apiURL.LOGOUT);
@@ -57,15 +56,8 @@ const UserDashboard = () => {
     }
   };
 
-  const handleCategoryPress = category => {
-    console.log('hlelo');
-  };
-
-  const handleViewPress = restaurant => {
-    navigation.navigate('ViewMenu', {restaurant});
-  };
-
   return (
+    <PaperProvider>
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Appbar.Header style={{backgroundColor: '#FE7420'}}>
         <Appbar.Action
@@ -113,45 +105,6 @@ const UserDashboard = () => {
         }}
       />
 
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{marginVertical: 10, margin: 20}}>
-        {categories.map(category => (
-          <TouchableOpacity
-            key={category.id}
-            onPress={() => handleCategoryPress(category)}
-            style={{
-              width: 100,
-              height: 130, // Set width to square or long rectangle
-              marginRight: 10,
-              marginLeft: 10,
-              alignItems: 'center', // Center align the content
-            }}>
-            <View
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 40, // Circle shape
-                overflow: 'hidden',
-                marginBottom: 5,
-              }}>
-              <Image
-                source={{uri: category.image}} // Placeholder image or category image URL
-                style={{width: '100%', height: '100%', resizeMode: 'cover'}}
-              />
-            </View>
-            <Text
-              style={{
-                color: '#000',
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              {category.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView> */}
 
       <ScrollView
         contentContainerStyle={{
@@ -230,7 +183,9 @@ const UserDashboard = () => {
         ))}
       </ScrollView>
     </View>
+    </PaperProvider>
   );
+
 };
 
 export default UserDashboard;

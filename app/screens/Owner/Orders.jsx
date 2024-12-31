@@ -63,12 +63,12 @@ const Orders = () => {
   useFocusEffect(
     useCallback(() => {
       fetchOrders();
-      // const timerInterval = setInterval(updateTimers, 1000);
-      // const pollingInterval = setInterval(fetchOrders, 3000);
+      const timerInterval = setInterval(updateTimers, 1000);
+      const pollingInterval = setInterval(fetchOrders, 3000);
 
       return () => {
-        // clearInterval(timerInterval);
-        // clearInterval(pollingInterval);
+        clearInterval(timerInterval);
+        clearInterval(pollingInterval);
       };
     }, [])
   );

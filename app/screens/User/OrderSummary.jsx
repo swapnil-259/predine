@@ -23,9 +23,7 @@ const OrderSummary = () => {
   const calculateRemainingTimeForPay = orderTime => {
     const orderTimestamp = new Date(orderTime).getTime();
     const currentTimestamp = new Date().getTime();
-    console.log('orderTimestamp',orderTimestamp,currentTimestamp,orderTime);
     const timeDiff = Math.max(0,180000 - (currentTimestamp-orderTimestamp));
-    console.log('timeDiff',timeDiff);
     return Math.floor(timeDiff/1000);
 
   }
@@ -44,20 +42,13 @@ const OrderSummary = () => {
     );
   };
 
-  const orderCancelledNoResponse = async orderId => {
-    try {
-      await postData(apiURL.ORDER_CANCELLED_NO_ORDER_RESPOSNE, { order_id: orderId });
-      orderSummary();
-    } catch (err) {
-      console.error('Error cancelling order:', err);
-    }
-  }
 
   const orderSummary = async () => {
     try {
       const res = await axios.get(baseURL+ apiURL.ORDER_SUMMARY);
 
       const sortedOrders = res.data.data
+      
         .sort((a, b) => new Date(b.order_time) - new Date(a.order_time))
         .map(order => ({
           ...order,
@@ -74,7 +65,12 @@ const OrderSummary = () => {
             order.level === 1 &&
             (order.order_status === 'Pending (by Restaurant Owner)' ||
               order.order_status === 'Accepted (by Restaurant Owner)'),
+          show_recieved_button:
+          order.payment_status === 'Success' &&
+          order.level===3 && order.orders_status === 'Pending',
         }));
+        console.log('order',sortedOrders)
+
 
       setOrders(sortedOrders);
     } catch (err) {
@@ -83,6 +79,18 @@ const OrderSummary = () => {
   };
 
   
+  const handleRecievedOrder = async orderId => {
+    console.log(orderId);
+    try {
+      const canceledOrder = await postData(apiURL.RECIEVED_ORDER, {
+        orderId: orderId,
+      });
+      console.log(canceledOrder);
+      orderSummary();
+    } catch (error) {
+      console.error('Error marking order as received:', error);
+    }
+  };
   useFocusEffect(
     useCallback(() => {
       orderSummary();
@@ -118,7 +126,7 @@ const OrderSummary = () => {
         image: 'https://your-logo-url.com/logo.png',
         currency: 'INR',
         key: razorpay.PRODUCTION_RAZORPAY_KEY,
-        amount: 1 * 100,
+        amount: amount * 100,
         order_id: razorpayOrderId,
         name: 'Predine',
         prefill: {
@@ -266,6 +274,18 @@ const OrderSummary = () => {
                     }}
                     labelStyle={{ color: '#FE7240' }}>
                     Cancel
+                  </Button>
+                )}
+                {order.show_recieved_button && (
+                  <Button
+                    mode="contained"
+                    onPress={() => handleRecievedOrder(order.order_id)}
+                    style={{
+                      marginTop: 10,
+                      backgroundColor: '#FE7240',
+                    }}
+                    >
+                    Recieved
                   </Button>
                 )}
               </Card.Content>

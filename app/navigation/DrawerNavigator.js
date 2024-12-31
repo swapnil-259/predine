@@ -1,10 +1,10 @@
 // DrawerNavigator.js
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import React, {useEffect, useState} from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DrawerText from '../components/DrawerText';
-import {apiURL} from '../constants/urls';
+import { apiURL } from '../constants/urls';
 import AddOwner from '../screens/Admin/AddOwner';
 import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig';
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
@@ -20,7 +20,7 @@ import OrderSummary from '../screens/User/OrderSummary';
 import PrivacyPolicy from '../screens/User/Privacy Policy/PrivacyPolicy';
 import UserDashboard from '../screens/User/UserDashboard';
 import UserProfile from '../screens/User/UserProfile';
-import {getData} from '../services/api/apiService';
+import { getData } from '../services/api/apiService';
 const Drawer = createDrawerNavigator();
 
 const navigationMap = {
@@ -113,7 +113,9 @@ const DrawerNavigator = () => {
                 ),
                 headerShown:
                   each.component === 'UserDashboard' ||
-                  each.component === 'ShowOrders'
+                  each.component === 'ShowOrders' 
+                  ||
+                  each.component === 'Dashboard'
                     ? false
                     : true,
               }}

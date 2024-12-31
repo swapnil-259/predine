@@ -1,6 +1,7 @@
-import {useFocusEffect} from '@react-navigation/native';
-import {useCallback, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import { BackHandler, Keyboard, ScrollView, Text } from 'react-native';
 import {
   Appbar,
   Card,
@@ -9,27 +10,79 @@ import {
   SegmentedButtons,
   Title,
 } from 'react-native-paper';
-import {StyledButton, StyledText, StyledView} from '../../components';
-import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
-
-const ShowOrders = navigation => {
+import { StyledButton, StyledText, StyledView } from '../../components';
+import { apiURL } from '../../constants/urls';
+import { getData, postData } from '../../services/api/apiService';
+import { baseURL } from '../../services/api/axios';
+const ShowOrders = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [value, setValue] = useState('all');
+  const [visible, setVisible] = useState(false);
 
+
+
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+  
+    useEffect(() => {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardVisible(true);
+        },
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardVisible(false);
+        },
+      );
+  
+      const backAction = () => {
+        showDialog();
+        return true;
+      };
+  
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+  
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+        BackHandler.removeEventListener('hardwareBackPress', backAction);
+      };
+    }, []);
+  
   const orderData = async () => {
     try {
-      const res = await getData(apiURL.CHEF_ORDER_DATA);
+      const res = await axios.get(baseURL+ apiURL.CHEF_ORDER_DATA);
       console.log(res.data);
-      setOrders(res.data);
+      setOrders(res.data.data);
     } catch (err) {
       console.log('Error fetching order data:', err);
     }
   };
 
-  useFocusEffect(
+
+  const checkAndUpdateOrderStatus = () => {
+    const currentTime = new Date();
+    orders.forEach(order => {
+      console.log('order',order);
+      const receivingTime = new Date(order.order_receiving_time);
+      if (receivingTime < currentTime && order.order_status == 'Preparing') {
+        handleUpdateOrderStatus(order.order_id);
+      }
+    });
+  };
+
+   useFocusEffect(
     useCallback(() => {
       orderData();
+
+      const intervalId = setInterval(() => {
+        orderData(); 
+        checkAndUpdateOrderStatus(); 
+      }, 5000);
+      return () => clearInterval(intervalId); 
     }, []),
   );
 
@@ -40,7 +93,7 @@ const ShowOrders = navigation => {
       return order.order_status === 'Preparing';
     } else if (value === 'prev') {
       return (
-        order.order_status === 'Completed' || order.order_status === 'Canceled'
+        order.order_status === 'Completed' || order.order_status === 'Cancelled'
       );
     }
     return false;
@@ -137,6 +190,19 @@ const ShowOrders = navigation => {
             },
           ]}
         />
+        <DialogBox
+                  visible={visible}
+                  showDialog={showDialog}
+                  hideDialog={hideDialog}
+                  title={'Exit'}
+                  text={'Do you really want to Exit?'}
+                  btnText1={'Yes'}
+                  btnText2={'Cancel'}
+                  onPressbtn1={() => {
+                    BackHandler.exitApp(), setVisible(false);
+                  }}
+                  onPressbtn2={hideDialog}
+                />
         {filteredOrders.map((order, index) => (
           <Card
             key={index}
@@ -213,7 +279,6 @@ const ShowOrders = navigation => {
                 />
               ))}
 
-              {/* Button to update order status if it's preparing */}
               {order.order_status === 'Preparing' && (
                 <StyledButton
                   mode="contained"
@@ -223,7 +288,6 @@ const ShowOrders = navigation => {
                 />
               )}
 
-              {/* Button to mark order as received if order_status is Completed and receiver_status is Pending */}
               {order.order_status === 'Completed' &&
                 order.receiver_status === 'Pending' && (
                   <StyledButton

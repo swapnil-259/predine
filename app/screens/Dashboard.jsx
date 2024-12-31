@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {BackHandler} from 'react-native';
-import {PaperProvider} from 'react-native-paper';
-import {DialogBox, StyledButton, StyledText, StyledView} from '../components';
-import {apiURL} from '../constants/urls';
-import {LeftPanel} from '../navigation/DrawerNavigator';
-import {getData} from '../services/api/apiService';
+import React, { useEffect, useState } from 'react';
+import { BackHandler } from 'react-native';
+import { Appbar, PaperProvider } from 'react-native-paper';
+import { DialogBox, StyledButton, StyledText, StyledView } from '../components';
+import { apiURL } from '../constants/urls';
+import { LeftPanel } from '../navigation/DrawerNavigator';
+import { getData } from '../services/api/apiService';
+
 const Dashboard = ({navigation}) => {
   const [visible, setVisible] = useState(false);
 
@@ -31,7 +32,33 @@ const Dashboard = ({navigation}) => {
   };
   return (
     <PaperProvider>
-      <StyledView tw="flex-1 justify-center items-center">
+      <StyledView tw="flex-1">
+      <Appbar.Header style={{backgroundColor: '#FE7420'}}>
+        <Appbar.Action
+          color="#fff"
+          icon="menu"
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        />
+        <Appbar.Content
+          title="Dashboard"
+          titleStyle={{
+            fontSize: 24,
+            fontWeight: '800',
+            textAlign: 'center',
+            color: '#fff',
+          }}
+        />
+        <Appbar.Action
+          icon="logout"
+          onPress={() => {
+            logoutUser();
+          }}
+          color="#fff"
+        />
+      </Appbar.Header>
+      <StyledView tw="flex-1 items-center justify-center">
         <DialogBox
           visible={visible}
           showDialog={showDialog}
@@ -47,7 +74,9 @@ const Dashboard = ({navigation}) => {
           tw="font-bold text-black text-lg"
           text={'Welcome to Predine!'}></StyledText>
         <StyledButton label={'logout'} onPress={logoutUser}></StyledButton>
+        </StyledView>
       </StyledView>
+
     </PaperProvider>
   );
 };

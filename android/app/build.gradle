@@ -79,8 +79,8 @@ android {
         applicationId "com.predine"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
     }
     signingConfigs {
         debug {
@@ -100,16 +100,9 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-    //     release {
-    //         signingConfig signingConfigs.release
-    // }
-        // release {
-        //     // Caution! In production, you need to generate your own keystore file.
-        //     // see https://reactnative.dev/docs/signed-apk-android.
-        //     signingConfig signingConfigs.debug
-        //     minifyEnabled enableProguardInReleaseBuilds
-        //     proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        // }
+        release {
+            signingConfig signingConfigs.release
+    }
     }
 }
 

@@ -35,7 +35,7 @@ const ViewRestaurantMenu = ({route}) => {
     startTime.setHours(9, 0, 0);
 
     const endTime = new Date(time);
-    endTime.setHours(22, 0, 0);
+    endTime.setHours(19, 0, 0);
 
     if (time >= startTime && time <= endTime) {
       setSelectedTime(time);
@@ -340,6 +340,7 @@ const ViewRestaurantMenu = ({route}) => {
           ref={bottomSheetRef}
           snapPoints={['28%', '28%', '28%']}
           index={-1}
+          enablePanDownToClose
           enableDynamicSizing={false}
           backgroundStyle={{
             backgroundColor: '#FEF7F4',

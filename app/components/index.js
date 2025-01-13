@@ -1,5 +1,5 @@
-import { styled } from 'nativewind';
-import { TextInput as ReactInput, Text, View } from 'react-native';
+import {styled} from 'nativewind';
+import {TextInput as ReactInput, Text, View} from 'react-native';
 import {
   Button,
   Card,
@@ -8,18 +8,17 @@ import {
   Text as PaperText,
   Portal,
 } from 'react-native-paper';
-import { baseURL } from '../services/api/axios';
+import {baseURL} from '../services/api/axios';
 import colors from '../styles/colors';
 
 export const StyledView = styled(View);
 
-import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity} from 'react-native';
 import {
   default as Icon,
   default as MaterialCommunityIcons,
 } from 'react-native-vector-icons/MaterialCommunityIcons';
-
 
 export const StyledTextInput = ({
   label,
@@ -235,17 +234,14 @@ export const DishCard = ({props}) => {
           </PaperText>
           <PaperText variant="bodyMedium">Price: {props.price}rs</PaperText>
           <PaperText variant="bodyMedium">
-            Recommended: {props.recommended}
+            Recommended: {props.recommended.toString()}
           </PaperText>
-          {/* <Text variant="bodyMedium">
-                      Diet: {each.diet__parent == 'Veg' ? 'Veg' : 'Non-Veg'}
-                    </Text> */}
         </Card.Content>
         <Card.Cover
           source={{
             uri:
               props.image !== ''
-                ? baseURL + '/media/' + props.image
+                ? baseURL + 'media/' + props.image
                 : 'https://picsum.photos/700',
           }}
           style={{
@@ -253,6 +249,7 @@ export const DishCard = ({props}) => {
             width: 125,
             height: 125,
             marginLeft: 10,
+            margin: 10,
           }}
         />
       </View>

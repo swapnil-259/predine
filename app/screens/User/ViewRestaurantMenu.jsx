@@ -1,23 +1,25 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 // import DateTimePicker from '@react-native-community/datetimepicker';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useRef, useState } from 'react';
-import { Alert, Image, ScrollView, TouchableOpacity } from 'react-native';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useRef, useState} from 'react';
+import {Alert, Image, ScrollView, TouchableOpacity} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { Appbar, Modal, PaperProvider, Portal } from 'react-native-paper';
-import { StyledButton, StyledText, StyledView } from '../../components';
-import { apiURL } from '../../constants/urls';
-import { getData, postData } from '../../services/api/apiService';
-import { baseURL } from '../../services/api/axios';
+import {Appbar, Modal, PaperProvider, Portal} from 'react-native-paper';
+import {StyledButton, StyledText, StyledView} from '../../components';
+import {apiURL} from '../../constants/urls';
+import {getData, postData} from '../../services/api/apiService';
+import {baseURL} from '../../services/api/axios';
 
-const ViewRestaurantMenu = ({route}) => {
+const ViewRestaurantMenu = ({route, navigation}) => {
   const [menuData, setMenuData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [isTimePicked, setIsTimePicked] = useState(false);
+  const [openingTime, setOpeningTime] = useState(null);
+  const [closingTime, setClosingTime] = useState(null);
 
   const bottomSheetRef = useRef(null);
 
@@ -30,14 +32,21 @@ const ViewRestaurantMenu = ({route}) => {
     setSelectedTime(new Date());
     setIsTimePicked(false);
   };
+
+  const getTimings = async () => {
+    try {
+      const res = await getData(apiURL.GET_TIMIMGS);
+      const startTime = new Date();
+      startTime.setHours(res.data.opening_time, 0, 0);
+      const endTime = new Date();
+      endTime.setHours(res.data.closing_time, 0, 0);
+      setOpeningTime(startTime);
+      setClosingTime(endTime);
+    } catch (err) {}
+  };
+
   const handleTimeChange = time => {
-    const startTime = new Date(time);
-    startTime.setHours(9, 0, 0);
-
-    const endTime = new Date(time);
-    endTime.setHours(19, 0, 0);
-
-    if (time >= startTime && time <= endTime) {
+    if (time >= openingTime && time <= closingTime) {
       setSelectedTime(time);
       setIsTimePicked(true);
       setShowTimePicker(false);
@@ -104,6 +113,7 @@ const ViewRestaurantMenu = ({route}) => {
   useFocusEffect(
     useCallback(() => {
       restaurantMenu();
+      getTimings();
     }, []),
   );
 
@@ -244,7 +254,7 @@ const ViewRestaurantMenu = ({route}) => {
         </StyledView>
 
         <Image
-          source={{uri: baseURL + '/media/' + item.image}}
+          source={{uri: baseURL + 'media/' + item.image}}
           style={{
             width: 100,
             height: 100,
@@ -287,37 +297,41 @@ const ViewRestaurantMenu = ({route}) => {
       closeModal();
       setCartItems([]);
       console.log('res', res);
-      
+
       bottomSheetRef.current?.close();
     } catch (err) {}
-
-
   };
 
   const getMinimumDate = () => {
     console.log('cartItems', cartItems);
-  
+
     const maxPreparationTime = cartItems.reduce(
       (maxTime, item) => Math.max(maxTime, item.preparation_time),
-      0 
+      0,
     );
-  
+
     console.log('Max Preparation Time:', maxPreparationTime);
-  
+
     const minimumDate = new Date();
     console.log('Prev Minimum Date:', minimumDate);
-  
+
     minimumDate.setMinutes(minimumDate.getMinutes() + maxPreparationTime);
-  
+
     console.log('Next Minimum Date:', minimumDate);
     return minimumDate;
   };
-  
 
   return (
     <PaperProvider>
       <StyledView tw="flex-1 bg-white">
         <Appbar.Header style={{backgroundColor: '#FE7420'}}>
+          <Appbar.Action
+            color="#fff"
+            icon="arrow-left"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
           <Appbar.Content
             title="Restaurant Menu"
             titleStyle={{
@@ -335,7 +349,7 @@ const ViewRestaurantMenu = ({route}) => {
             </StyledView>
           ))}
         </ScrollView>
-        
+
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={['28%', '28%', '28%']}
@@ -348,26 +362,38 @@ const ViewRestaurantMenu = ({route}) => {
             borderWidth: 1,
             borderColor: '#ccc',
           }}>
-
-            <StyledText
-              tw="text-xl text-black font-bold mb-4 pl-5 text-center"
-              text="Your Cart"
-            />
-            <BottomSheetScrollView style={{margin:10,marginTop:0,borderWidth:1,borderColor:'#ccc',borderRadius:5}}> 
+          <StyledText
+            tw="text-xl text-black font-bold mb-4 pl-5 text-center"
+            text="Your Cart"
+          />
+          <BottomSheetScrollView
+            style={{
+              margin: 10,
+              marginTop: 0,
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 5,
+            }}>
             {cartItems.length > 0 ? (
-              cartItems.map((item, index) =>{
-                return(
-                  <StyledView style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10 }} key={index}>
-                <StyledText
-                    tw="text-base text-black font-bold"
-                    text={`${item.name} x ${item.quantity}`}
-                  />
-                  <StyledText
-                    tw="text-base text-black font-bold"
-                    text={`₹${item.price * item.quantity}`}
-                  />
-                </StyledView>
-                )
+              cartItems.map((item, index) => {
+                return (
+                  <StyledView
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                    }}
+                    key={index}>
+                    <StyledText
+                      tw="text-base text-black font-bold"
+                      text={`${item.name} x ${item.quantity}`}
+                    />
+                    <StyledText
+                      tw="text-base text-black font-bold"
+                      text={`₹${item.price * item.quantity}`}
+                    />
+                  </StyledView>
+                );
               })
             ) : (
               <StyledText
@@ -375,53 +401,53 @@ const ViewRestaurantMenu = ({route}) => {
                 text="No items in cart."
               />
             )}
-            </BottomSheetScrollView>
-            <StyledText
-              tw="text-lg font-bold text-black ml-5"
-              text={`Total: ₹${totalPrice}`}
-            />
-            <StyledView
+          </BottomSheetScrollView>
+          <StyledText
+            tw="text-lg font-bold text-black ml-5"
+            text={`Total: ₹${totalPrice}`}
+          />
+          <StyledView
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              margin: 20,
+            }}>
+            <TouchableOpacity
+              onPress={handleClearCart}
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                margin: 20,
+                backgroundColor: '#f5f5f5',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+                flex: 1,
+                marginRight: 5,
+                alignItems: 'center',
+                borderColor: 'red',
+                borderWidth: 0.5,
               }}>
-              <TouchableOpacity
-                onPress={handleClearCart}
-                style={{
-                  backgroundColor: '#f5f5f5',
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderRadius: 5,
-                  flex: 1,
-                  marginRight: 5,
-                  alignItems: 'center',
-                  borderColor: 'red',
-                  borderWidth: 0.5,
-                }}>
-                <StyledText
-                  tw="text-red-500 font-bold text-[16px]"
-                  text="Clear"
-                />
-              </TouchableOpacity>
+              <StyledText
+                tw="text-red-500 font-bold text-[16px]"
+                text="Clear"
+              />
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={handleBuyNow}
-                style={{
-                  backgroundColor: 'green',
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderRadius: 5,
-                  flex: 1,
-                  marginLeft: 5,
-                  alignItems: 'center',
-                }}>
-                <StyledText
-                  tw="text-white font-bold text-[16px]"
-                  text="Buy Now"
-                />
-              </TouchableOpacity>
-            </StyledView>
+            <TouchableOpacity
+              onPress={handleBuyNow}
+              style={{
+                backgroundColor: 'green',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+                flex: 1,
+                marginLeft: 5,
+                alignItems: 'center',
+              }}>
+              <StyledText
+                tw="text-white font-bold text-[16px]"
+                text="Buy Now"
+              />
+            </TouchableOpacity>
+          </StyledView>
         </BottomSheet>
 
         <Portal>
@@ -447,7 +473,9 @@ const ViewRestaurantMenu = ({route}) => {
             </StyledView>
 
             <TouchableOpacity
-              onPress={() => {setShowTimePicker(true),setSelectedTime(getMinimumDate())}}
+              onPress={() => {
+                setShowTimePicker(true), setSelectedTime(getMinimumDate());
+              }}
               style={{
                 backgroundColor: '#FEF7F4',
                 padding: 15,

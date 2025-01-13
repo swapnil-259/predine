@@ -190,19 +190,7 @@ const ShowOrders = ({navigation}) => {
             },
           ]}
         />
-        <DialogBox
-                  visible={visible}
-                  showDialog={showDialog}
-                  hideDialog={hideDialog}
-                  title={'Exit'}
-                  text={'Do you really want to Exit?'}
-                  btnText1={'Yes'}
-                  btnText2={'Cancel'}
-                  onPressbtn1={() => {
-                    BackHandler.exitApp(), setVisible(false);
-                  }}
-                  onPressbtn2={hideDialog}
-                />
+       
         {filteredOrders.map((order, index) => (
           <Card
             key={index}

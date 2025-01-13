@@ -1,15 +1,16 @@
 // DrawerNavigator.js
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { useEffect, useState } from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import React, {useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DrawerText from '../components/DrawerText';
-import { apiURL } from '../constants/urls';
+import {apiURL} from '../constants/urls';
 import AddOwner from '../screens/Admin/AddOwner';
 import RestauratConfig from '../screens/Admin/RestaurantConfig/RestaurantConfig';
 import OwnerList from '../screens/Admin/ViewOwner/OwnerList';
 import ShowOrders from '../screens/Chef/ShowOrders';
 import Dashboard from '../screens/Dashboard';
+import ManageOrders from '../screens/Owner-Chef/ManageOrders';
 import AddChef from '../screens/Owner/AddChef';
 import AddMenu from '../screens/Owner/AddMenu';
 import MenuConfig from '../screens/Owner/MenuConfig/MenuConfig';
@@ -20,7 +21,7 @@ import OrderSummary from '../screens/User/OrderSummary';
 import PrivacyPolicy from '../screens/User/Privacy Policy/PrivacyPolicy';
 import UserDashboard from '../screens/User/UserDashboard';
 import UserProfile from '../screens/User/UserProfile';
-import { getData } from '../services/api/apiService';
+import {getData} from '../services/api/apiService';
 const Drawer = createDrawerNavigator();
 
 const navigationMap = {
@@ -39,6 +40,7 @@ const navigationMap = {
   PrivacyPolicy: PrivacyPolicy,
   Orders: Orders,
   ShowOrders: ShowOrders,
+  ManageOrders: ManageOrders,
 };
 
 const iconMap = {
@@ -113,8 +115,8 @@ const DrawerNavigator = () => {
                 ),
                 headerShown:
                   each.component === 'UserDashboard' ||
-                  each.component === 'ShowOrders' 
-                  ||
+                  each.component === 'ShowOrders' ||
+                  each.compoenent === 'RestaurantMenu' ||
                   each.component === 'Dashboard'
                     ? false
                     : true,

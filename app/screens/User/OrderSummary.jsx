@@ -2,7 +2,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import axios from 'axios';
 import {useCallback, useState} from 'react';
 import {ScrollView} from 'react-native';
-import {Button, Card, List, Paragraph, Title} from 'react-native-paper';
+import {Button, Card, List, Text, Title} from 'react-native-paper';
 import RazorpayCheckout from 'react-native-razorpay';
 import {StyledText, StyledView} from '../../components';
 import {razorpay} from '../../constants/razorpay';
@@ -176,19 +176,27 @@ const OrderSummary = () => {
               }}>
               <Card.Content>
                 <Title>Order ID: {order.order_id}</Title>
-                <Paragraph>Order Status: {order.order_status}</Paragraph>
-                <Paragraph>Payment Status: {order.payment_status}</Paragraph>
-                <Paragraph>Total Amount: Rs {order.total_amount}</Paragraph>
-                <Paragraph>
+                <Text variant="titleMedium" tw="text-black">
+                  Order Status: {order.order_status}
+                </Text>
+                <Text variant="titleMedium" tw="text-black">
+                  Payment Status: {order.payment_status}
+                </Text>
+                <Text variant="titleMedium" tw="text-black">
+                  Total Amount: Rs {order.total_amount}
+                </Text>
+                <Text variant="titleMedium" tw="text-black">
                   Order Time: {new Date(order.order_time).toLocaleString()}
-                </Paragraph>
-                <Paragraph>
+                </Text>
+                <Text variant="titleMedium" tw="text-black">
                   Receiving Time:{' '}
                   {new Date(order.order_receiving_time).toLocaleString()}
-                </Paragraph>
+                </Text>
 
                 {order.payment_status === 'Success' && order.payment_id && (
-                  <Paragraph>Payment ID: {order.payment_id}</Paragraph>
+                  <Text variant="titleMedium" tw="text-black">
+                    Payment ID: {order.payment_id}
+                  </Text>
                 )}
 
                 {order.dishes && order.dishes.length > 0 && (

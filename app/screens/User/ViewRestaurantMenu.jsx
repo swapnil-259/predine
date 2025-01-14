@@ -155,7 +155,7 @@ const ViewRestaurantMenu = ({route, navigation}) => {
               text="Description :"
             />
             <StyledText
-              tw="text-sm text-gray-500 mb-1 font-bold"
+              tw="text-sm text-gray-500 mb-1 font-bold max-w-[200px]"
               text={item.description}
             />
           </StyledView>
@@ -336,9 +336,17 @@ const ViewRestaurantMenu = ({route, navigation}) => {
             title="Restaurant Menu"
             titleStyle={{
               fontSize: 24,
+              // marginLeft: '-15%',
               fontWeight: '800',
               textAlign: 'center',
               color: '#fff',
+            }}
+          />
+          <Appbar.Action
+            color="#fff"
+            icon="file-document-outline"
+            onPress={() => {
+              navigation.navigate('Order Summary');
             }}
           />
         </Appbar.Header>

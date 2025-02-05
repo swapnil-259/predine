@@ -1,5 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   BackHandler,
   Dimensions,
@@ -8,16 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { PaperProvider } from 'react-native-paper';
-import {
-  DialogBox,
-  StyledButton,
-  StyledText,
-  StyledTextInput,
-} from '../components';
-import { BottomSheetComponent } from '../components/BottomSheet';
-import { apiURL } from '../constants/urls';
-import { postData } from '../services/api/apiService';
+import {Button, PaperProvider} from 'react-native-paper';
+import {DialogBox, StyledText, StyledTextInput} from '../components';
+import {BottomSheetComponent} from '../components/BottomSheet';
+import {apiURL} from '../constants/urls';
+import {postData} from '../services/api/apiService';
 
 const initialdata = {
   username: '',
@@ -114,11 +109,11 @@ const Login = ({navigation}) => {
 
         <BottomSheetComponent style={{justifyContent: 'center'}}>
           <StyledText
-            tw="text-black font-bold text-[18px] text-center mb-2"
+            tw="text-black font-bold text-[22px] text-center mb-2"
             text="LOGIN"></StyledText>
 
           <StyledTextInput
-            autoCapitalize="none" 
+            autoCapitalize="none"
             keyboardType="email-address"
             label="Email"
             placeholder="Enter Your Email"
@@ -138,21 +133,25 @@ const Login = ({navigation}) => {
             }}
             secureTextEntry={true}></StyledTextInput>
 
-          <StyledButton
-            label="LOGIN"
+          <Button
+            mode="contained"
             onPress={() => {
               handleLogin();
-            }}></StyledButton>
-          <View tw="flex-row justify-center items-center ">
+            }}
+            style={{backgroundColor: '#FE7240', margin: 20}}
+            labelStyle={{color: '#fff', fontWeight: 'bold'}}>
+            {'LOGIN'}
+          </Button>
+          <View tw="flex-row justify-center items-center mb-5">
             <StyledText
-              tw="text-black font-bold"
+              tw="text-black font-bold text-[17px]"
               text="Not Registered?"></StyledText>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('InputEmail');
               }}>
               <StyledText
-                tw="text-[#FE7240] font-bold"
+                tw="text-[#FE7240] font-bold text-[17px]"
                 text=" Click Here!"></StyledText>
             </TouchableOpacity>
           </View>

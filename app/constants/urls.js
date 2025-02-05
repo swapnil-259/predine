@@ -46,4 +46,5 @@ export const apiURL = {
   CANCEL_DISH: '/owner/orders/cancel/',
   MANAGE_ORDERS: 'chef/manage-orders/',
   GET_TIMIMGS: '/owner/timings/',
+  RESTAURANT_STATISTICS: '/owner/statistics/',
 };

@@ -68,6 +68,7 @@ export const StyledButton = ({fun, label, ...props}) => {
     <Button
       mode="contained"
       textColor="#fff"
+      labelStyle={{color: '#fff', fontWeight: 'bold'}}
       tw="bg-[#FE7240] m-5 mb-4 mt-4 border-0 font-bold"
       {...props}>
       {label}

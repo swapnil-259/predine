@@ -3,23 +3,30 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {Alert, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Image,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {Appbar, Modal, PaperProvider, Portal} from 'react-native-paper';
 import {StyledButton, StyledText, StyledView} from '../../components';
 import {apiURL} from '../../constants/urls';
 import {getData, postData} from '../../services/api/apiService';
 import {baseURL} from '../../services/api/axios';
-
 const ViewRestaurantMenu = ({route, navigation}) => {
   const [menuData, setMenuData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [filteredMenu, setFilteredMenu] = useState([]);
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [isTimePicked, setIsTimePicked] = useState(false);
   const [openingTime, setOpeningTime] = useState(null);
   const [closingTime, setClosingTime] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const bottomSheetRef = useRef(null);
 
@@ -110,6 +117,14 @@ const ViewRestaurantMenu = ({route, navigation}) => {
     bottomSheetRef.current?.close();
   };
 
+  const restaurantMenu = async () => {
+    try {
+      const res = await getData(apiURL.MENU_DATA, {data: route.params.id});
+      setMenuData(res.data);
+      setFilteredMenu(res.data);
+    } catch (err) {}
+  };
+
   useFocusEffect(
     useCallback(() => {
       restaurantMenu();
@@ -117,11 +132,16 @@ const ViewRestaurantMenu = ({route, navigation}) => {
     }, []),
   );
 
-  const restaurantMenu = async () => {
-    try {
-      const res = await getData(apiURL.MENU_DATA, {data: route.params.id});
-      setMenuData(res.data);
-    } catch (err) {}
+  const handleSearch = query => {
+    setSearchQuery(query);
+    if (query.trim() === '') {
+      setFilteredMenu(menuData); // Reset to full menu when search is empty
+    } else {
+      const filtered = menuData.filter(item =>
+        item.name.toLowerCase().includes(query.toLowerCase()),
+      );
+      setFilteredMenu(filtered);
+    }
   };
 
   const renderDish = ({item}) => {
@@ -146,39 +166,47 @@ const ViewRestaurantMenu = ({route, navigation}) => {
                 />
               </StyledView>
             </StyledView>
-            <StyledText tw="text-lg text-black font-bold" text={item.name} />
+            <StyledText
+              tw="text-lg text-black font-bold"
+              text={item.name}
+              numberOfLines={3}
+              ellipsizeMode="tail"
+              style={{maxWidth: '80%'}}
+            />
           </StyledView>
 
-          <StyledView style={{flexDirection: 'row'}} tw="gap-1">
+          <StyledView
+            style={{flexDirection: 'row', flexWrap: 'wrap'}}
+            tw="gap-1">
             <StyledText
-              tw="text-sm text-gray-700 mb-1 font-bold"
+              tw="text-sm text-gray-700 font-bold"
               text="Description :"
             />
             <StyledText
-              tw="text-sm text-gray-500 mb-1 font-bold max-w-[200px]"
+              tw="text-sm text-gray-500 font-bold"
               text={item.description}
+              numberOfLines={4}
+              ellipsizeMode="tail"
+              style={{maxWidth: '100%'}} // Prevents overflow
             />
           </StyledView>
+
           <StyledView style={{flexDirection: 'row'}} tw="gap-1">
+            <StyledText tw="text-sm text-gray-700 font-bold" text="Diet:" />
             <StyledText
-              tw="text-sm text-gray-700 mb-1 font-bold"
-              text="Diet:"
-            />
-            <StyledText
-              tw="text-sm text-gray-500 mb-1 font-bold"
+              tw="text-sm text-gray-500 font-bold"
               text={item.diet__parent}
             />
           </StyledView>
+
           <StyledView style={{flexDirection: 'row'}} tw="gap-1">
+            <StyledText tw="text-sm text-gray-700 font-bold" text="Category:" />
             <StyledText
-              tw="text-sm text-gray-700 mb-1 font-bold"
-              text="Category:"
-            />
-            <StyledText
-              tw="text-sm text-gray-500 mb-1 font-bold"
+              tw="text-sm text-gray-500 font-bold"
               text={item.category__parent}
             />
           </StyledView>
+
           <StyledView style={{flexDirection: 'row'}} tw="gap-1">
             <StyledText
               tw="text-sm text-gray-700 font-bold"
@@ -189,10 +217,12 @@ const ViewRestaurantMenu = ({route, navigation}) => {
               text={`${item.preparation_time} mins`}
             />
           </StyledView>
+
           <StyledText
             tw="text-base text-black font-bold mt-1"
             text={`₹${item.price}`}
           />
+
           {item.recommended && (
             <StyledText tw="text-green-600 font-bold" text="Recommended" />
           )}
@@ -211,11 +241,7 @@ const ViewRestaurantMenu = ({route, navigation}) => {
                   width: 200,
                   marginTop: 10,
                 }}>
-                <StyledText
-                  tw="text-white font-bold text-[16px]"
-                  style={{fontSize: 20}}
-                  text="Add"
-                />
+                <StyledText tw="text-white font-bold text-[16px]" text="Add" />
               </TouchableOpacity>
             ) : (
               <StyledView
@@ -231,38 +257,31 @@ const ViewRestaurantMenu = ({route, navigation}) => {
                   marginTop: 10,
                 }}>
                 <TouchableOpacity onPress={() => handleDecrement(item.id)}>
-                  <StyledText
-                    tw="text-white font-bold"
-                    style={{fontSize: 22}}
-                    text="-"
-                  />
+                  <StyledText tw="text-white font-bold text-[16px]" text="-" />
                 </TouchableOpacity>
                 <StyledText
                   tw="text-white font-bold text-[16px]"
                   text={quantity.toString()}
                 />
                 <TouchableOpacity onPress={() => handleIncrement(item.id)}>
-                  <StyledText
-                    tw="text-white font-bold "
-                    style={{fontSize: 22}}
-                    text="+"
-                  />
+                  <StyledText tw="text-white font-bold text-[16px]" text="+" />
                 </TouchableOpacity>
               </StyledView>
             )}
           </StyledView>
         </StyledView>
 
-        <Image
-          source={{uri: baseURL + 'media/' + item.image}}
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 10,
-            alignSelf: 'center',
-          }}
-          resizeMode="cover"
-        />
+        <StyledView tw="w-[110px] h-[110px]">
+          <Image
+            source={{uri: baseURL + 'media/' + item.image}}
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: 10,
+            }}
+            resizeMode="cover"
+          />
+        </StyledView>
       </StyledView>
     );
   };
@@ -296,6 +315,7 @@ const ViewRestaurantMenu = ({route, navigation}) => {
       const res = await postData(apiURL.ORDER_PLACED, data);
       closeModal();
       setCartItems([]);
+      navigation.navigate('Order Summary');
       console.log('res', res);
 
       bottomSheetRef.current?.close();
@@ -350,19 +370,49 @@ const ViewRestaurantMenu = ({route, navigation}) => {
             }}
           />
         </Appbar.Header>
+        <TextInput
+          style={{
+            height: 50,
+            borderColor: '#ccc',
+            borderWidth: 1,
+            margin: 15,
+            marginBottom: 5,
+            paddingLeft: 10,
+            borderRadius: 5,
+            color: '#000',
+          }}
+          placeholder="Search dishes..."
+          placeholderTextColor={'#ccc'}
+          value={searchQuery}
+          onChangeText={handleSearch}
+          clearButtonMode="always"
+        />
         <ScrollView contentContainerStyle={{padding: 10, paddingBottom: '50%'}}>
-          {menuData.map((item, index) => (
-            <StyledView key={index} tw="mb-4">
-              {renderDish({item})}
+          {filteredMenu && filteredMenu?.length === 0 ? (
+            <StyledView
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignContent: 'center',
+              }}>
+              <StyledText
+                text={'Waiting for the dishes...'}
+                tw="text-black text-[20px]"></StyledText>
             </StyledView>
-          ))}
+          ) : (
+            filteredMenu.map((item, index) => (
+              <StyledView key={index} tw="mb-4">
+                {renderDish({item})}
+              </StyledView>
+            ))
+          )}
         </ScrollView>
 
         <BottomSheet
           ref={bottomSheetRef}
-          snapPoints={['28%', '28%', '28%']}
+          snapPoints={['28%', '50%', '28%']}
           index={-1}
-          enablePanDownToClose
+          // enablePanDownToClose
           enableDynamicSizing={false}
           backgroundStyle={{
             backgroundColor: '#FEF7F4',

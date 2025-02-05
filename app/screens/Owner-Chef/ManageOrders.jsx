@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import axios from 'axios';
 import {useCallback, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {
   Button,
   Card,
@@ -138,18 +138,38 @@ const ManageOrders = () => {
     }
   };
 
+  const allCount = ordersData.length;
+  const pendingCount = ordersData.filter(
+    order => order.order_status === 'Pending',
+  ).length;
+  const prevCount = ordersData.filter(
+    order =>
+      order.order_status !== 'Pending' &&
+      (order.order_status === 'Accepted' || order.order_status === 'Rejected'),
+  ).length;
+
   return (
     <StyledView tw="flex-1 p-4 bg-white">
       <SegmentedButtons
         value={value}
         style={{
-          backgroundColor: '#FEF7F4',
+          backgroundColor: '#FEF7F4', // Background color of the segmented button container
+          borderRadius: 20, // Rounded corners to make the background fit the buttons
+          padding: 2, // Ensures that the buttons don't stretch beyond their container
         }}
         onValueChange={setValue}
         buttons={[
           {
             value: 'all',
-            label: 'All',
+            label: (
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: value === 'all' ? '#FF6347' : '#000',
+                }}>
+                All ({allCount})
+              </Text>
+            ),
             icon: 'format-list-bulleted',
             style: {
               backgroundColor: value === 'all' ? '#FEF7F4' : '#fff',
@@ -157,7 +177,15 @@ const ManageOrders = () => {
           },
           {
             value: 'pending',
-            label: 'Pending',
+            label: (
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: value === 'pending' ? '#FF6347' : '#000',
+                }}>
+                Pending ({pendingCount})
+              </Text>
+            ),
             icon: 'clock',
             style: {
               backgroundColor: value === 'pending' ? '#FEF7F4' : '#fff',
@@ -165,7 +193,15 @@ const ManageOrders = () => {
           },
           {
             value: 'prev',
-            label: 'Previous',
+            label: (
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: value === 'prev' ? '#FF6347' : '#000',
+                }}>
+                Previous ({prevCount})
+              </Text>
+            ),
             icon: 'history',
             style: {
               backgroundColor: value === 'prev' ? '#FEF7F4' : '#fff',
@@ -204,7 +240,9 @@ const ManageOrders = () => {
                 <Title>{`Order ID: ${order.order_id}`}</Title>
                 <Paragraph>{`Total Amount: Rs ${order.total_amount}`}</Paragraph>
                 <Paragraph>{`Order Status: ${order.order_status}`}</Paragraph>
-                <Paragraph>{`Food Status: ${order.food_status}`}</Paragraph>
+                <Paragraph>{`Food Status: ${
+                  order.food_status === null ? 'No Status' : order.food_status
+                }`}</Paragraph>
                 <Paragraph>{`Order Time: ${new Date(
                   order.order_time,
                 ).toLocaleString()}`}</Paragraph>

@@ -7,17 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {PaperProvider} from 'react-native-paper';
-import {
-  DialogBox,
-  StyledButton,
-  StyledButtonTrans,
-  StyledText,
-  StyledTextInput,
-} from '../../components';
+import {Button, PaperProvider} from 'react-native-paper';
+import {DialogBox, StyledText, StyledTextInput} from '../../components';
 import {BottomSheetComponent} from '../../components/BottomSheet';
 import {apiURL} from '../../constants/urls';
-import {getData, postData} from '../../services/api/apiService';
+import {postData} from '../../services/api/apiService';
 
 const InputEmail = ({navigation}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -73,28 +67,15 @@ const InputEmail = ({navigation}) => {
 
     try {
       const res = await postData(apiURL.VERIFY_EMAIL, data);
-      console.log(res);
-      setEditDisable(false);
-      navigation.navigate('VerifyOTP', {data});
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const checkEmail = async () => {
-    if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
-      return;
-    }
-    setEmailError('');
-    const data = {email: email};
-
-    try {
-      const res = await getData(apiURL.CHECK_EMAIL_VERF, data);
-      console.log(res);
       setEditDisable(false);
       setEmail('');
-      navigation.navigate('Register', {email});
+      if (res.email_verified && !res.user_registered) {
+        navigation.navigate('Register', {email});
+      } else if (!res.email_verified && !res.user_registered) {
+        navigation.navigate('VerifyOTP', {email});
+      } else if (res.email_verified && res.user_registered) {
+        navigation.navigate('Logout');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -128,7 +109,7 @@ const InputEmail = ({navigation}) => {
         />
         <BottomSheetComponent>
           <StyledText
-            tw="text-black font-bold text-[18px] text-center mb-2"
+            tw="text-black font-bold text-[22px] text-center mb-2"
             text="EMAIL VERIFICATION"></StyledText>
 
           <StyledTextInput
@@ -142,25 +123,32 @@ const InputEmail = ({navigation}) => {
             <StyledText tw="pl-8 text-red-500" text={emailError}></StyledText>
           ) : null}
 
-          <StyledButton
-            label="VERIFY EMAIL"
+          <Button
+            mode="contained"
             onPress={() => {
-              console.log('button pressed');
               verifyEmail();
-            }}></StyledButton>
+            }}
+            style={{backgroundColor: '#FE7240', margin: 20}}
+            labelStyle={{
+              color: '#fff',
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            {'VERIFY EMAIL'}
+          </Button>
 
-          <StyledButtonTrans
+          {/* <StyledButtonTrans
             label={'Continue Registration Process'}
-            onPress={() => checkEmail()}></StyledButtonTrans>
+            onPress={() => checkEmail()}></StyledButtonTrans> */}
 
           <View tw="flex-1 justify-end mb-8 mt-1">
             <View tw="flex-row justify-center">
               <StyledText
-                tw="text-black font-bold"
+                tw="text-black font-bold text-[17px]"
                 text="Already Registered?"></StyledText>
               <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
                 <StyledText
-                  tw="text-[#FE7240] font-bold"
+                  tw="text-[#FE7240] font-bold text-[17px]"
                   text=" Back to Login!"></StyledText>
               </TouchableOpacity>
             </View>
